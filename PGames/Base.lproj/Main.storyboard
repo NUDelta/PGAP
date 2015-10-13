@@ -49,10 +49,10 @@
             </objects>
             <point key="canvasLocation" x="-584" y="311"/>
         </scene>
-        <!--View Controller-->
+        <!--Image View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PGames" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ImageViewController" customModule="PGames" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -61,16 +61,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SRN-kr-fPH">
-                                <rect key="frame" x="145" y="154" width="311" height="291"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Zk-l3-JWv">
-                                <rect key="frame" x="279" y="491" width="42" height="30"/>
-                                <state key="normal" title="image"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Zk-l3-JWv">
+                                <rect key="frame" x="254" y="491" width="92" height="30"/>
+                                <state key="normal" title="TAKE PHOTO"/>
+                                <connections>
+                                    <action selector="takePhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G7p-5N-SA7"/>
+                                </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SRN-kr-fPH">
+                                <rect key="frame" x="145" y="154" width="311" height="291"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="311" id="eBe-1d-aAF"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spl-Sb-6Lc">
+                                <rect key="frame" x="273" y="529" width="55" height="30"/>
+                                <state key="normal" title="WATER!"/>
+                                <connections>
+                                    <action selector="doAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3hg-o5-yVl"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKd-1b-TnH">
+                                <rect key="frame" x="20" y="20" width="21" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SRN-kr-fPH" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="134" id="6tQ-ZZ-6VM"/>
+                            <constraint firstItem="SRN-kr-fPH" firstAttribute="centerX" secondItem="1Zk-l3-JWv" secondAttribute="centerX" id="8aa-LH-g9N"/>
+                            <constraint firstItem="spl-Sb-6Lc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RrR-m0-Tf8"/>
+                            <constraint firstItem="SRN-kr-fPH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Swx-kg-2rx"/>
+                            <constraint firstItem="SRN-kr-fPH" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="fIL-MD-Kfd"/>
+                            <constraint firstItem="1Zk-l3-JWv" firstAttribute="top" secondItem="SRN-kr-fPH" secondAttribute="bottom" constant="46" id="paV-iX-hJo"/>
+                            <constraint firstItem="spl-Sb-6Lc" firstAttribute="top" secondItem="1Zk-l3-JWv" secondAttribute="bottom" constant="8" id="prk-Sx-CAU"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="countDownLabel" destination="XKd-1b-TnH" id="7L7-1t-p7D"/>
+                        <outlet property="imageV" destination="SRN-kr-fPH" id="wkg-ZD-eWw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

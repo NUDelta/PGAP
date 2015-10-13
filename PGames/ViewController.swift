@@ -34,10 +34,15 @@ class ViewController: UIViewController {
             ViewControllerIn.timeLeft = timeLeft
             
         }
+        else if (segue.identifier == "imageSegue") {
+            let ViewControllerIn = (segue.destinationViewController as! ImageViewController)
+            ViewControllerIn.mainController = self
+            ViewControllerIn.timeLeft = timeLeft
+        }
     }
 
     @IBAction func beginGame(sender: UIButton) {
-        self.performSegueWithIdentifier("textSegue", sender: self)
+        self.performSegueWithIdentifier("imageSegue", sender: self)
     }
     
     func update() {
