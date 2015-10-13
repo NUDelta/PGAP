@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import Parse
 
 class TextViewController: UIViewController {
 
+    @IBOutlet weak var taskText: UILabel!
     @IBOutlet weak var countDownLabel: UILabel!
     var timeLeft:Int?
+    var tasks: [PFObject] = []
     var mainController:ViewController?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +22,17 @@ class TextViewController: UIViewController {
         // Do any additional setup after loading the view.
         countDownLabel.text = String(timeLeft!--)
         _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        
+        let query = PFQuery(className:"tasks")
+        do {
+            try tasks = query.findObjects()
+            
+        } catch {
+            tasks = []
+        }
+        let randomIndex = Int(arc4random_uniform(UInt32(tasks.count)))
+        taskText.text = tasks[randomIndex]["description"] as? String
+        
     }
 
     override func didReceiveMemoryWarning() {
