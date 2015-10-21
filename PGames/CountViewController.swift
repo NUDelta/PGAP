@@ -1,39 +1,49 @@
 //
-//  TextViewController.swift
+//  CountViewController.swift
 //  PGames
 //
-//  Created by Shawn Caeiro on 10/12/15.
+//  Created by Shawn Caeiro on 10/13/15.
 //  Copyright © 2015 Shawn Caeiro. All rights reserved.
 //
 
 import UIKit
 import Parse
 
-class TextViewController: UIViewController {
+class CountViewController: UIViewController {
 
-    @IBOutlet weak var taskText: UILabel!
+    @IBOutlet weak var doneButton: UIButton!
+   
     @IBOutlet weak var countDownLabel: UILabel!
+    @IBOutlet weak var countButton: UIButton!
+    @IBOutlet weak var gameText: UILabel!
     var timeLeft:Int?
-    var tasks: [PFObject] = []
     var mainController:ViewController?
     var game: PFObject?
+    var count = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        countDownLabel.text = String(timeLeft!--)
-        _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
-        taskText.text = game!["description"] as? String
         
+        _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+        countDownLabel.text = String(timeLeft!)
+        gameText.text = game!["description"] as! String
+        countButton.backgroundColor = UIColor.blueColor()
+        countButton.layer.cornerRadius = 5
+        countButton.layer.borderWidth = 1
+        countButton.layer.borderColor = UIColor.blackColor().CGColor
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func nextGame(sender: UIButton) {
-        //mainController?.timeLeft = timeLeft
+    @IBAction func addCount(sender: UIButton) {
+        count++
+        countButton.setTitle(String(count), forState: .Normal)
+    }
+    @IBAction func doneButton(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -43,7 +53,6 @@ class TextViewController: UIViewController {
             countDownLabel.text = String(timeLeft!--)
         }
     }
-    
     /*
     // MARK: - Navigation
 

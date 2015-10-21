@@ -1,30 +1,38 @@
 //
-//  TextViewController.swift
+//  ShakeViewController.swift
 //  PGames
 //
-//  Created by Shawn Caeiro on 10/12/15.
+//  Created by Shawn Caeiro on 10/13/15.
 //  Copyright © 2015 Shawn Caeiro. All rights reserved.
 //
 
 import UIKit
 import Parse
+import CoreMotion
 
-class TextViewController: UIViewController {
-
-    @IBOutlet weak var taskText: UILabel!
+class ShakeViewController: UIViewController {
+    
+    @IBOutlet weak var gameText: UILabel!
+    @IBOutlet weak var shakeCount: UILabel!
     @IBOutlet weak var countDownLabel: UILabel!
     var timeLeft:Int?
-    var tasks: [PFObject] = []
     var mainController:ViewController?
+    var actionCount = 0
+    var tasks: [PFObject] = []
     var game: PFObject?
+    
+    let pedometer = CMPedometer()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         countDownLabel.text = String(timeLeft!--)
+        gameText.text = game!["description"] as? String
+        actionCount = game!["numReq"] as! Int
+        shakeCount.text = String(actionCount)
         _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
-        taskText.text = game!["description"] as? String
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,11 +40,28 @@ class TextViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func nextGame(sender: UIButton) {
-        //mainController?.timeLeft = timeLeft
+
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func motionEnded(motion: UIEventSubtype,
+        withEvent event: UIEvent?) {
+            if motion == .MotionShake{
+                actionCount--
+                shakeCount.text = String(actionCount)
+                if (actionCount == 0) {
+                    shakeCount.text = "HAPPY"
+                    let _ : NSTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("leaveCode"), userInfo: nil, repeats: false)
+                }
+            }
+         
+    }
+    
+    func leaveCode() {
         dismissViewControllerAnimated(true, completion: nil)
     }
-
+    
     func update() {
         if(timeLeft >= 0)
         {

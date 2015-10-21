@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import Parse
+import ReplayKit
 
 class StartViewController: UIViewController {
-
+    var tasks: [PFObject] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,11 +35,29 @@ class StartViewController: UIViewController {
             
             let ViewControllerIn = (segue.destinationViewController as! ViewController)
             
-            ViewControllerIn.timeLeft = 60
+            ViewControllerIn.timeLeft = 90
             
         }
     }
 
+    @IBAction func stopRecording(sender: AnyObject) {
+        let recorder = RPScreenRecorder.sharedRecorder()
+        
+        recorder.stopRecordingWithHandler { (previewVC, error) in
+            if let vc = previewVC {
+                self.presentViewController(
+                    vc,
+                    animated: true,
+                    completion: nil
+                )
+            }
+        }
+    }
+    @IBAction func startrRecord(sender: UIButton) {
+        let recorder = RPScreenRecorder.sharedRecorder()
+        recorder.startRecordingWithMicrophoneEnabled(true, handler: nil)
+        
+    }
     /*
     // MARK: - Navigation
 

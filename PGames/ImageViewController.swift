@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Parse
 
 class ImageViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     @IBOutlet weak var countDownLabel: UILabel!
+    @IBOutlet weak var gameText: UILabel!
     
     @IBOutlet weak var imageV: UIImageView!
     var imagePicker: UIImagePickerController!
@@ -18,6 +20,8 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
     var timeLeft:Int?
     var mainController:ViewController?
     var actionCount = 0
+    var tasks: [PFObject] = []
+    var game: PFObject?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +33,8 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
         imageV.addGestureRecognizer(tapGestureRecognizer)
         imageV.userInteractionEnabled = true
+        
+        gameText.text = game!["description"] as? String
     }
     
     func imageTapped(img: UITapGestureRecognizer)
@@ -40,14 +46,19 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
             //DynamicView.backgroundColor=UIColor.greenColor()
             //DynamicView.layer.cornerRadius=25
             //DynamicView.layer.borderWidth=2
-            DynamicView.image = UIImage(named: "water")
+            DynamicView.image = UIImage(named: game!["imgName"] as! String)
             DynamicView.center = location
             self.view.addSubview(DynamicView)
             actionCount++
         }
         else {
-            dismissViewControllerAnimated(true, completion: nil)
+            gameText.text = "THANKS!!!!"
+            let _ : NSTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("leaveCode"), userInfo: nil, repeats: false)
         }
+    }
+    
+    func leaveCode() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,6 +79,7 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
         imageV.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        gameText.text = game!["actionVerb"] as? String
     }
     
     func update() {

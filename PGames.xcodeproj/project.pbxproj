@@ -29,6 +29,8 @@
 		1F171F231BCCDCB600B13AEB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F221BCCDCB600B13AEB /* SystemConfiguration.framework */; };
 		1F171F251BCCDCEF00B13AEB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F241BCCDCEF00B13AEB /* libz.tbd */; };
 		1F171F271BCCDCFC00B13AEB /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F261BCCDCFC00B13AEB /* libsqlite3.tbd */; };
+		1F171F2D1BCD630E00B13AEB /* ShakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		1F171F2F1BCDDE1100B13AEB /* CountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +79,8 @@
 		1F171F221BCCDCB600B13AEB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1F171F241BCCDCEF00B13AEB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		1F171F261BCCDCFC00B13AEB /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShakeViewController.swift; sourceTree = "<group>"; };
+		1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,9 +144,11 @@
 		1F171ED81BCC8B6000B13AEB /* PGames */ = {
 			isa = PBXGroup;
 			children = (
+				1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */,
 				1F171ED91BCC8B6000B13AEB /* AppDelegate.swift */,
 				1F171EDB1BCC8B6000B13AEB /* ViewController.swift */,
 				1F171EDD1BCC8B6000B13AEB /* Main.storyboard */,
+				1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */,
 				1F171F0B1BCC938600B13AEB /* StartViewController.swift */,
 				1F171F071BCC8D9900B13AEB /* TextViewController.swift */,
 				1F171F091BCC8DAC00B13AEB /* ImageViewController.swift */,
@@ -322,9 +328,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F171F0C1BCC938600B13AEB /* StartViewController.swift in Sources */,
+				1F171F2D1BCD630E00B13AEB /* ShakeViewController.swift in Sources */,
 				1F171EDC1BCC8B6000B13AEB /* ViewController.swift in Sources */,
 				1F171EDA1BCC8B6000B13AEB /* AppDelegate.swift in Sources */,
 				1F171F0A1BCC8DAC00B13AEB /* ImageViewController.swift in Sources */,
+				1F171F2F1BCDDE1100B13AEB /* CountViewController.swift in Sources */,
 				1F171F081BCC8D9900B13AEB /* TextViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
