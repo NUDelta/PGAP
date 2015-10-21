@@ -481,7 +481,7 @@
 				);
 				INFOPLIST_FILE = PGames/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.PGames;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.PGames1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -499,7 +499,7 @@
 				);
 				INFOPLIST_FILE = PGames/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.PGames;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.PGames1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

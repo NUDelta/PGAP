@@ -34,6 +34,7 @@ class TextViewController: UIViewController {
     
     @IBAction func nextGame(sender: UIButton) {
         //mainController?.timeLeft = timeLeft
+        sendParseData()
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -41,6 +42,22 @@ class TextViewController: UIViewController {
         if(timeLeft >= 0)
         {
             countDownLabel.text = String(timeLeft!--)
+        }
+    }
+    
+    func sendParseData() {
+        let loc = PFObject(className:"locationData")
+        
+        PFGeoPoint.geoPointForCurrentLocationInBackground {
+            (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
+            if error == nil {
+                // do something with the new geoPoint
+                loc["location"] = geoPoint!
+                print("\(geoPoint)")
+            }
+            loc["gameType"] = "textGames"
+            loc["gameID"] = self.game!.objectId
+            loc.saveInBackground()
         }
     }
     

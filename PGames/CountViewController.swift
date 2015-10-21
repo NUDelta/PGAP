@@ -44,6 +44,7 @@ class CountViewController: UIViewController {
         countButton.setTitle(String(count), forState: .Normal)
     }
     @IBAction func doneButton(sender: UIButton) {
+        sendParseData()
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -51,6 +52,23 @@ class CountViewController: UIViewController {
         if(timeLeft >= 0)
         {
             countDownLabel.text = String(timeLeft!--)
+        }
+    }
+    
+    func sendParseData() {
+        let loc = PFObject(className:"locationData")
+        
+        PFGeoPoint.geoPointForCurrentLocationInBackground {
+            (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
+            if error == nil {
+                // do something with the new geoPoint
+                loc["location"] = geoPoint!
+                print("\(geoPoint)")
+            }
+            loc["count"] = self.count
+            loc["gameType"] = "countGames"
+            loc["gameID"] = self.game!.objectId
+            loc.saveInBackground()
         }
     }
     /*

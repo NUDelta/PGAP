@@ -190,7 +190,7 @@
                                     <action selector="takePhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G7p-5N-SA7"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SRN-kr-fPH">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SRN-kr-fPH">
                                 <rect key="frame" x="145" y="154" width="311" height="291"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="311" id="eBe-1d-aAF"/>
@@ -273,11 +273,24 @@
                                     <action selector="stopRecording:" destination="LKZ-6e-97x" eventType="touchUpInside" id="IFE-on-9A5"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have 75 seconds to play AS MANY mini games as you can... Are you up to the challenge?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="dEs-qy-1D1">
+                                <rect key="frame" x="86" y="333" width="429" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="Zaf-Zx-Len"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="dEs-qy-1D1" firstAttribute="leading" secondItem="kPj-JU-mDK" secondAttribute="leadingMargin" constant="66" id="6Lt-27-tcG"/>
+                            <constraint firstItem="dEs-qy-1D1" firstAttribute="top" secondItem="7RK-2w-HT0" secondAttribute="bottom" constant="16" id="883-Vu-pQH"/>
                             <constraint firstItem="aNu-gn-Dbf" firstAttribute="top" secondItem="CZ2-8A-zVp" secondAttribute="bottom" constant="131" id="ImP-YL-KXs"/>
+                            <constraint firstItem="dEs-qy-1D1" firstAttribute="centerX" secondItem="7RK-2w-HT0" secondAttribute="centerX" id="VhI-vd-fGZ"/>
                             <constraint firstItem="7RK-2w-HT0" firstAttribute="centerY" secondItem="kPj-JU-mDK" secondAttribute="centerY" id="We3-v3-b0p"/>
+                            <constraint firstAttribute="bottom" secondItem="dEs-qy-1D1" secondAttribute="bottom" constant="192" id="lYM-i0-KAH"/>
                             <constraint firstItem="7RK-2w-HT0" firstAttribute="centerX" secondItem="kPj-JU-mDK" secondAttribute="centerX" id="uak-eA-Dfo"/>
                             <constraint firstItem="CZ2-8A-zVp" firstAttribute="centerX" secondItem="kPj-JU-mDK" secondAttribute="centerX" id="vw0-NO-OvE"/>
                         </constraints>

@@ -53,11 +53,14 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         }
         else {
             gameText.text = "THANKS!!!!"
-            let _ : NSTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("leaveCode"), userInfo: nil, repeats: false)
+            imageV.userInteractionEnabled = false
+            //let _ : NSTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("leaveCode"), userInfo: nil, repeats: false)
+            performSelector("leaveCode", withObject: nil, afterDelay: 1)
         }
     }
     
     func leaveCode() {
+        sendParseData()
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -78,7 +81,8 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
-        imageV.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        imageV.image = image
         gameText.text = game!["actionVerb"] as? String
     }
     
@@ -86,6 +90,25 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         if(timeLeft >= 0)
         {
             countDownLabel.text = String(timeLeft!--)
+        }
+    }
+    
+    func sendParseData() {
+        let loc = PFObject(className:"locationData")
+        
+        PFGeoPoint.geoPointForCurrentLocationInBackground {
+            (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
+            if error == nil {
+                // do something with the new geoPoint
+                loc["location"] = geoPoint!
+                print("\(geoPoint)")
+            }
+            let imageData = UIImageJPEGRepresentation(self.image!, 0.90)
+            let imageFile = PFFile(name:"image.jpg", data:imageData!)
+            loc["imageFile"] = imageFile
+            loc["gameType"] = "imageGames"
+            loc["gameID"] = self.game!.objectId
+            loc.saveInBackground()
         }
     }
 
