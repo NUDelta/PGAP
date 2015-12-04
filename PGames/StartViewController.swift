@@ -12,7 +12,38 @@ import ReplayKit
 
 class StartViewController: UIViewController {
     var tasks: [PFObject] = []
-    
+    var a: [PFObject]?
+    @IBAction func startExplore(sender: AnyObject) {
+        let query = PFQuery(className:"exploreGames")
+        do {
+            a = try query.findObjects()
+            print("EH")
+        } catch {
+            print("NOO")
+        }
+        print(a)
+        print("OMG")
+        
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        
+
+        if a![0]["gameType"] as! String == "button" {
+            let svc : ButtonViewController = mainStoryboard.instantiateViewControllerWithIdentifier("buttonGame") as! ButtonViewController
+            svc.modalTransitionStyle = .CrossDissolve
+            svc.tasks = a!
+            svc.game = 0
+            presentViewController(svc, animated: true, completion: nil)
+        }
+        else {
+            let svc : PaceViewController = mainStoryboard.instantiateViewControllerWithIdentifier("pace") as! PaceViewController
+            svc.modalTransitionStyle = .CrossDissolve
+            svc.tasks = a!
+            svc.game = 0
+            svc.g = a![0]
+            presentViewController(svc, animated: true, completion: nil)
+        }
+
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 

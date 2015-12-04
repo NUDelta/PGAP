@@ -32,6 +32,9 @@
 		1F171F2D1BCD630E00B13AEB /* ShakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */; };
 		1F171F2F1BCDDE1100B13AEB /* CountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */; };
 		1F39593E1BE04ED0005B2369 /* NearUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F39593D1BE04ED0005B2369 /* NearUViewController.swift */; };
+		1FD9B4C11C1140DB00E5DAE5 /* PaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD9B4C01C1140DB00E5DAE5 /* PaceViewController.swift */; };
+		1FD9B4C31C11542700E5DAE5 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD9B4C21C11542700E5DAE5 /* ResultsViewController.swift */; };
+		1FD9B4C51C1162BD00E5DAE5 /* ButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD9B4C41C1162BD00E5DAE5 /* ButtonViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +86,9 @@
 		1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShakeViewController.swift; sourceTree = "<group>"; };
 		1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountViewController.swift; sourceTree = "<group>"; };
 		1F39593D1BE04ED0005B2369 /* NearUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearUViewController.swift; sourceTree = "<group>"; };
+		1FD9B4C01C1140DB00E5DAE5 /* PaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaceViewController.swift; sourceTree = "<group>"; };
+		1FD9B4C21C11542700E5DAE5 /* ResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
+		1FD9B4C41C1162BD00E5DAE5 /* ButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +156,9 @@
 				1F171ED91BCC8B6000B13AEB /* AppDelegate.swift */,
 				1F171EDB1BCC8B6000B13AEB /* ViewController.swift */,
 				1F171EDD1BCC8B6000B13AEB /* Main.storyboard */,
+				1FD9B4C41C1162BD00E5DAE5 /* ButtonViewController.swift */,
+				1FD9B4C21C11542700E5DAE5 /* ResultsViewController.swift */,
+				1FD9B4C01C1140DB00E5DAE5 /* PaceViewController.swift */,
 				1F39593D1BE04ED0005B2369 /* NearUViewController.swift */,
 				1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */,
 				1F171F0B1BCC938600B13AEB /* StartViewController.swift */,
@@ -333,11 +342,14 @@
 				1F171F0C1BCC938600B13AEB /* StartViewController.swift in Sources */,
 				1F171F2D1BCD630E00B13AEB /* ShakeViewController.swift in Sources */,
 				1F171EDC1BCC8B6000B13AEB /* ViewController.swift in Sources */,
+				1FD9B4C31C11542700E5DAE5 /* ResultsViewController.swift in Sources */,
 				1F171EDA1BCC8B6000B13AEB /* AppDelegate.swift in Sources */,
+				1FD9B4C11C1140DB00E5DAE5 /* PaceViewController.swift in Sources */,
 				1F171F0A1BCC8DAC00B13AEB /* ImageViewController.swift in Sources */,
 				1F171F2F1BCDDE1100B13AEB /* CountViewController.swift in Sources */,
 				1F39593E1BE04ED0005B2369 /* NearUViewController.swift in Sources */,
 				1F171F081BCC8D9900B13AEB /* TextViewController.swift in Sources */,
+				1FD9B4C51C1162BD00E5DAE5 /* ButtonViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
