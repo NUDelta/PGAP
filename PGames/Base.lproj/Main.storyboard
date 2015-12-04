@@ -262,7 +262,7 @@
         <!--Start View Controller-->
         <scene sceneID="UNC-Am-Xp5">
             <objects>
-                <viewController id="LKZ-6e-97x" customClass="StartViewController" customModule="PGames" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="startView" id="LKZ-6e-97x" customClass="StartViewController" customModule="PGames" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pyy-vm-cyX"/>
                         <viewControllerLayoutGuide type="bottom" id="aNu-gn-Dbf"/>
@@ -466,6 +466,7 @@
                             <constraint firstAttribute="bottom" secondItem="5nS-ZU-eqG" secondAttribute="bottom" constant="101" id="rah-zT-Tb4"/>
                             <constraint firstItem="kDT-Wa-PUu" firstAttribute="top" secondItem="W92-rU-9nY" secondAttribute="bottom" constant="36" id="tuC-4V-Vb7"/>
                             <constraint firstItem="yH4-ns-a9F" firstAttribute="leading" secondItem="jSb-tf-XYt" secondAttribute="leading" id="wMF-vL-qI7"/>
+                            <constraint firstItem="anI-cH-YSB" firstAttribute="top" secondItem="Cjo-5m-VOw" secondAttribute="bottom" constant="49" id="yBT-Q3-q24"/>
                         </constraints>
                     </view>
                     <connections>
@@ -476,7 +477,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bEj-dd-thA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-925" y="-1349"/>
+            <point key="canvasLocation" x="593" y="-1959"/>
         </scene>
         <!--Pace View Controller-->
         <scene sceneID="SUU-Y1-E9m">
@@ -550,6 +551,101 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P8s-TP-xqe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-941" y="-2052"/>
+        </scene>
+        <!--ImageG View Controller-->
+        <scene sceneID="HT2-VW-rn4">
+            <objects>
+                <viewController storyboardIdentifier="imageGame" id="wQj-Xd-EDQ" customClass="ImageGViewController" customModule="PGames" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9gw-K0-Bsq"/>
+                        <viewControllerLayoutGuide type="bottom" id="YRg-EB-f84"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="g7L-jD-RyF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YFi-kK-dko">
+                                <rect key="frame" x="140" y="208" width="321" height="284"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="321" id="LDT-0e-2X4"/>
+                                    <constraint firstAttribute="height" constant="284" id="zAM-Bv-sma"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="56E-qt-1bP">
+                                <rect key="frame" x="260" y="522" width="81" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="81" id="Qwa-z2-O71"/>
+                                </constraints>
+                                <state key="normal" title="Take Photo!">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Take Photo!">
+                                            <attributes>
+                                                <font key="NSFont" size="15" name="ChalkboardSE-Regular"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <connections>
+                                    <action selector="takePhoto:" destination="wQj-Xd-EDQ" eventType="touchUpInside" id="q9a-xb-mMi"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bella Says...." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqS-x0-gxI">
+                                <rect key="frame" x="20" y="20" width="161" height="65"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="161" id="pQg-PZ-b0p"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="23"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zSP-30-h4P">
+                                <rect key="frame" x="71" y="93" width="447" height="97"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="97" id="C5H-ND-NG6"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="she's lonely! Can you take a picture of the largest crowd of people near you?">
+                                        <attributes>
+                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="18" name="ChalkboardSE-Regular"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="56E-qt-1bP" firstAttribute="top" secondItem="YFi-kK-dko" secondAttribute="bottom" constant="30" id="3Xd-jb-qvu"/>
+                            <constraint firstItem="zSP-30-h4P" firstAttribute="leading" secondItem="g7L-jD-RyF" secondAttribute="leadingMargin" constant="51" id="6g3-n3-Sxv"/>
+                            <constraint firstItem="YFi-kK-dko" firstAttribute="top" secondItem="zSP-30-h4P" secondAttribute="bottom" constant="18" id="8HQ-9I-Xfa"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="zSP-30-h4P" secondAttribute="trailing" constant="62" id="EK1-PR-mPT"/>
+                            <constraint firstItem="YFi-kK-dko" firstAttribute="top" secondItem="9gw-K0-Bsq" secondAttribute="bottom" constant="188" id="K64-OO-dxm"/>
+                            <constraint firstItem="56E-qt-1bP" firstAttribute="centerX" secondItem="YFi-kK-dko" secondAttribute="centerX" id="Nkt-ax-YY7"/>
+                            <constraint firstItem="YFi-kK-dko" firstAttribute="centerX" secondItem="g7L-jD-RyF" secondAttribute="centerX" id="UFe-pm-qpM"/>
+                            <constraint firstItem="zSP-30-h4P" firstAttribute="leading" secondItem="g7L-jD-RyF" secondAttribute="leadingMargin" constant="51" id="UV3-l5-7p4"/>
+                            <constraint firstItem="zSP-30-h4P" firstAttribute="top" secondItem="cqS-x0-gxI" secondAttribute="bottom" constant="8" symbolic="YES" id="cs5-l5-8kl"/>
+                            <constraint firstItem="YRg-EB-f84" firstAttribute="top" secondItem="56E-qt-1bP" secondAttribute="bottom" constant="48" id="i2O-fr-OKf"/>
+                            <constraint firstItem="cqS-x0-gxI" firstAttribute="top" secondItem="9gw-K0-Bsq" secondAttribute="bottom" id="iRQ-fZ-U2L"/>
+                            <constraint firstItem="cqS-x0-gxI" firstAttribute="leading" secondItem="g7L-jD-RyF" secondAttribute="leadingMargin" id="jRd-Yz-2MT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="zSP-30-h4P" secondAttribute="trailing" constant="62" id="t9k-Oh-swj"/>
+                            <constraint firstItem="YFi-kK-dko" firstAttribute="top" secondItem="g7L-jD-RyF" secondAttribute="top" constant="208" id="xQP-h3-6p2"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="UV3-l5-7p4"/>
+                                <exclude reference="t9k-Oh-swj"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="gameText" destination="zSP-30-h4P" id="v9h-2T-dDR"/>
+                        <outlet property="imageV" destination="YFi-kK-dko" id="rid-bJ-fgj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fVr-3p-U8S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-495" y="-2813"/>
         </scene>
         <!--Results View Controller-->
         <scene sceneID="bAY-xH-Wkp">

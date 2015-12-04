@@ -25,8 +25,8 @@ class StartViewController: UIViewController {
         print("OMG")
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        a = [a![0], a![2], a![5], a![3], a![1], a![4]]
         
-
         if a![0]["gameType"] as! String == "button" {
             let svc : ButtonViewController = mainStoryboard.instantiateViewControllerWithIdentifier("buttonGame") as! ButtonViewController
             svc.modalTransitionStyle = .CrossDissolve
@@ -34,7 +34,7 @@ class StartViewController: UIViewController {
             svc.game = 0
             presentViewController(svc, animated: true, completion: nil)
         }
-        else {
+        else if a![0]["gameType"] as! String == "pace"{
             let svc : PaceViewController = mainStoryboard.instantiateViewControllerWithIdentifier("pace") as! PaceViewController
             svc.modalTransitionStyle = .CrossDissolve
             svc.tasks = a!
@@ -42,6 +42,15 @@ class StartViewController: UIViewController {
             svc.g = a![0]
             presentViewController(svc, animated: true, completion: nil)
         }
+        else {
+            let svc : ImageGViewController = mainStoryboard.instantiateViewControllerWithIdentifier("imageGame") as! ImageGViewController
+            svc.modalTransitionStyle = .CrossDissolve
+            presentViewController(svc, animated: true, completion: nil)
+        }
+        
+
+       
+
 
     }
     override func viewDidLoad() {

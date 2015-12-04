@@ -26,7 +26,7 @@ class PaceViewController: UIViewController {
         
         
         if g!.objectId! as String != "gttM8sMlpS" {
-            _ = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("end"), userInfo: nil, repeats: true)
+            _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: Selector("end"), userInfo: nil, repeats: true)
         }
         gameText.text = g!["mainInfo"] as! String
         // Do any additional setup after loading the view.

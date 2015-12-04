@@ -44,6 +44,10 @@ class ResultsViewController: UIViewController {
     }
     
     @IBAction func homeScreen(sender: UIButton) {
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        let svc : StartViewController = mainStoryboard.instantiateViewControllerWithIdentifier("startView") as! StartViewController
+        svc.modalTransitionStyle = .CrossDissolve
+        presentViewController(svc, animated: true, completion: nil)
     }
     @IBAction func nextGame(sender: UIButton) {
         
@@ -61,18 +65,25 @@ class ResultsViewController: UIViewController {
         }
         
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-        if tasks![game! + 1]["gameType"] as! String == "button" {
+        if tasks![(game! + 1) % 6]["gameType"] as! String == "button" {
             let svc : ButtonViewController = mainStoryboard.instantiateViewControllerWithIdentifier("buttonGame") as! ButtonViewController
             svc.modalTransitionStyle = .CrossDissolve
             svc.tasks = tasks
-            svc.game = game! + 1
+            svc.game = (game! + 1) % 6
             presentViewController(svc, animated: true, completion: nil)
         }
-        else {
+        else if tasks![(game! + 1) % 6]["gameType"] as! String == "pace"{
             let svc : PaceViewController = mainStoryboard.instantiateViewControllerWithIdentifier("pace") as! PaceViewController
             svc.modalTransitionStyle = .CrossDissolve
             svc.tasks = tasks
-            svc.game = game! + 1
+            svc.game = (game! + 1) % 6
+            presentViewController(svc, animated: true, completion: nil)
+        }
+        else {
+            let svc : ImageGViewController = mainStoryboard.instantiateViewControllerWithIdentifier("imageGame") as! ImageGViewController
+            svc.modalTransitionStyle = .CrossDissolve
+            svc.tasks = tasks
+            svc.game = (game! + 1) % 6
             presentViewController(svc, animated: true, completion: nil)
         }
     }

@@ -35,6 +35,7 @@
 		1FD9B4C11C1140DB00E5DAE5 /* PaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD9B4C01C1140DB00E5DAE5 /* PaceViewController.swift */; };
 		1FD9B4C31C11542700E5DAE5 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD9B4C21C11542700E5DAE5 /* ResultsViewController.swift */; };
 		1FD9B4C51C1162BD00E5DAE5 /* ButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD9B4C41C1162BD00E5DAE5 /* ButtonViewController.swift */; };
+		1FD9B4C91C117BC800E5DAE5 /* ImageGViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD9B4C81C117BC800E5DAE5 /* ImageGViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		1FD9B4C01C1140DB00E5DAE5 /* PaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaceViewController.swift; sourceTree = "<group>"; };
 		1FD9B4C21C11542700E5DAE5 /* ResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		1FD9B4C41C1162BD00E5DAE5 /* ButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonViewController.swift; sourceTree = "<group>"; };
+		1FD9B4C81C117BC800E5DAE5 /* ImageGViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageGViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				1F171ED91BCC8B6000B13AEB /* AppDelegate.swift */,
 				1F171EDB1BCC8B6000B13AEB /* ViewController.swift */,
 				1F171EDD1BCC8B6000B13AEB /* Main.storyboard */,
+				1FD9B4C81C117BC800E5DAE5 /* ImageGViewController.swift */,
 				1FD9B4C41C1162BD00E5DAE5 /* ButtonViewController.swift */,
 				1FD9B4C21C11542700E5DAE5 /* ResultsViewController.swift */,
 				1FD9B4C01C1140DB00E5DAE5 /* PaceViewController.swift */,
@@ -341,6 +344,7 @@
 			files = (
 				1F171F0C1BCC938600B13AEB /* StartViewController.swift in Sources */,
 				1F171F2D1BCD630E00B13AEB /* ShakeViewController.swift in Sources */,
+				1FD9B4C91C117BC800E5DAE5 /* ImageGViewController.swift in Sources */,
 				1F171EDC1BCC8B6000B13AEB /* ViewController.swift in Sources */,
 				1FD9B4C31C11542700E5DAE5 /* ResultsViewController.swift in Sources */,
 				1F171EDA1BCC8B6000B13AEB /* AppDelegate.swift in Sources */,
