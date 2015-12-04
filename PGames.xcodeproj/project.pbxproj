@@ -14,11 +14,11 @@
 		1F171EE41BCC8B6000B13AEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F171EE21BCC8B6000B13AEB /* LaunchScreen.storyboard */; };
 		1F171EEF1BCC8B6000B13AEB /* PGamesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171EEE1BCC8B6000B13AEB /* PGamesTests.swift */; };
 		1F171EFA1BCC8B6000B13AEB /* PGamesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171EF91BCC8B6000B13AEB /* PGamesUITests.swift */; };
-		1F171F081BCC8D9900B13AEB /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F071BCC8D9900B13AEB /* TextViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		1F171F0A1BCC8DAC00B13AEB /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F091BCC8DAC00B13AEB /* ImageViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		1F171F0C1BCC938600B13AEB /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F0B1BCC938600B13AEB /* StartViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		1F171F121BCCDC2700B13AEB /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F101BCCDC2700B13AEB /* Bolts.framework */; settings = {ASSET_TAGS = (); }; };
-		1F171F131BCCDC2700B13AEB /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F111BCCDC2700B13AEB /* Parse.framework */; settings = {ASSET_TAGS = (); }; };
+		1F171F081BCC8D9900B13AEB /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F071BCC8D9900B13AEB /* TextViewController.swift */; };
+		1F171F0A1BCC8DAC00B13AEB /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F091BCC8DAC00B13AEB /* ImageViewController.swift */; };
+		1F171F0C1BCC938600B13AEB /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F0B1BCC938600B13AEB /* StartViewController.swift */; };
+		1F171F121BCCDC2700B13AEB /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F101BCCDC2700B13AEB /* Bolts.framework */; };
+		1F171F131BCCDC2700B13AEB /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F111BCCDC2700B13AEB /* Parse.framework */; };
 		1F171F151BCCDC8400B13AEB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F141BCCDC8400B13AEB /* AudioToolbox.framework */; };
 		1F171F171BCCDC8A00B13AEB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F161BCCDC8A00B13AEB /* CFNetwork.framework */; };
 		1F171F191BCCDC9400B13AEB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F181BCCDC9400B13AEB /* CoreGraphics.framework */; };
@@ -29,8 +29,9 @@
 		1F171F231BCCDCB600B13AEB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F221BCCDCB600B13AEB /* SystemConfiguration.framework */; };
 		1F171F251BCCDCEF00B13AEB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F241BCCDCEF00B13AEB /* libz.tbd */; };
 		1F171F271BCCDCFC00B13AEB /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F171F261BCCDCFC00B13AEB /* libsqlite3.tbd */; };
-		1F171F2D1BCD630E00B13AEB /* ShakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		1F171F2F1BCDDE1100B13AEB /* CountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		1F171F2D1BCD630E00B13AEB /* ShakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */; };
+		1F171F2F1BCDDE1100B13AEB /* CountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */; };
+		1F39593E1BE04ED0005B2369 /* NearUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F39593D1BE04ED0005B2369 /* NearUViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		1F171F261BCCDCFC00B13AEB /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		1F171F2C1BCD630E00B13AEB /* ShakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShakeViewController.swift; sourceTree = "<group>"; };
 		1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountViewController.swift; sourceTree = "<group>"; };
+		1F39593D1BE04ED0005B2369 /* NearUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearUViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				1F171ED91BCC8B6000B13AEB /* AppDelegate.swift */,
 				1F171EDB1BCC8B6000B13AEB /* ViewController.swift */,
 				1F171EDD1BCC8B6000B13AEB /* Main.storyboard */,
+				1F39593D1BE04ED0005B2369 /* NearUViewController.swift */,
 				1F171F2E1BCDDE1000B13AEB /* CountViewController.swift */,
 				1F171F0B1BCC938600B13AEB /* StartViewController.swift */,
 				1F171F071BCC8D9900B13AEB /* TextViewController.swift */,
@@ -333,6 +336,7 @@
 				1F171EDA1BCC8B6000B13AEB /* AppDelegate.swift in Sources */,
 				1F171F0A1BCC8DAC00B13AEB /* ImageViewController.swift in Sources */,
 				1F171F2F1BCDDE1100B13AEB /* CountViewController.swift in Sources */,
+				1F39593E1BE04ED0005B2369 /* NearUViewController.swift in Sources */,
 				1F171F081BCC8D9900B13AEB /* TextViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

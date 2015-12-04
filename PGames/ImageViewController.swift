@@ -32,7 +32,7 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
         imageV.addGestureRecognizer(tapGestureRecognizer)
-        imageV.userInteractionEnabled = true
+        imageV.userInteractionEnabled = false
         
         gameText.text = game!["description"] as? String
     }
@@ -83,6 +83,7 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
         image = info[UIImagePickerControllerOriginalImage] as? UIImage
         imageV.image = image
+        imageV.userInteractionEnabled = true
         gameText.text = game!["actionVerb"] as? String
     }
     

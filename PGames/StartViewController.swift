@@ -35,7 +35,7 @@ class StartViewController: UIViewController {
             
             let ViewControllerIn = (segue.destinationViewController as! ViewController)
             
-            ViewControllerIn.timeLeft = 90
+            ViewControllerIn.timeLeft = 75
             
         }
     }
