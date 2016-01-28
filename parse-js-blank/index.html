@@ -13,37 +13,62 @@
 
 <body >
 
+  <body >
+
   <div id="main" >
 
     <h1>Welcome to DTR PGP!</h1>
-
-    <h4>Enter a game below to add it to our database of games</h4><br>
+    <h3><font color = "gray">Enter a game below to add it to our database of games</font></h3><br>
 
     <form id="formInput" onsubmit="submitForm()" >
-      First name:<br>
-      <input type="text" id="firstName" ><br><br>
-      Last name:<br>
-      <input type="text" id="lastName" ><br><br>
+      <b>Name</b><br>
+      <input type="text" id="name" ><br><br>
 
-      Game Title:<br>
+
+      <b>Game Title</b><br> <small>e.g. Catch the snow!</small><br>
       <input type="text" id="gameTitle"><br><br>
-      Game Description:<br>
+      <b>Game Description</b><br><small>e.g. count how many snowflakes you can catch on your tongue in one minute</small><br>
       <textarea rows="4" cols="50" id= "gameDesc"></textarea> <br><br>
 
-      When or where can you play the game? <br>
-<!-- 
-      <input type="checkbox" id="iSheridan" > On Sheridan<br>
-      <input type="checkbox" id="isTech"  > Inside Tech <br>
-      <input type="checkbox" id="isSnowing" > While it's snowing <br>
- -->
-        <select id="gameCond">
+      <b>Where should this game be played?</b><br>
+      <small>e.g. anywhere!</small><br>
+
+      <input type="checkbox" id="anywhere"> Anywhere <br>
+      <input type="checkbox" id="anywhereCampus"> Anywhere on campus <br>
+      <input type="checkbox" id="onSheridan"> On Sheridan<br>
+      <input type="checkbox" id="inTech"> Inside Tech <br>
+      <input type="checkbox" id="inMain"> in Main <br>
+      <input type="checkbox" id="onDeering"> on Deering Field <br>
+      <input type="checkbox" id="onLakefill"> on the lakefill <br>
+      <input type="checkbox" id="inNorris"> in Norris <br>
+      <input type="checkbox" id="offCampusRes"> in off campus residentail areas <br>
+      <input type="checkbox" id="downtownEvanston"> in downtown Evanston <br>
+      <input type="checkbox" id="onEl"> on the El <br>
+      <input type="checkbox" id="otherLoc"> Other
+      <input type="text" id="otherCondText"><br><br>
+
+
+      <b>Under what conditions should this game be played?</b> <br>
+      <small>e.g. While it's snowing</small><br>
+      <input type="checkbox" id="anytime" > Anytime <br>
+      <input type="checkbox" id="whileSnowing" > While it's snowing <br>
+      <input type="checkbox" id="groundSnow" > when there's snow on the ground <br>
+      <input type="checkbox" id="whenSunny" > When it is sunny<br>
+      <input type="checkbox" id="whenRaining" > When it is raining<br>
+      <input type="checkbox" id="atNight" > At night <br>
+      <input type="checkbox" id="duringDay" > During the day <br>
+      <input type="checkbox" id="duringPassing" > During the passing periods <br>
+      <input type="checkbox" id="otherCond"> Other
+      <input type="text" id="otherLocText"><br><br><br>
+
+
+      <!--   <select id="gameCond">
           <option value="anywhere">Anywhere</option>
           <option value="sheridan">On Sheridan</option>
           <option value="tech">Inside Tech</option>
           <option value="snow">When it's snowing</option>
-        </select> 
+        </select>  -->
 
-        <br><br>
 
       <input id="mySubmit" type="submit">
 
@@ -60,8 +85,18 @@
 
    $("#mySubmit").click(function(event){
       event.preventDefault();
-      submitForm();
-      
+
+    //   var val;
+    // if (document.getElementById("isSheridan").checked){
+    //    val = 1;
+    //     console.log("yes");
+    // }else{
+    //    val = 0;
+    //   //userIdea.set("sheridan", 0);
+    // }
+
+     submitForm();
+
     });
 
 
@@ -77,23 +112,35 @@
     var GameIdea = Parse.Object.extend("GameIdea");
     var userIdea = new GameIdea();
 
-
-    userIdea.set("firstName", document.getElementById("firstName").value);
-    userIdea.set("lastName", document.getElementById("lastName").value);
+    userIdea.set("name", document.getElementById("name").value);
     userIdea.set("gameTitle", document.getElementById("gameTitle").value);
     userIdea.set("gameDesc", document.getElementById("gameDesc").value);
-    userIdea.set("gameCond", document.getElementById("gameCond").value);
+    //userIdea.set("gameCond", document.getElementById("gameCond").value);
 
-    // if (document.getElementById("isSheridan").checked){
-    //     //userIdea.set("sheridan", 1);
-    //     console.log("yes");
-    // }else{
-    //     //userIdea.set("sheridan", 0);
-    // }
-    //userIdea.set("tech", (document.getElementById("isTech").checked));
-    //userIdea.set("snowing", document.getElementById("isSnowing").checked);
+    userIdea.set("anywhere", ""+document.getElementById("anywhere").checked+"");
+    userIdea.set("anywhereCampus", ""+document.getElementById("anywhereCampus").checked+"");
+    userIdea.set("onSheridan", ""+document.getElementById("onSheridan").checked+"");
+    userIdea.set("inTech", ""+document.getElementById("inTech").checked+"");
+    userIdea.set("inMain", ""+document.getElementById("inMain").checked+"");
+    userIdea.set("onDeering", ""+document.getElementById("onDeering").checked+"");
+    userIdea.set("onLakefill", ""+document.getElementById("onLakefill").checked+"");
+    userIdea.set("inNorris", ""+document.getElementById("inNorris").checked+"");
+    userIdea.set("offCampusRes", ""+document.getElementById("offCampusRes").checked+"");
+    userIdea.set("downtownEvanston", ""+document.getElementById("downtownEvanston").checked+"");
+    userIdea.set("onEl", ""+document.getElementById("onEl").checked+"");
+    userIdea.set("otherLoc", ""+document.getElementById("otherLoc").checked+"");
+    userIdea.set("otherCondText", ""+document.getElementById("otherCondText").checked+"");
 
-
+    userIdea.set("anytime", ""+document.getElementById("anytime").checked+"");
+    userIdea.set("whileSnowing", ""+document.getElementById("whileSnowing" ).checked+"");
+    userIdea.set("groundSnow", ""+document.getElementById("groundSnow" ).checked+"");
+    userIdea.set("whenSunny", ""+document.getElementById("whenSunny" ).checked+"");
+    userIdea.set("whenRaining", ""+document.getElementById("whenRaining" ).checked+"");
+    userIdea.set("atNight", ""+document.getElementById("atNight").checked+"");
+    userIdea.set("duringDay", ""+document.getElementById("duringDay" ).checked+"");
+    userIdea.set("duringPassing", ""+document.getElementById("duringPassing" ).checked+"");
+    userIdea.set("otherCond", ""+document.getElementById("otherCondText").value+"");
+    userIdea.set("otherLocText", ""+document.getElementById("otherLocText").value+"");
 
 
       userIdea.save({}, {
@@ -111,5 +158,6 @@
 
   </script>
 </body>
+
 
 </html>
