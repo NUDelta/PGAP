@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LKZ-6e-97x">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LKZ-6e-97x">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -59,7 +59,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VFT-rg-sQS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-550" y="267"/>
+            <point key="canvasLocation" x="-2686" y="-421"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="0HB-mw-vuO">
@@ -82,7 +82,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hYe-tz-QYf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-577" y="1144"/>
+            <point key="canvasLocation" x="-2670" y="-3143"/>
         </scene>
         <!--Shake View Controller-->
         <scene sceneID="na6-Qn-vpV">
@@ -136,7 +136,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yAV-1m-k4I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="258" y="822"/>
+            <point key="canvasLocation" x="-966" y="1238"/>
         </scene>
         <!--Count View Controller-->
         <scene sceneID="WzU-RP-cuL">
@@ -194,7 +194,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QKE-dv-4Kt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-182" y="-784"/>
+            <point key="canvasLocation" x="-974" y="-1472"/>
         </scene>
         <!--Image View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -257,7 +257,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="905" y="382"/>
+            <point key="canvasLocation" x="-974" y="398"/>
         </scene>
         <!--Start View Controller-->
         <scene sceneID="UNC-Am-Xp5">
@@ -292,14 +292,14 @@
                                     <action selector="beginGame:" destination="LKZ-6e-97x" eventType="touchUpInside" id="GZZ-ov-Dfd"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fO1-ll-4gZ">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fO1-ll-4gZ">
                                 <rect key="frame" x="20" y="512" width="49" height="30"/>
                                 <state key="normal" title="Record"/>
                                 <connections>
                                     <action selector="startrRecord:" destination="LKZ-6e-97x" eventType="touchUpInside" id="L2B-nt-mD0"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6o-8z-L5V">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6o-8z-L5V">
                                 <rect key="frame" x="20" y="550" width="32" height="30"/>
                                 <state key="normal" title="Stop"/>
                                 <connections>
@@ -327,20 +327,28 @@
                                     </attributedString>
                                 </state>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bunny" translatesAutoresizingMaskIntoConstraints="NO" id="lZf-M0-kaQ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="bunny" translatesAutoresizingMaskIntoConstraints="NO" id="lZf-M0-kaQ">
                                 <rect key="frame" x="151" y="198" width="299" height="204"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="299" id="BGz-HT-QSl"/>
                                     <constraint firstAttribute="height" constant="204" id="CP0-gk-J2R"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0GB-oV-UW4">
-                                <rect key="frame" x="217.5" y="434" width="165" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="We9-1J-6z4">
+                                <rect key="frame" x="216" y="410" width="168" height="30"/>
+                                <state key="normal" title="Community Games Start"/>
+                                <connections>
+                                    <action selector="commGameStart:" destination="LKZ-6e-97x" eventType="touchUpInside" id="PdJ-eR-upX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0GB-oV-UW4">
+                                <rect key="frame" x="247" y="443" width="105" height="33"/>
                                 <state key="normal" title="It's time to play a demo">
                                     <attributedString key="attributedTitle">
-                                        <fragment content="It's time to play a demo">
+                                        <fragment content="Free Play Start">
                                             <attributes>
                                                 <font key="NSFont" size="15" name="ChalkboardSE-Regular"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
                                             </attributes>
                                         </fragment>
                                     </attributedString>
@@ -356,7 +364,9 @@
                             <constraint firstItem="r7S-ca-deB" firstAttribute="centerX" secondItem="kPj-JU-mDK" secondAttribute="centerX" id="6zq-Mr-N3g"/>
                             <constraint firstItem="dEs-qy-1D1" firstAttribute="top" secondItem="7RK-2w-HT0" secondAttribute="bottom" constant="271" id="883-Vu-pQH"/>
                             <constraint firstItem="lZf-M0-kaQ" firstAttribute="centerX" secondItem="0GB-oV-UW4" secondAttribute="centerX" id="CRO-5O-tV6"/>
+                            <constraint firstItem="We9-1J-6z4" firstAttribute="centerX" secondItem="kPj-JU-mDK" secondAttribute="centerX" id="FuQ-kT-GhL"/>
                             <constraint firstItem="aNu-gn-Dbf" firstAttribute="top" secondItem="CZ2-8A-zVp" secondAttribute="bottom" constant="131" id="ImP-YL-KXs"/>
+                            <constraint firstItem="We9-1J-6z4" firstAttribute="top" secondItem="lZf-M0-kaQ" secondAttribute="bottom" constant="8" id="NQY-SG-jxm"/>
                             <constraint firstItem="0GB-oV-UW4" firstAttribute="top" secondItem="lZf-M0-kaQ" secondAttribute="bottom" constant="32" id="PnD-MF-l19"/>
                             <constraint firstItem="lZf-M0-kaQ" firstAttribute="centerY" secondItem="kPj-JU-mDK" secondAttribute="centerY" id="RnS-ek-KlH"/>
                             <constraint firstItem="dEs-qy-1D1" firstAttribute="centerX" secondItem="7RK-2w-HT0" secondAttribute="centerX" id="VhI-vd-fGZ"/>
@@ -373,7 +383,60 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bnY-pt-hKY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1715" y="-1769"/>
+            <point key="canvasLocation" x="-2670" y="-2329"/>
+        </scene>
+        <!--Comm Text View Controller-->
+        <scene sceneID="nn0-zG-wKu">
+            <objects>
+                <viewController storyboardIdentifier="commText" id="lIc-c4-Mdy" customClass="CommTextViewController" customModule="PGames" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="awE-bn-BTM"/>
+                        <viewControllerLayoutGuide type="bottom" id="x7r-O0-nIH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pTm-H3-0cy">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="border" translatesAutoresizingMaskIntoConstraints="NO" id="aRC-5h-9VM">
+                                <rect key="frame" x="76" y="79" width="449" height="442"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOw-vd-7KY">
+                                <rect key="frame" x="168" y="137" width="264" height="326"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="264" id="PvS-9A-Tur"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Dv-Xg-8LO">
+                                <rect key="frame" x="262" y="550" width="76" height="30"/>
+                                <state key="normal" title="Next Game"/>
+                                <connections>
+                                    <action selector="nextGame:" destination="lIc-c4-Mdy" eventType="touchUpInside" id="62v-LV-dcE"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="lOw-vd-7KY" firstAttribute="centerX" secondItem="pTm-H3-0cy" secondAttribute="centerX" id="5Q2-il-2u7"/>
+                            <constraint firstItem="lOw-vd-7KY" firstAttribute="centerX" secondItem="5Dv-Xg-8LO" secondAttribute="centerX" id="EAy-qB-dx5"/>
+                            <constraint firstItem="aRC-5h-9VM" firstAttribute="centerY" secondItem="lOw-vd-7KY" secondAttribute="centerY" id="Erx-gq-bKO"/>
+                            <constraint firstItem="aRC-5h-9VM" firstAttribute="leading" secondItem="pTm-H3-0cy" secondAttribute="leadingMargin" constant="56" id="Iky-CD-XvU"/>
+                            <constraint firstAttribute="bottom" secondItem="5Dv-Xg-8LO" secondAttribute="bottom" constant="20" symbolic="YES" id="VA9-Mm-kck"/>
+                            <constraint firstItem="aRC-5h-9VM" firstAttribute="centerX" secondItem="lOw-vd-7KY" secondAttribute="centerX" id="WA5-wb-3bs"/>
+                            <constraint firstItem="5Dv-Xg-8LO" firstAttribute="top" secondItem="aRC-5h-9VM" secondAttribute="bottom" constant="29" id="aXb-hn-UOw"/>
+                            <constraint firstItem="5Dv-Xg-8LO" firstAttribute="top" secondItem="lOw-vd-7KY" secondAttribute="bottom" constant="87" id="bd6-Wu-n4B"/>
+                            <constraint firstItem="aRC-5h-9VM" firstAttribute="top" secondItem="awE-bn-BTM" secondAttribute="bottom" constant="59" id="oYt-rN-dQ9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="gameText" destination="lOw-vd-7KY" id="Y1C-af-zUv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qSc-zP-Srx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-152" y="-1472"/>
         </scene>
         <!--Button View Controller-->
         <scene sceneID="yh2-57-33Y">
@@ -477,7 +540,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bEj-dd-thA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="593" y="-1959"/>
+            <point key="canvasLocation" x="-152" y="-3143"/>
         </scene>
         <!--Pace View Controller-->
         <scene sceneID="SUU-Y1-E9m">
@@ -550,7 +613,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P8s-TP-xqe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-941" y="-2052"/>
+            <point key="canvasLocation" x="-974" y="-2329"/>
         </scene>
         <!--ImageG View Controller-->
         <scene sceneID="HT2-VW-rn4">
@@ -645,7 +708,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVr-3p-U8S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-495" y="-2813"/>
+            <point key="canvasLocation" x="-152" y="-2329"/>
         </scene>
         <!--Results View Controller-->
         <scene sceneID="bAY-xH-Wkp">
@@ -760,7 +823,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dBE-Gw-MgV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-49" y="-1959"/>
+            <point key="canvasLocation" x="-974" y="-3143"/>
         </scene>
         <!--Text View Controller-->
         <scene sceneID="UVE-aC-1Wc">
@@ -812,7 +875,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4W8-tL-7rg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="539" y="-353"/>
+            <point key="canvasLocation" x="-974" y="-433"/>
         </scene>
     </scenes>
     <resources>

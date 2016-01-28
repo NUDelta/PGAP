@@ -19,18 +19,23 @@ class TextViewController: UIViewController {
     var game: PFObject?
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         countDownLabel.text = String(timeLeft!--)
         _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         taskText.text = game!["description"] as? String
-        
     }
 
+    /***********************
+     // Template Functions
+     ************************/
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    /***********************
+     // Game Transition Functions
+     ************************/
     
     @IBAction func nextGame(sender: UIButton) {
         //mainController?.timeLeft = timeLeft
@@ -44,6 +49,10 @@ class TextViewController: UIViewController {
             countDownLabel.text = String(timeLeft!--)
         }
     }
+    
+    /***********************
+     // Data Functions
+     ************************/
     
     func sendParseData() {
         let loc = PFObject(className:"locationData")

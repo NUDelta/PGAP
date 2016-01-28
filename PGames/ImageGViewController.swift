@@ -9,13 +9,7 @@ import UIKit
 import Parse
 
 class ImageGViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    
-    @IBAction func takePhoto(sender: UIButton) {
-        imagePicker =  UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .Camera
-        presentViewController(imagePicker, animated: true, completion: nil)
-    }
+    // Free Play Image Interaction Game
 
     @IBOutlet weak var gameText: UILabel!
     @IBOutlet weak var imageV: UIImageView!
@@ -28,7 +22,6 @@ class ImageGViewController: UIViewController, UINavigationControllerDelegate, UI
     var g: PFObject?
     var tasks: [PFObject]?
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,15 +32,15 @@ class ImageGViewController: UIViewController, UINavigationControllerDelegate, UI
         imageV.userInteractionEnabled = false
     }
     
+    /***********************
+     // Image Interaction Functions
+     ************************/
+    
     func imageTapped(img: UITapGestureRecognizer)
     {
         if (actionCount < 10) {
-            var location = img.locationInView(nil) as CGPoint
-            var DynamicView=UIImageView(frame: CGRectMake(100, 200, 50, 100))
-            
-            //DynamicView.backgroundColor=UIColor.greenColor()
-            //DynamicView.layer.cornerRadius=25
-            //DynamicView.layer.borderWidth=2
+            let location = img.locationInView(nil) as CGPoint
+            let DynamicView=UIImageView(frame: CGRectMake(100, 200, 50, 100))
             DynamicView.image = UIImage(named: "carrot")
             DynamicView.center = location
             self.view.addSubview(DynamicView)
@@ -55,16 +48,34 @@ class ImageGViewController: UIViewController, UINavigationControllerDelegate, UI
         }
         else {
             imageV.userInteractionEnabled = false
-            //let _ : NSTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("leaveCode"), userInfo: nil, repeats: false)
             performSelector("leaveCode", withObject: nil, afterDelay: 1)
         }
     }
     
-    func leaveCode() {
-        end()
+    /***********************
+     // Image Creation Functions
+     ************************/
+    
+    @IBAction func takePhoto(sender: UIButton) {
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .Camera
+        presentViewController(imagePicker, animated: true, completion: nil)
     }
     
-    func end() {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+        image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        imageV.image = image
+        imageV.userInteractionEnabled = true
+        gameText.text = "Great! Now share the wealth and feed those people carrots! Tap Away!"
+    }
+    
+    /***********************
+     // Transition to Results
+     ************************/
+    
+    func leaveCode() {
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         let svc : ResultsViewController = mainStoryboard.instantiateViewControllerWithIdentifier("results") as! ResultsViewController
         svc.modalTransitionStyle = .CrossDissolve
@@ -74,20 +85,17 @@ class ImageGViewController: UIViewController, UINavigationControllerDelegate, UI
         presentViewController(svc, animated: true, completion: nil)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     func doAction(sender: UIButton) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        imagePicker.dismissViewControllerAnimated(true, completion: nil)
-        image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        imageV.image = image
-        imageV.userInteractionEnabled = true
-        gameText.text = "Great! Now share the wealth and feed those people carrots! Tap Away!"
+    /***********************
+     // Template Functions
+     ************************/
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
 }

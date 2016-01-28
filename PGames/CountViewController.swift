@@ -22,10 +22,7 @@ class CountViewController: UIViewController {
     var count = 0
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        
+        super.viewDidLoad()        
         _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
         countDownLabel.text = String(timeLeft!)
         gameText.text = game!["description"] as! String
@@ -34,15 +31,20 @@ class CountViewController: UIViewController {
         countButton.layer.borderWidth = 1
         countButton.layer.borderColor = UIColor.blackColor().CGColor
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
+    /***********************
+     // Button Interaction Functions
+     ************************/
+    
     @IBAction func addCount(sender: UIButton) {
         count++
         countButton.setTitle(String(count), forState: .Normal)
     }
+    
+    /***********************
+     // Game Transition Functions
+     ************************/
+    
     @IBAction func doneButton(sender: UIButton) {
         sendParseData()
         dismissViewControllerAnimated(true, completion: nil)
@@ -54,6 +56,10 @@ class CountViewController: UIViewController {
             countDownLabel.text = String(timeLeft!--)
         }
     }
+    
+    /***********************
+     // Data Functions
+     ************************/
     
     func sendParseData() {
         let loc = PFObject(className:"locationData")
@@ -71,6 +77,16 @@ class CountViewController: UIViewController {
             loc.saveInBackground()
         }
     }
+    
+    /***********************
+     // Template Functions
+     ************************/
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
     /*
     // MARK: - Navigation
 

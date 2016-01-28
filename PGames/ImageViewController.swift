@@ -25,24 +25,24 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         countDownLabel.text = String(timeLeft!--)
         _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
-        
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
         imageV.addGestureRecognizer(tapGestureRecognizer)
         imageV.userInteractionEnabled = false
-        
+    
         gameText.text = game!["description"] as? String
     }
+    
+    /***********************
+     // Image Interaction Functions
+     ************************/
     
     func imageTapped(img: UITapGestureRecognizer)
     {
         if (actionCount < 10) {
-            var location = img.locationInView(nil) as CGPoint
-            var DynamicView=UIImageView(frame: CGRectMake(100, 200, 50, 100))
-            
+            let location = img.locationInView(nil) as CGPoint
+            let DynamicView=UIImageView(frame: CGRectMake(100, 200, 50, 100))
             //DynamicView.backgroundColor=UIColor.greenColor()
             //DynamicView.layer.cornerRadius=25
             //DynamicView.layer.borderWidth=2
@@ -59,18 +59,9 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         }
     }
     
-    func leaveCode() {
-        sendParseData()
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    @IBAction func doAction(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
+    /***********************
+     // Image Creation Function
+     ************************/
     
     @IBAction func takePhoto(sender: UIButton) {
         imagePicker =  UIImagePickerController()
@@ -87,12 +78,25 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         gameText.text = game!["actionVerb"] as? String
     }
     
+    /***********************
+     // Game Transition Functions
+     ************************/
+    
+    func leaveCode() {
+        sendParseData()
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     func update() {
         if(timeLeft >= 0)
         {
             countDownLabel.text = String(timeLeft!--)
         }
     }
+    
+    /***********************
+     // Data  Functions
+     ************************/
     
     func sendParseData() {
         let loc = PFObject(className:"locationData")
@@ -113,6 +117,18 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
         }
     }
 
+    /***********************
+     // Template Functions
+     ************************/
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    @IBAction func doAction(sender: UIButton) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -140,8 +156,6 @@ class ImageViewController: UIViewController, UINavigationControllerDelegate, UII
     
     
     }
-    
-    
     
     */
 

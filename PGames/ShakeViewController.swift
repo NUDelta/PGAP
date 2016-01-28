@@ -22,24 +22,19 @@ class ShakeViewController: UIViewController {
     var game: PFObject?
     
     let pedometer = CMPedometer()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         countDownLabel.text = String(timeLeft!--)
         gameText.text = game!["description"] as? String
         actionCount = game!["numReq"] as! Int
         shakeCount.text = String(actionCount)
         _ = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
+    /***********************
+     // Motion Functions
+     ************************/
 
     override func canBecomeFirstResponder() -> Bool {
         return true
@@ -56,8 +51,11 @@ class ShakeViewController: UIViewController {
                     performSelector("leaveCode", withObject: nil, afterDelay: 1)
                 }
             }
-         
     }
+    
+    /***********************
+     // Game Transition Functions
+     ************************/
     
     func leaveCode() {
         sendParseData()
@@ -70,6 +68,10 @@ class ShakeViewController: UIViewController {
             countDownLabel.text = String(timeLeft!--)
         }
     }
+    
+    /***********************
+     // Data Functions
+     ************************/
     
     func sendParseData() {
         let loc = PFObject(className:"locationData")
@@ -85,6 +87,15 @@ class ShakeViewController: UIViewController {
             loc["gameID"] = self.game!.objectId
             loc.saveInBackground()
         }
+    }
+    
+    /***********************
+     // Template Functions
+     ************************/
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     /*

@@ -10,6 +10,7 @@ import UIKit
 import Parse
 
 class ButtonViewController: UIViewController {
+    // View for games that end in a button click.
 
     @IBOutlet weak var submitText: UIButton!
     @IBOutlet weak var gameText: UILabel!
@@ -33,20 +34,13 @@ class ButtonViewController: UIViewController {
                 }
             }
         }
-
-        
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    @IBAction func finishGame(sender: UIButton) {
-        end()
-    }
+    /***********************
+     // Transition to Results
+     ************************/
     
-    func end() {
+    @IBAction func finishGame(sender: UIButton) {
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         let svc : ResultsViewController = mainStoryboard.instantiateViewControllerWithIdentifier("results") as! ResultsViewController
         svc.modalTransitionStyle = .CrossDissolve
@@ -54,9 +48,17 @@ class ButtonViewController: UIViewController {
         svc.g = g
         svc.tasks = tasks
         presentViewController(svc, animated: true, completion: nil)
+    
     }
     
-
+    /***********************
+     // Template Functions
+     ************************/
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     /*
     // MARK: - Navigation
 

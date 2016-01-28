@@ -11,6 +11,7 @@ import Parse
 import CoreMotion
 
 class PaceViewController: UIViewController {
+    // View for games that end by pace or motion interaction
 
     @IBOutlet weak var gameText: UILabel!
     var game: Int?
@@ -20,23 +21,20 @@ class PaceViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Pace not Enabled! TBD
         //startPaceTracking()
-        print(game)
+        
         g = tasks![game!]
-        
-        
         if g!.objectId! as String != "gttM8sMlpS" {
             _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: Selector("end"), userInfo: nil, repeats: true)
         }
-        gameText.text = g!["mainInfo"] as! String
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        gameText.text = g!["mainInfo"] as? String
     }
     
+    /***********************
+     // Results Transition
+     ************************/
     
     func end() {
         let mainStoryboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
@@ -47,6 +45,25 @@ class PaceViewController: UIViewController {
         svc.tasks = tasks
         presentViewController(svc, animated: true, completion: nil)
     }
+    
+    /***********************
+     // Shake Interaction Functions
+     ************************/
+    
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func motionEnded(motion: UIEventSubtype,
+        withEvent event: UIEvent?) {
+            if motion == .MotionShake && g!.objectId! as String == "gttM8sMlpS"{
+                    performSelector("end", withObject: nil, afterDelay: 1)
+            }
+    }
+    
+    /***********************
+     // Pace Interaction Functions - TBD
+     ************************/
     
     func startPaceTracking() {
         if(CMMotionActivityManager.isActivityAvailable()){
@@ -69,17 +86,13 @@ class PaceViewController: UIViewController {
         }
     }
     
+    /***********************
+     // Template Function
+     ************************/
     
-    override func canBecomeFirstResponder() -> Bool {
-        return true
-    }
-    
-    override func motionEnded(motion: UIEventSubtype,
-        withEvent event: UIEvent?) {
-            if motion == .MotionShake && g!.objectId! as String == "gttM8sMlpS"{
-                    performSelector("end", withObject: nil, afterDelay: 1)
-            }
-            
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
     /*
