@@ -1,0 +1,168 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Parse App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+</head>
+
+<body >
+
+  <body >
+
+  <div id="main" >
+
+    <h1>Welcome to DTR PGP!</h1>
+    <h3><font color = "gray">Enter a game below to add it to our database of games</font></h3><br>
+
+    <form id="formInput" onsubmit="submitForm()" >
+      <b>Name</b><br>
+      <input type="text" id="name" ><br><br>
+
+
+      <!-- <b>Game Title</b><br> <small>e.g. Catch the snow!</small><br>
+      <input type="text" id="gameTitle"><br><br> -->
+      <b>Game Description</b><br><small>e.g. count how many snowflakes you can catch on your tongue in one minute</small><br>
+      <textarea rows="4" cols="50" id= "gameDesc"></textarea> <br><br>
+
+      <b>Where should this game be played?</b><br>
+      <small>e.g. anywhere!</small><br>
+      <input type="checkbox" id="anywhere"> Anywhere <br>
+      <input type="checkbox" id="anywhereCampus"> Anywhere on campus <br>
+      <input type="checkbox" id="onSheridan"> On Sheridan<br>
+      <input type="checkbox" id="inTech"> Inside Tech <br>
+      <input type="checkbox" id="inMain"> in Main <br>
+      <input type="checkbox" id="onDeering"> on Deering Field <br>
+      <input type="checkbox" id="onLakefill"> on the lakefill <br>
+      <input type="checkbox" id="inNorris"> in Norris <br>
+      <input type="checkbox" id="offCampusRes"> in off campus residentail areas <br>
+      <input type="checkbox" id="downtownEvanston"> in downtown Evanston <br>
+      <input type="checkbox" id="onEl"> on the El <br>
+      <input type="checkbox" id="garage"> The Garage <br>
+      <input type="checkbox" id="spac"> SPAC<br>
+      <input type="checkbox" id="bobbbasketball"> Bobb Basketball Courts<br>
+      <input type="checkbox" id="lisas"> Lisa's<br>
+      <input type="checkbox" id="sargparking"> Sargent Parking Lot<br>
+      <input type="checkbox" id="otherLoc"> Other
+
+      <input type="text" id="otherCondText"><br><br>
+
+
+      <b>Under what conditions should this game be played?</b> <br>
+      <small>e.g. While it's snowing</small><br>
+      <input type="checkbox" id="anytime" > Anytime <br>
+      <input type="checkbox" id="whileSnowing" > While it's snowing <br>
+      <input type="checkbox" id="groundSnow" > when there's snow on the ground <br>
+      <input type="checkbox" id="whenSunny" > When it is sunny<br>
+      <input type="checkbox" id="whenRaining" > When it is raining<br>
+      <input type="checkbox" id="atNight" > At night <br>
+      <input type="checkbox" id="duringDay" > During the day <br>
+      <input type="checkbox" id="duringPassing" > During the passing periods <br>
+      <input type="checkbox" id="otherCond"> Other
+      <input type="text" id="otherLocText"><br><br><br>
+
+
+      <!--   <select id="gameCond">
+          <option value="anywhere">Anywhere</option>
+          <option value="sheridan">On Sheridan</option>
+          <option value="tech">Inside Tech</option>
+          <option value="snow">When it's snowing</option>
+        </select>  -->
+
+
+      <input id="mySubmit" type="submit">
+
+   </form>
+
+
+
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+    onPageLoad();
+
+  });
+
+   $("#mySubmit").click(function(event){
+      event.preventDefault();
+
+    //   var val;
+    // if (document.getElementById("isSheridan").checked){
+    //    val = 1;
+    //     console.log("yes");
+    // }else{
+    //    val = 0;
+    //   //userIdea.set("sheridan", 0);
+    // }
+
+     submitForm();
+
+    });
+
+
+  function onPageLoad(){
+    Parse.initialize("I7rtXgtQu7kArOQ93IkrRX1komZWM2lfZBNQzLH4", "y9Nk8xW6nKn2KooVIy52LHT8S66uW0cbFrOJIWXf");
+    console.log("loaded");
+
+  }
+
+  function submitForm(){
+
+    console.log("submit called");
+    var CommSourced = Parse.Object.extend("myCommSourced");
+    var userIdea = new CommSourced();
+
+    userIdea.set("name", document.getElementById("name").value);
+    // userIdea.set("gameTitle", document.getElementById("gameTitle").value);
+    userIdea.set("gameDesc", document.getElementById("gameDesc").value);
+    //userIdea.set("gameCond", document.getElementById("gameCond").value);
+
+    userIdea.set("anywhere", ""+document.getElementById("anywhere").checked+"");
+    userIdea.set("anywhereCampus", ""+document.getElementById("anywhereCampus").checked+"");
+    userIdea.set("onSheridan", ""+document.getElementById("onSheridan").checked+"");
+    userIdea.set("inTech", ""+document.getElementById("inTech").checked+"");
+    userIdea.set("inMain", ""+document.getElementById("inMain").checked+"");
+    userIdea.set("onDeering", ""+document.getElementById("onDeering").checked+"");
+    userIdea.set("onLakefill", ""+document.getElementById("onLakefill").checked+"");
+    userIdea.set("inNorris", ""+document.getElementById("inNorris").checked+"");
+    userIdea.set("offCampusRes", ""+document.getElementById("offCampusRes").checked+"");
+    userIdea.set("downtownEvanston", ""+document.getElementById("downtownEvanston").checked+"");
+    userIdea.set("onEl", ""+document.getElementById("onEl").checked+"");
+    userIdea.set("otherLoc", ""+document.getElementById("otherLoc").checked+"");
+    userIdea.set("otherCondText", ""+document.getElementById("otherCondText").checked+"");
+
+    userIdea.set("anytime", ""+document.getElementById("anytime").checked+"");
+    // userIdea.set("whileSnowing", ""+document.getElementById("whileSnowing" ).checked+"");
+    // userIdea.set("groundSnow", ""+document.getElementById("groundSnow" ).checked+"");
+    // userIdea.set("whenSunny", ""+document.getElementById("whenSunny" ).checked+"");
+    // userIdea.set("whenRaining", ""+document.getElementById("whenRaining" ).checked+"");
+    // userIdea.set("atNight", ""+document.getElementById("atNight").checked+"");
+    // userIdea.set("duringDay", ""+document.getElementById("duringDay" ).checked+"");
+    // userIdea.set("duringPassing", ""+document.getElementById("duringPassing" ).checked+"");
+    userIdea.set("otherCond", ""+document.getElementById("otherCondText").value+"");
+    userIdea.set("otherLocText", ""+document.getElementById("otherLocText").value+"");
+
+
+      userIdea.save({}, {
+      success: function(object) {
+        $(".success").show();
+      },
+      error: function(model, error) {
+        $(".error").show();
+      }
+      });
+
+      window.location = "done.html"
+
+    }
+
+  </script>
+</body>
+
+
+</html>

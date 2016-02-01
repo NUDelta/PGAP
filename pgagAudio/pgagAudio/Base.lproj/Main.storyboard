@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="pgagAudio" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nsi-26-XGa">
+                                <rect key="frame" x="197" y="275" width="206" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="49" id="VU5-gd-cwo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="31"/>
+                                <state key="normal" title="Play Hello"/>
+                                <connections>
+                                    <action selector="playAudio:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mo6-ip-1aV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZDx-31-NeW">
+                                <rect key="frame" x="198" y="327" width="205" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="49" id="SJo-CV-EoS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="31"/>
+                                <state key="normal" title="Play River Lea"/>
+                                <connections>
+                                    <action selector="playAudio:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UOf-m9-zRc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYn-e2-QnN">
+                                <rect key="frame" x="284" y="384" width="32" height="30"/>
+                                <state key="normal" title="Stop"/>
+                                <connections>
+                                    <action selector="stopMusic" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ha8-ux-gBF"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZDx-31-NeW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="61t-p7-vA4"/>
+                            <constraint firstItem="ZDx-31-NeW" firstAttribute="top" secondItem="nsi-26-XGa" secondAttribute="bottom" constant="3" id="9PI-Kz-Etw"/>
+                            <constraint firstItem="nsi-26-XGa" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="QeP-VX-tfA"/>
+                            <constraint firstItem="TYn-e2-QnN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WJ0-lh-lZK"/>
+                            <constraint firstItem="nsi-26-XGa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="atA-5Y-9FE"/>
+                            <constraint firstItem="TYn-e2-QnN" firstAttribute="top" secondItem="ZDx-31-NeW" secondAttribute="bottom" constant="8" id="tVC-eT-vBT"/>
+                            <constraint firstItem="ZDx-31-NeW" firstAttribute="trailing" secondItem="nsi-26-XGa" secondAttribute="trailing" id="zxq-se-PtZ"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
