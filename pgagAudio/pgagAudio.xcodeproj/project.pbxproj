@@ -29,6 +29,17 @@
 		3EE6CDC71C5EB4B600B43022 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */; };
 		3EE6CDCA1C5EB4DB00B43022 /* 01. Hello.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3EE6CDC81C5EB4DB00B43022 /* 01. Hello.mp3 */; };
 		3EE6CDCB1C5EB4DB00B43022 /* 07. River Lea.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3EE6CDC91C5EB4DB00B43022 /* 07. River Lea.mp3 */; };
+		3EFBF0A91C62624100EB9F3B /* Conclusion.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF09D1C62624100EB9F3B /* Conclusion.m4a */; };
+		3EFBF0AA1C62624100EB9F3B /* Game1.end.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF09E1C62624100EB9F3B /* Game1.end.m4a */; };
+		3EFBF0AB1C62624100EB9F3B /* Game1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF09F1C62624100EB9F3B /* Game1.m4a */; };
+		3EFBF0AC1C62624100EB9F3B /* Game2.end.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A01C62624100EB9F3B /* Game2.end.m4a */; };
+		3EFBF0AD1C62624100EB9F3B /* Game2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A11C62624100EB9F3B /* Game2.m4a */; };
+		3EFBF0AE1C62624100EB9F3B /* Game3.end.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A21C62624100EB9F3B /* Game3.end.m4a */; };
+		3EFBF0AF1C62624100EB9F3B /* Game3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A31C62624100EB9F3B /* Game3.m4a */; };
+		3EFBF0B01C62624100EB9F3B /* Game4a.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A41C62624100EB9F3B /* Game4a.m4a */; };
+		3EFBF0B11C62624100EB9F3B /* Game4b.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A51C62624100EB9F3B /* Game4b.m4a */; };
+		3EFBF0B31C62624100EB9F3B /* Intro1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A71C62624100EB9F3B /* Intro1.m4a */; };
+		3EFBF0B41C62624100EB9F3B /* Intro2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF0A81C62624100EB9F3B /* Intro2.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +88,17 @@
 		3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3EE6CDC81C5EB4DB00B43022 /* 01. Hello.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "01. Hello.mp3"; path = "../01. Hello.mp3"; sourceTree = "<group>"; };
 		3EE6CDC91C5EB4DB00B43022 /* 07. River Lea.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "07. River Lea.mp3"; path = "../07. River Lea.mp3"; sourceTree = "<group>"; };
+		3EFBF09D1C62624100EB9F3B /* Conclusion.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Conclusion.m4a; sourceTree = "<group>"; };
+		3EFBF09E1C62624100EB9F3B /* Game1.end.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game1.end.m4a; sourceTree = "<group>"; };
+		3EFBF09F1C62624100EB9F3B /* Game1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game1.m4a; sourceTree = "<group>"; };
+		3EFBF0A01C62624100EB9F3B /* Game2.end.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game2.end.m4a; sourceTree = "<group>"; };
+		3EFBF0A11C62624100EB9F3B /* Game2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game2.m4a; sourceTree = "<group>"; };
+		3EFBF0A21C62624100EB9F3B /* Game3.end.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game3.end.m4a; sourceTree = "<group>"; };
+		3EFBF0A31C62624100EB9F3B /* Game3.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game3.m4a; sourceTree = "<group>"; };
+		3EFBF0A41C62624100EB9F3B /* Game4a.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game4a.m4a; sourceTree = "<group>"; };
+		3EFBF0A51C62624100EB9F3B /* Game4b.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game4b.m4a; sourceTree = "<group>"; };
+		3EFBF0A71C62624100EB9F3B /* Intro1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Intro1.m4a; sourceTree = "<group>"; };
+		3EFBF0A81C62624100EB9F3B /* Intro2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Intro2.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +175,17 @@
 		3E4311DB1C5EB0ED001FFFB0 /* pgagAudio */ = {
 			isa = PBXGroup;
 			children = (
+				3EFBF09D1C62624100EB9F3B /* Conclusion.m4a */,
+				3EFBF09E1C62624100EB9F3B /* Game1.end.m4a */,
+				3EFBF09F1C62624100EB9F3B /* Game1.m4a */,
+				3EFBF0A01C62624100EB9F3B /* Game2.end.m4a */,
+				3EFBF0A11C62624100EB9F3B /* Game2.m4a */,
+				3EFBF0A21C62624100EB9F3B /* Game3.end.m4a */,
+				3EFBF0A31C62624100EB9F3B /* Game3.m4a */,
+				3EFBF0A41C62624100EB9F3B /* Game4a.m4a */,
+				3EFBF0A51C62624100EB9F3B /* Game4b.m4a */,
+				3EFBF0A71C62624100EB9F3B /* Intro1.m4a */,
+				3EFBF0A81C62624100EB9F3B /* Intro2.m4a */,
 				3EE6CDC81C5EB4DB00B43022 /* 01. Hello.mp3 */,
 				3EE6CDC91C5EB4DB00B43022 /* 07. River Lea.mp3 */,
 				3E4311DC1C5EB0ED001FFFB0 /* AppDelegate.swift */,
@@ -290,11 +323,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EFBF0AA1C62624100EB9F3B /* Game1.end.m4a in Resources */,
 				3E4311E71C5EB0ED001FFFB0 /* LaunchScreen.storyboard in Resources */,
+				3EFBF0B11C62624100EB9F3B /* Game4b.m4a in Resources */,
+				3EFBF0AF1C62624100EB9F3B /* Game3.m4a in Resources */,
+				3EFBF0A91C62624100EB9F3B /* Conclusion.m4a in Resources */,
+				3EFBF0AD1C62624100EB9F3B /* Game2.m4a in Resources */,
 				3E4311E41C5EB0ED001FFFB0 /* Assets.xcassets in Resources */,
+				3EFBF0B31C62624100EB9F3B /* Intro1.m4a in Resources */,
+				3EFBF0AB1C62624100EB9F3B /* Game1.m4a in Resources */,
 				3EE6CDCB1C5EB4DB00B43022 /* 07. River Lea.mp3 in Resources */,
+				3EFBF0AC1C62624100EB9F3B /* Game2.end.m4a in Resources */,
 				3EE6CDCA1C5EB4DB00B43022 /* 01. Hello.mp3 in Resources */,
+				3EFBF0B41C62624100EB9F3B /* Intro2.m4a in Resources */,
 				3E4311E21C5EB0ED001FFFB0 /* Main.storyboard in Resources */,
+				3EFBF0AE1C62624100EB9F3B /* Game3.end.m4a in Resources */,
+				3EFBF0B01C62624100EB9F3B /* Game4a.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

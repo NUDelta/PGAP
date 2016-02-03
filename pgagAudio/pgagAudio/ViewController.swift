@@ -14,12 +14,17 @@ import CoreLocation //add location to info
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
+    @IBAction func reportDistances() {
+          self.displayDistances.text = ""
+        distanceFromPoints()
+
+    }
+    
     //initalize Parse global variables
     var userData = PFObject(className: "UserData")
     var gameLoc : String = "home"{
         
         willSet{
-            labelChangeLocation.text = "false"
         }
         
         didSet{
@@ -27,11 +32,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //NEED TO ADD A CHECK IF gameLoc HAS CHANGED TO A NULL VALUE BC NOT NEAR A NEW LOCATION
 //!!!!!!!!!!!!!!!!!!!!!!
             
-            if (gameLoc != oldValue && gameLoc != "empty") {
+            if (gameLoc != oldValue && gameLoc != "empty" && gameLoc != "hydrant") {
                 //check if the user has reached a new game location
                 //  and trigger audio
                 playGameAudio(gameLoc)
-                labelChangeLocation.text = "true"
             }
         }
     }
@@ -59,12 +63,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
     }
    
+    func distanceFromPoints(){
+        
+        let query = PFQuery(className:"generalLocations")
+        
+        query.findObjectsInBackgroundWithBlock {
+            (foundObj: [PFObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                // The find succeeded.
+                print("Successfully retrieved \(foundObj!.count) locations.")
+                // Do something with the found objects
+                
+              
+                if let foundObj = foundObj {
+                    for object in foundObj {
+                        let loc = object["location"]
+                        let myLoc = PFGeoPoint(location:self.currLocation)
+                    
+                            let dist = loc?.distanceInMilesTo(myLoc)
+                            print("\(object["name"]) is \(dist) miles away");
+                        
+                            self.displayDistances.text = self.displayDistances.text!  + "\n" + "\(object["name"]) is \(dist) miles away"
+                    }
+                }
+                
+            } else {
+                // Log details of the failure
+                
+                print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+
+        
+    }
+    
+    @IBOutlet weak var displayDistances: UILabel!
     
     //Check Parse DB for a nearby location, and if so, update gameLoc
     func findLocation(){
         let query = PFQuery(className:"generalLocations")
         // Interested in locations near user.
-        query.whereKey("location", nearGeoPoint:PFGeoPoint(location:currLocation), withinMiles:0.1)
+        query.whereKey("location", nearGeoPoint:PFGeoPoint(location:currLocation), withinMiles:0.01)
 
         // Limit what could be a lot of points.
         query.limit = 1
@@ -76,7 +116,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 // The find succeeded.
                 print("Successfully retrieved \(foundObj!.count) locations.")
                 // Do something with the found objects
-                if let foundObj = foundObj {
+                
+                if (foundObj!.count == 0){
+                    
+//TEST TEST TEST CAN YOU SET gameLoc TO EMPTY IF NOTHING NEARBY
+//!!!!!!!!!!!
+                    self.gameLoc = "empty"
+                    print(self.gameLoc)
+                    self.labelNearLocation.text = self.gameLoc
+                    
+                }
+                else if let foundObj = foundObj {
                     for object in foundObj {
                         self.gameLoc = object["name"] as! String
                         print(self.gameLoc)
@@ -85,10 +135,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
             } else {
                 // Log details of the failure
-                
-//TEST TEST TEST CAN YOU SET gameLoc TO EMPTY IF NOTHING NEARBY
-//!!!!!!!!!!!
-                self.gameLoc = "empty"
+
                 print("Error: \(error!) \(error!.userInfo)")
             }
         }
@@ -191,7 +238,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print("makePlay called")
         
         //call set-up using the give file name and type of mp3
-        if let helloPlayer = self.setupAudioPlayerWithFile(fileName, type: "mp3"){
+        if let helloPlayer = self.setupAudioPlayerWithFile(fileName, type: "m4a"){
             self.thePlayer = helloPlayer
         }else{
             print("error in makePlay when called with \(fileName)")
