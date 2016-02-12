@@ -99,6 +99,8 @@
 		3EFBF0A51C62624100EB9F3B /* Game4b.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game4b.m4a; sourceTree = "<group>"; };
 		3EFBF0A71C62624100EB9F3B /* Intro1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Intro1.m4a; sourceTree = "<group>"; };
 		3EFBF0A81C62624100EB9F3B /* Intro2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Intro2.m4a; sourceTree = "<group>"; };
+		3EFBF0B71C65078C00EB9F3B /* rockRedo.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = rockRedo.m4a; sourceTree = "<group>"; };
+		3EFBF0B81C65078C00EB9F3B /* treeRedo.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = treeRedo.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,8 @@
 		3E4311DB1C5EB0ED001FFFB0 /* pgagAudio */ = {
 			isa = PBXGroup;
 			children = (
+				3EFBF0B71C65078C00EB9F3B /* rockRedo.m4a */,
+				3EFBF0B81C65078C00EB9F3B /* treeRedo.m4a */,
 				3EFBF09D1C62624100EB9F3B /* Conclusion.m4a */,
 				3EFBF09E1C62624100EB9F3B /* Game1.end.m4a */,
 				3EFBF09F1C62624100EB9F3B /* Game1.m4a */,
@@ -458,6 +462,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -481,7 +486,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -496,6 +501,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -506,6 +512,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -513,8 +521,9 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = DTR.pgagAudio;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgapaud;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
 			};
 			name = Debug;
 		};
@@ -522,6 +531,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -529,8 +540,9 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = DTR.pgagAudio;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgapaud;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
 			};
 			name = Release;
 		};
