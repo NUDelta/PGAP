@@ -44,6 +44,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //initalize location global variables
     var locationManager: CLLocationManager!
     var currLocation: CLLocation? = nil
+    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print(manager.location?.coordinate)
         currLocation = manager.location
@@ -156,8 +157,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 if let foundObj = foundObj {
                     for object in foundObj {
                         print(object.objectId)
-                        let audioFile = object["audioFile"] as! String
-                        self.makePlay(audioFile)
+                        let gameName = object["name"] as! String
+                        self.makePlay(gameName)
                     }
                 }
             } else {
@@ -208,14 +209,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //set up for audio, turn string into file path, check if audio play can play, etc.
     //  takes file name and file type as an argument
     func setupAudioPlayerWithFile(file:NSString, type:NSString) -> AVAudioPlayer?  {
-    
-        //check if file can be found
-        if (NSBundle.mainBundle().pathForResource(file as String, ofType: type as String) != nil){
-        }else{
-            print("no file \(file) found")
-        }
         
-//MOVE THIS INTO THE IF CLAUSE
+        
+        //MOVE THIS INTO THE IF CLAUSE
         //define file path
         let path = NSBundle.mainBundle().pathForResource(file as String, ofType: type as String)
         let url = NSURL.fileURLWithPath(path!)
@@ -233,15 +229,59 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         return audioPlayer
     }
     
+    func setupAudioPlayerFromParse(gameName: String) -> AVAudioPlayer? {
+        
+        var audioPlayer:AVAudioPlayer!
+        let query = PFQuery(className:"generalLocations")
+        query.whereKey("name", equalTo: gameName )
+        
+        query.findObjectsInBackgroundWithBlock() {
+            (foundObj: [PFObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                
+                if let foundObj = foundObj {
+                    for object in foundObj {
+                        print("the object is \(object)")
+                        
+                        let file = object["actualAudio"] as! PFFile
+                        file.getDataInBackgroundWithBlock({ (data, error) -> Void in
+                            if let data = data where error == nil{
+                                
+                                do {
+                                    try audioPlayer = AVAudioPlayer(data: data)
+                                } catch {
+                                    print("Player not available")
+                                }
+                            }
+                        })
+                        
+                    }
+                }
+                
+            } else {
+                
+                print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+        
+        
+        //create the player with the specific audio file
+        
+        
+        return audioPlayer
+        
+    }
+    
     //given an audio file name, make it play
-    func makePlay(fileName:String){
+    func makePlay(gName:String){
         print("makePlay called")
         
         //call set-up using the give file name and type of mp3
-        if let helloPlayer = self.setupAudioPlayerWithFile(fileName, type: "m4a"){
+        if let helloPlayer = self.setupAudioPlayerFromParse(gName){
             self.thePlayer = helloPlayer
         }else{
-            print("error in makePlay when called with \(fileName)")
+            print("error in makePlay when called with \(gName)")
         }
         
         //start playing!
