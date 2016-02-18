@@ -20,25 +20,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
     }
     
+    var playedGames : [String] = []
+    var recentlyPlayed = false
+    
     //initalize Parse global variables
     var userData = PFObject(className: "UserData")
-    var gameLoc : String = "home"{
-        
-        willSet{
-        }
-        
-        didSet{
-            
-//NEED TO ADD A CHECK IF gameLoc HAS CHANGED TO A NULL VALUE BC NOT NEAR A NEW LOCATION
-//!!!!!!!!!!!!!!!!!!!!!!
-            
-            if (gameLoc != oldValue && gameLoc != "empty" && gameLoc != "hydrant") {
-                //check if the user has reached a new game location
-                //  and trigger audio
-                playGameAudio(gameLoc)
-            }
-        }
-    }
     
     
     //initalize location global variables
@@ -49,7 +35,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print(manager.location?.coordinate)
         currLocation = manager.location
         saveLocation()
-        findLocation()
+        
+     
+        if(!recentlyPlayed){
+            print("calling find location")
+            findLocation()
+        }
         
     }
     
@@ -99,39 +90,71 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
+    
+    
+//get points from WorldDatabse
+    
     @IBOutlet weak var displayDistances: UILabel!
     
     //Check Parse DB for a nearby location, and if so, update gameLoc
     func findLocation(){
-        let query = PFQuery(className:"generalLocations")
+        let query = PFQuery(className:"WorldObject")
         // Interested in locations near user.
         query.whereKey("location", nearGeoPoint:PFGeoPoint(location:currLocation), withinMiles:0.01)
 
         // Limit what could be a lot of points.
-        query.limit = 1
+        query.limit = 5
+        
         // Final list of objects
         query.findObjectsInBackgroundWithBlock {
-            (foundObj: [PFObject]?, error: NSError?) -> Void in
+            (foundObjs: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 // The find succeeded.
-                print("Successfully retrieved \(foundObj!.count) locations.")
+                print("Successfully retrieved \(foundObjs!.count) locations.")
                 // Do something with the found objects
                 
-                if (foundObj!.count == 0){
-                    
-//TEST TEST TEST CAN YOU SET gameLoc TO EMPTY IF NOTHING NEARBY
-//!!!!!!!!!!!
-                    self.gameLoc = "empty"
-                    print(self.gameLoc)
-                    self.labelNearLocation.text = self.gameLoc
+                if (foundObjs!.count == 0){
+                    print("no nearby objects found")
                     
                 }
-                else if let foundObj = foundObj {
-                    for object in foundObj {
-                        self.gameLoc = object["name"] as! String
-                        print(self.gameLoc)
-                        self.labelNearLocation.text = self.gameLoc
+                else if let foundObjs = foundObjs {
+                    for object in foundObjs {
+                        //STORE IN AN ARRAY
+                        
+                        let queryGames = PFQuery(className:"WorldGame")
+                        queryGames.whereKey("object", equalTo: object["label"])
+                        
+                        queryGames.findObjectsInBackgroundWithBlock {
+                            (foundGames: [PFObject]?, error: NSError?) -> Void in
+                            
+                            if error == nil {
+                                print("Successfully retrieved \(foundGames!.count) games.")
+                                if let foundGames = foundGames{
+
+                                    for game in foundGames{
+                                        print(game)
+                                    
+                                        let fileName = game["fileName"] as! String
+                                        let fileType = game["fileType"] as! String
+                                    
+                                        if (!self.playedGames.contains(fileName)){
+                                            self.playedGames.append(fileName)
+                                            print("About to play \(fileName)")
+                                            self.makePlay(fileName, gType: fileType)
+                                            return
+                                        }
+
+                                    }
+                                }
+                                
+                            }else{
+                                print("Error: \(error!) \(error!.userInfo)")
+
+                            }
+                        }
+                        
+                    
                     }
                 }
             } else {
@@ -143,30 +166,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
     }
     
-    //pull the name of the correct audio file based on user's location and play it
-    func playGameAudio(gameLoc: String){
-        print("playGameAudio called")
-        let query = PFQuery(className:"generalLocations")
-        query.whereKey("name", equalTo: gameLoc)
-        
-        query.findObjectsInBackgroundWithBlock {
-            (foundObj: [PFObject]?, error: NSError?) -> Void in
-            
-            if error == nil {
-                // The find succeeded.
-                if let foundObj = foundObj {
-                    for object in foundObj {
-                        print(object.objectId)
-                        let gameName = object["name"] as! String
-                        self.makePlay(gameName)
-                    }
-                }
-            } else {
-                // Log details of the failure
-                print("Error in playGameAudio: \(error!) \(error!.userInfo)")
-            }
-        }
-    }
     
     //saves the user's locaiton into a parse database
     func saveLocation(){
@@ -203,6 +202,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //AUDIO PLAYING SETUP
 //************************
     
+//LIFE QUESTION: when to create new audio players versus reset
+    
     //initalize audio player instance
     var thePlayer : AVAudioPlayer!
     
@@ -210,13 +211,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //  takes file name and file type as an argument
     func setupAudioPlayerWithFile(file:NSString, type:NSString) -> AVAudioPlayer?  {
         
-        
-        //MOVE THIS INTO THE IF CLAUSE
         //define file path
         let path = NSBundle.mainBundle().pathForResource(file as String, ofType: type as String)
         let url = NSURL.fileURLWithPath(path!)
     
-//CAN I USE thePlayer HERE WHY DID I CREATE A NEW VARIABLE???
         var audioPlayer:AVAudioPlayer!
     
         //create the player with the specific audio file
@@ -229,7 +227,46 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         return audioPlayer
     }
     
-    func setupAudioPlayerFromParse(gameName: String) -> AVAudioPlayer? {
+    
+    //given an audio file name, make it play
+    func makePlay(gName:String, gType:String){
+        print("makePlay called")
+        
+        //call set-up using the give file name and type of mp3
+        if let helloPlayer = self.setupAudioPlayerWithFile(gName, type: gType){
+            self.thePlayer = helloPlayer
+        }else{
+            print("error in makePlay when called with \(gName)")
+        }
+        
+        //start playing!
+        thePlayer?.play()
+        recentlyPlayed = true;
+        let _ = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
+        
+    }
+    
+    func updateRecentlyPlayed(){
+        recentlyPlayed = false
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+        
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    //DELETE
+    
+  /*  func setupAudioPlayerFromParse(gameName: String, audioType: String) -> AVAudioPlayer? {
         
         var audioPlayer:AVAudioPlayer!
         let query = PFQuery(className:"generalLocations")
@@ -272,29 +309,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         return audioPlayer
         
     }
+
+    var gameLoc : String = "home"{
     
-    //given an audio file name, make it play
-    func makePlay(gName:String){
-        print("makePlay called")
+    willSet{
+    }
+    
+    didSet{
+    if (gameLoc != oldValue && gameLoc != "empty" && gameLoc != "hydrant") {
+    //check if the user has reached a new game location
+    //  and trigger audio
+    playGameAudio(gameLoc)
+    }
+    }
+    }
+
+    
+    
+    //pull the name of the correct audio file based on user's location and play it
+    func playGameAudio(gameLoc: String){
+        print("playGameAudio called")
+        let query = PFQuery(className:"generalLocations")
+        query.whereKey("name", equalTo: gameLoc)
         
-        //call set-up using the give file name and type of mp3
-        if let helloPlayer = self.setupAudioPlayerFromParse(gName){
-            self.thePlayer = helloPlayer
-        }else{
-            print("error in makePlay when called with \(gName)")
+        query.findObjectsInBackgroundWithBlock {
+            (foundObj: [PFObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                // The find succeeded.
+                if let foundObj = foundObj {
+                    for object in foundObj {
+                        print(object.objectId)
+                        let gameName = object["name"] as! String
+                       // self.makePlay(gameName)
+                    }
+                }
+            } else {
+                // Log details of the failure
+                print("Error in playGameAudio: \(error!) \(error!.userInfo)")
+            }
         }
-        
-        //start playing!
-        thePlayer?.play()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-        
     }
 
-
+*/
     
    
 }
