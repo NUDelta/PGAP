@@ -29,6 +29,12 @@
 		3EE6CDC71C5EB4B600B43022 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */; };
 		3EE6CDCA1C5EB4DB00B43022 /* 01. Hello.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3EE6CDC81C5EB4DB00B43022 /* 01. Hello.mp3 */; };
 		3EE6CDCB1C5EB4DB00B43022 /* 07. River Lea.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3EE6CDC91C5EB4DB00B43022 /* 07. River Lea.mp3 */; };
+		3EE98C961C758E3000E09095 /* J1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C901C758E2F00E09095 /* J1.m4a */; };
+		3EE98C971C758E3000E09095 /* J2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C911C758E2F00E09095 /* J2.m4a */; };
+		3EE98C981C758E3000E09095 /* J3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C921C758E2F00E09095 /* J3.m4a */; };
+		3EE98C991C758E3000E09095 /* J4.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C931C758E3000E09095 /* J4.m4a */; };
+		3EE98C9A1C758E3000E09095 /* J5.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C941C758E3000E09095 /* J5.m4a */; };
+		3EE98C9B1C758E3000E09095 /* J6.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C951C758E3000E09095 /* J6.m4a */; };
 		3EFBF0A91C62624100EB9F3B /* Conclusion.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF09D1C62624100EB9F3B /* Conclusion.m4a */; };
 		3EFBF0AA1C62624100EB9F3B /* Game1.end.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF09E1C62624100EB9F3B /* Game1.end.m4a */; };
 		3EFBF0AB1C62624100EB9F3B /* Game1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBF09F1C62624100EB9F3B /* Game1.m4a */; };
@@ -88,6 +94,12 @@
 		3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3EE6CDC81C5EB4DB00B43022 /* 01. Hello.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "01. Hello.mp3"; path = "../01. Hello.mp3"; sourceTree = "<group>"; };
 		3EE6CDC91C5EB4DB00B43022 /* 07. River Lea.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "07. River Lea.mp3"; path = "../07. River Lea.mp3"; sourceTree = "<group>"; };
+		3EE98C901C758E2F00E09095 /* J1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J1.m4a; sourceTree = "<group>"; };
+		3EE98C911C758E2F00E09095 /* J2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J2.m4a; sourceTree = "<group>"; };
+		3EE98C921C758E2F00E09095 /* J3.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J3.m4a; sourceTree = "<group>"; };
+		3EE98C931C758E3000E09095 /* J4.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J4.m4a; sourceTree = "<group>"; };
+		3EE98C941C758E3000E09095 /* J5.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J5.m4a; sourceTree = "<group>"; };
+		3EE98C951C758E3000E09095 /* J6.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J6.m4a; sourceTree = "<group>"; };
 		3EFBF09D1C62624100EB9F3B /* Conclusion.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Conclusion.m4a; sourceTree = "<group>"; };
 		3EFBF09E1C62624100EB9F3B /* Game1.end.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game1.end.m4a; sourceTree = "<group>"; };
 		3EFBF09F1C62624100EB9F3B /* Game1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Game1.m4a; sourceTree = "<group>"; };
@@ -144,6 +156,12 @@
 		3E4311D01C5EB0EC001FFFB0 = {
 			isa = PBXGroup;
 			children = (
+				3EE98C901C758E2F00E09095 /* J1.m4a */,
+				3EE98C911C758E2F00E09095 /* J2.m4a */,
+				3EE98C921C758E2F00E09095 /* J3.m4a */,
+				3EE98C931C758E3000E09095 /* J4.m4a */,
+				3EE98C941C758E3000E09095 /* J5.m4a */,
+				3EE98C951C758E3000E09095 /* J6.m4a */,
 				3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */,
 				3E5F94C91C60FA8800C8B9AD /* libz.tbd */,
 				3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */,
@@ -327,6 +345,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EE98C991C758E3000E09095 /* J4.m4a in Resources */,
+				3EE98C981C758E3000E09095 /* J3.m4a in Resources */,
+				3EE98C971C758E3000E09095 /* J2.m4a in Resources */,
+				3EE98C9A1C758E3000E09095 /* J5.m4a in Resources */,
+				3EE98C9B1C758E3000E09095 /* J6.m4a in Resources */,
 				3EFBF0AA1C62624100EB9F3B /* Game1.end.m4a in Resources */,
 				3E4311E71C5EB0ED001FFFB0 /* LaunchScreen.storyboard in Resources */,
 				3EFBF0B11C62624100EB9F3B /* Game4b.m4a in Resources */,
@@ -342,6 +365,7 @@
 				3EFBF0B41C62624100EB9F3B /* Intro2.m4a in Resources */,
 				3E4311E21C5EB0ED001FFFB0 /* Main.storyboard in Resources */,
 				3EFBF0AE1C62624100EB9F3B /* Game3.end.m4a in Resources */,
+				3EE98C961C758E3000E09095 /* J1.m4a in Resources */,
 				3EFBF0B01C62624100EB9F3B /* Game4a.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
