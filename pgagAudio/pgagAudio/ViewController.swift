@@ -138,9 +138,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                         let fileName = game["fileName"] as! String
                                         let fileType = game["fileType"] as! String
                                     
-                                        if (!self.playedGames.contains(fileName)){
+                                        if (!self.recentlyPlayed && !self.playedGames.contains(fileName)){
                                             self.playedGames.append(fileName)
                                             print("About to play \(fileName)")
+                                            print("already played \(self.playedGames)")
+                                            self.recentlyPlayed = true;
                                             self.makePlay(fileName, gType: fileType)
                                             return
                                         }
@@ -241,8 +243,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //start playing!
         thePlayer?.play()
-        recentlyPlayed = true;
-        let _ = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
+        let _ = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
         
     }
     
