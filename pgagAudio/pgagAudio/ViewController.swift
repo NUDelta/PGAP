@@ -14,11 +14,16 @@ import CoreLocation //add location to info
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
-    @IBAction func reportDistances() {
-          self.displayDistances.text = ""
-        distanceFromPoints()
+    
+    @IBAction func introGame() {
+        playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"]).play()
+    }
+    
+    @IBAction func endGame() {
+        playSound("Conclusion", type: "m4a")
 
     }
+    
     
     var playedGames : [String] = []
     var recentlyPlayed = false
@@ -55,48 +60,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
     }
    
-    func distanceFromPoints(){
-        
-        let query = PFQuery(className:"generalLocations")
-        
-        query.findObjectsInBackgroundWithBlock {
-            (foundObj: [PFObject]?, error: NSError?) -> Void in
-            
-            if error == nil {
-                // The find succeeded.
-                print("Successfully retrieved \(foundObj!.count) locations.")
-                // Do something with the found objects
-                
-              
-                if let foundObj = foundObj {
-                    for object in foundObj {
-                        let loc = object["location"]
-                        let myLoc = PFGeoPoint(location:self.currLocation)
-                    
-                            let dist = loc?.distanceInMilesTo(myLoc)
-                            print("\(object["name"]) is \(dist) miles away");
-                        
-                            self.displayDistances.text = self.displayDistances.text!  + "\n" + "\(object["name"]) is \(dist) miles away"
-                    }
-                }
-                
-            } else {
-                // Log details of the failure
-                
-                print("Error: \(error!) \(error!.userInfo)")
-            }
-        }
-
-        
-    }
     
     
     
 //get points from WorldDatabse
     
-    @IBOutlet weak var displayDistances: UILabel!
-    
-    //Check Parse DB for a nearby location, and if so, update gameLoc
     func findLocation(){
         let query = PFQuery(className:"WorldObject")
         // Interested in locations near user.
@@ -143,7 +111,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                             print("About to play \(fileName)")
                                             print("already played \(self.playedGames)")
                                             self.recentlyPlayed = true;
-                                            self.makePlay(fileName, gType: fileType)
+                                            self.makePlayGame(fileName, gType: fileType)
                                             return
                                         }
 
@@ -230,10 +198,53 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
+    func playSound(file:String, type:String){
+        
+        if let helloPlayer = self.setupAudioPlayerWithFile(file, type: type){
+            self.thePlayer = helloPlayer
+        }
+        
+        //start playing!
+        thePlayer?.play()
+        
+    }
+    
+    
+    func playQueue(files:[String], types:[String]) -> AVQueuePlayer!{
+        
+        let qPlayer = AVQueuePlayer()
+        var prev : AVPlayerItem! = nil
+        
+        for (var i = 0;  i < files.count; i++){
+            let sound = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource(files[i], ofType: types[i]))!))
+            qPlayer.insertItem(sound, afterItem: prev)
+            prev = sound;
+            
+        }
+        
+        return qPlayer
+        
+    }
+    
+    
+    var avPlayer = AVQueuePlayer()
+    
     //given an audio file name, make it play
-    func makePlay(gName:String, gType:String){
+    func makePlayGame(gName:String, gType:String){
         print("makePlay called")
         
+        
+        let intro = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("beep", ofType: "wav"))!))
+        let game = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource(gName as String, ofType: gType as String))!))
+        
+        avPlayer.insertItem(intro, afterItem: nil)
+        avPlayer.insertItem(game, afterItem: intro)
+        
+        avPlayer.play()
+        
+        let _ = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: "sendConfirmation", userInfo: nil, repeats: false)
+        
+        /*
         //call set-up using the give file name and type of mp3
         if let helloPlayer = self.setupAudioPlayerWithFile(gName, type: gType){
             self.thePlayer = helloPlayer
@@ -243,12 +254,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         //start playing!
         thePlayer?.play()
+*/
         let _ = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
         
     }
     
     func updateRecentlyPlayed(){
         recentlyPlayed = false
+    }
+    
+    func sendConfirmation(){
+        let conf = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("confirm", ofType: "wav"))!))
+        
+        avPlayer.insertItem(conf, afterItem: nil)
+        avPlayer.play()
     }
     
     
@@ -350,6 +369,42 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 print("Error in playGameAudio: \(error!) \(error!.userInfo)")
             }
         }
+    }
+
+    
+    func distanceFromPoints(){
+    
+    let query = PFQuery(className:"generalLocations")
+    
+    query.findObjectsInBackgroundWithBlock {
+    (foundObj: [PFObject]?, error: NSError?) -> Void in
+    
+    if error == nil {
+    // The find succeeded.
+    print("Successfully retrieved \(foundObj!.count) locations.")
+    // Do something with the found objects
+    
+    
+    if let foundObj = foundObj {
+    for object in foundObj {
+    let loc = object["location"]
+    let myLoc = PFGeoPoint(location:self.currLocation)
+    
+    let dist = loc?.distanceInMilesTo(myLoc)
+    print("\(object["name"]) is \(dist) miles away");
+    
+    self.displayDistances.text = self.displayDistances.text!  + "\n" + "\(object["name"]) is \(dist) miles away"
+    }
+    }
+    
+    } else {
+    // Log details of the failure
+    
+    print("Error: \(error!) \(error!.userInfo)")
+    }
+    }
+    
+    
     }
 
 */
