@@ -28,8 +28,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     @IBAction func introGame() {
-        var a = playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"])
-        a.play()
+       // let a = playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"])
+       // a.play()
+        
+        playSound("Intro1", type: "m4a")
     }
     
     @IBAction func endGame() {
