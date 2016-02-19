@@ -12,11 +12,24 @@ import Parse //add to stuff to Build Phases, set-up db in AppDelegate
 import CoreLocation //add location to info
 
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
+    @IBOutlet weak var nameTextField: UITextField!
+    var nameText = "Name"
+    func textFieldDidChange(textField: UITextField) {
+        if nameTextField.text != nil {
+            nameText = nameTextField.text!
+        }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
     @IBAction func introGame() {
-        playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"]).play()
+        var a = playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"])
+        a.play()
     }
     
     @IBAction func endGame() {
@@ -52,12 +65,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         //initalize loaction manager details
+        nameTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        self.nameTextField.delegate = self;
+
         locationManager = CLLocationManager();
         self.locationManager.delegate = self;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation();
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
+    
     }
    
     
@@ -112,6 +129,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                                             print("already played \(self.playedGames)")
                                             self.recentlyPlayed = true;
                                             self.makePlayGame(fileName, gType: fileType)
+                                            self.saveGamePlayData(object, game: game)
+                          
                                             return
                                         }
 
@@ -136,9 +155,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
     }
     
+    func saveGamePlayData(object:PFObject, game:PFObject) {
+        var gamePlay = PFObject(className:"WorldPlayData")
+        gamePlay["username"] = nameText
+        gamePlay["userLocation"] =  PFGeoPoint(location:currLocation)
+        gamePlay["objectID"] = object.objectId
+        gamePlay["object"] = object["label"]
+        gamePlay["gameID"] = game.objectId
+        gamePlay["game"] = game["gameName"]
+        gamePlay.saveInBackgroundWithBlock {
+            (success: Bool, error: NSError?) -> Void in
+            if (success) {
+                // The object has been saved.
+            } else {
+                // There was a problem, check error.description
+            }
+        }
+    }
     
     //saves the user's locaiton into a parse database
     func saveLocation(){
+        var gamePlay = PFObject(className:"WorldPlayLoc")
+        gamePlay["username"] = nameText
+        gamePlay["userLocation"] =  PFGeoPoint(location:currLocation)
+        gamePlay.saveInBackgroundWithBlock {
+            (success: Bool, error: NSError?) -> Void in
+            if (success) {
+                // The object has been saved.
+            } else {
+                // There was a problem, check error.description
+            }
+        }
+
         //display location in UI
         let lat: Double = (currLocation?.coordinate.latitude)!
          labelLat.text = String(format: "%f", lat)
@@ -212,16 +260,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func playQueue(files:[String], types:[String]) -> AVQueuePlayer!{
         
-        let qPlayer = AVQueuePlayer()
+        var qPlayer = AVQueuePlayer()
         var prev : AVPlayerItem! = nil
         
         for (var i = 0;  i < files.count; i++){
+            print("OK")
             let sound = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource(files[i], ofType: types[i]))!))
             qPlayer.insertItem(sound, afterItem: prev)
             prev = sound;
             
         }
-        
+        print(qPlayer)
         return qPlayer
         
     }
@@ -242,7 +291,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         avPlayer.play()
         
-        let _ = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: "sendConfirmation", userInfo: nil, repeats: false)
+        let _ = NSTimer.scheduledTimerWithTimeInterval(28, target: self, selector: "sendConfirmation", userInfo: nil, repeats: false)
         
         /*
         //call set-up using the give file name and type of mp3
