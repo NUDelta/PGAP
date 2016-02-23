@@ -10,121 +10,104 @@ import UIKit
 import AVFoundation //add framework to Build Phases
 import Parse //add to stuff to Build Phases, set-up db in AppDelegate
 import CoreLocation //add location to info
+import MapKit
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
+    // Outlets
+    @IBOutlet weak var ratingsValue: UILabel!
+    @IBOutlet weak var ratingsSlider: UISlider!
+    @IBOutlet weak var objMap: MKMapView!
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var labelLat: UILabel!
+    @IBOutlet weak var labelNearLocation: UILabel!
+    @IBOutlet weak var labelChangeLocation: UILabel!
+    @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var feedbackText: UILabel!
+    
+    // Variables
     var nameText = "Name"
-    func textFieldDidChange(textField: UITextField) {
-        if nameTextField.text != nil {
-            nameText = nameTextField.text!
-        }
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
-    }
-    
-    @IBAction func introGame() {
-       // let a = playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"])
-       // a.play()
-        
-        playSound("Intro1", type: "m4a")
-    }
-    
-    @IBAction func endGame() {
-        playSound("Conclusion", type: "m4a")
-
-    }
-    
-    
     var playedGames : [String] = []
-    var recentlyPlayed = false
-    
-    //initalize Parse global variables
-    var userData = PFObject(className: "UserData")
-    
-    
-    //initalize location global variables
+    var recentlyPlayed = true
     var locationManager: CLLocationManager!
     var currLocation: CLLocation? = nil
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(manager.location?.coordinate)
-        currLocation = manager.location
-        saveLocation()
-        
-     
-        if(!recentlyPlayed){
-            print("calling find location")
-            findLocation()
-        }
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //initalize loaction manager details
+        
         nameTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         self.nameTextField.delegate = self;
-
+        
         locationManager = CLLocationManager();
         self.locationManager.delegate = self;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation();
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-    
+        
+        objMap.showsUserLocation = true;
+        objMap.setUserTrackingMode(MKUserTrackingMode.Follow, animated: true)
+        addAnnotations()
+        
+        feedbackText.hidden = true
+        submitButton.hidden = true
+        ratingsValue.hidden = true
+        ratingsSlider.hidden = true
+        
     }
-   
+ 
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print(manager.location?.coordinate)
+        currLocation = manager.location
+        saveLocation()
+        if(!recentlyPlayed){
+            print("calling find location")
+            findLocation()
+        }
+    }
     
-    
-    
-//get points from WorldDatabse
+    //saves the user's locaiton into a parse database
+    func saveLocation(){
+        let gamePlay = PFObject(className:"WorldPlayLoc")
+        gamePlay["username"] = nameText
+        gamePlay["userLocation"] =  PFGeoPoint(location:currLocation)
+        gamePlay.saveInBackgroundWithBlock {
+            (success: Bool, error: NSError?) -> Void in
+            if (success) {
+            } else {
+            }
+        }
+        
+        labelLat.text = String((currLocation?.coordinate.latitude)!) + ", " + String((currLocation?.coordinate.longitude)!)
+    }
     
     func findLocation(){
         let query = PFQuery(className:"WorldObject")
-        // Interested in locations near user.
         query.whereKey("location", nearGeoPoint:PFGeoPoint(location:currLocation), withinMiles:0.01)
-
-        // Limit what could be a lot of points.
         query.limit = 5
         
-        // Final list of objects
         query.findObjectsInBackgroundWithBlock {
             (foundObjs: [PFObject]?, error: NSError?) -> Void in
-            
             if error == nil {
-                // The find succeeded.
                 print("Successfully retrieved \(foundObjs!.count) locations.")
-                // Do something with the found objects
-                
                 if (foundObjs!.count == 0){
                     print("no nearby objects found")
-                    
                 }
                 else if let foundObjs = foundObjs {
                     for object in foundObjs {
-                        //STORE IN AN ARRAY
-                        
                         let queryGames = PFQuery(className:"WorldGame")
                         queryGames.whereKey("object", equalTo: object["label"])
-                        
                         queryGames.findObjectsInBackgroundWithBlock {
                             (foundGames: [PFObject]?, error: NSError?) -> Void in
-                            
                             if error == nil {
                                 print("Successfully retrieved \(foundGames!.count) games.")
                                 if let foundGames = foundGames{
-
                                     for game in foundGames{
                                         print(game)
-                                    
                                         let fileName = game["fileName"] as! String
                                         let fileType = game["fileType"] as! String
-                                    
+                                        
                                         if (!self.recentlyPlayed && !self.playedGames.contains(fileName)){
                                             self.playedGames.append(fileName)
                                             print("About to play \(fileName)")
@@ -132,29 +115,35 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                             self.recentlyPlayed = true;
                                             self.makePlayGame(fileName, gType: fileType)
                                             self.saveGamePlayData(object, game: game)
-                          
                                             return
                                         }
-
                                     }
                                 }
-                                
                             }else{
                                 print("Error: \(error!) \(error!.userInfo)")
-
                             }
                         }
-                        
-                    
                     }
                 }
             } else {
-                // Log details of the failure
-
                 print("Error: \(error!) \(error!.userInfo)")
             }
         }
-
+    }
+    
+    func makePlayGame(gName:String, gType:String){
+        print("makePlay called")
+        
+        let intro = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("beep", ofType: "wav"))!))
+        let game = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource(gName as String, ofType: gType as String))!))
+        
+        avPlayer.insertItem(intro, afterItem: nil)
+        avPlayer.insertItem(game, afterItem: intro)
+        avPlayer.play()
+        
+        let _ = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "sendConfirmation", userInfo: nil, repeats: false)
+        let _ = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
+        
     }
     
     func saveGamePlayData(object:PFObject, game:PFObject) {
@@ -175,54 +164,96 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
     }
     
-    //saves the user's locaiton into a parse database
-    func saveLocation(){
-        var gamePlay = PFObject(className:"WorldPlayLoc")
+    func sendConfirmation(){
+        let conf = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("confirm", ofType: "wav"))!))
+        avPlayer.insertItem(conf, afterItem: nil)
+        avPlayer.play()
+        
+        askForFeedback()
+    }
+    
+    func updateRecentlyPlayed(){
+        recentlyPlayed = false
+    }
+    
+    func askForFeedback() {
+        feedbackText.text = "Please rate your enjoyment of the last game."
+        ratingsValue.text = "5"
+        feedbackText.hidden = false
+        submitButton.hidden = false
+        ratingsValue.hidden = false
+        ratingsSlider.hidden = false
+    }
+    
+    @IBAction func submitRating(sender: UIButton) {
+        let gamePlay = PFObject(className:"GameRating")
         gamePlay["username"] = nameText
-        gamePlay["userLocation"] =  PFGeoPoint(location:currLocation)
+        gamePlay["game"] =  PFGeoPoint(location:currLocation)
         gamePlay.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
-                // The object has been saved.
             } else {
-                // There was a problem, check error.description
             }
         }
-
-        //display location in UI
-        let lat: Double = (currLocation?.coordinate.latitude)!
-         labelLat.text = String(format: "%f", lat)
-        let long: Double = (currLocation?.coordinate.longitude)!
-        labelLong.text = String(format: "%f", long)
-        
-        //save User's current location in parse db
-        userData["location"] =  PFGeoPoint(location:currLocation)
-        userData.saveInBackgroundWithBlock {
-            (success: Bool, error: NSError?) -> Void in
-            if (success) {
-                // The object has been saved.
-                print("location saved")
-            } else {
-                // There was a problem, check error.description
-                print("error in SaveLocatoin")
-            }
-        }
-    
+        feedbackText.text = "Thank you!"
+        submitButton.hidden = true
+        ratingsValue.hidden = true
+        ratingsSlider.hidden = true
     }
     
+    @IBAction func sliderChanged(sender: UISlider) {
+        var selectedValue = Int(sender.value)
+        ratingsValue.text = String(stringInterpolationSegment: selectedValue)
+    }
 
-    //inialize UI element labels
-    @IBOutlet weak var labelLat: UILabel!
-    @IBOutlet weak var labelLong: UILabel!
-    @IBOutlet weak var labelNearLocation: UILabel!
-    @IBOutlet weak var labelChangeLocation: UILabel!
+    func textFieldDidChange(textField: UITextField) {
+        if nameTextField.text != nil {
+            nameText = nameTextField.text!
+        }
+    }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
-//************************
-//AUDIO PLAYING SETUP
-//************************
+    @IBAction func introGame() {
+        //playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"])
+        playSound("Intro1", type: "m4a")
+        let _ = NSTimer.scheduledTimerWithTimeInterval(26, target: self, selector: "introB", userInfo: nil, repeats: false)
+        let _ = NSTimer.scheduledTimerWithTimeInterval(41, target: self, selector: "introC", userInfo: nil, repeats: false)
+        let _ = NSTimer.scheduledTimerWithTimeInterval(57, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
+    }
     
-//LIFE QUESTION: when to create new audio players versus reset
+    func introB() {
+        playSound("Intro2", type: "m4a")
+    }
+    
+    func introC() {
+        playSound("theme", type: "mp3")
+    }
+    
+    @IBAction func endGame() {
+        playSound("Conclusion", type: "m4a")
+    }
+
+    func addAnnotations() {
+        let query = PFQuery(className:"WorldObject")
+        query.limit = 1000
+        query.findObjectsInBackgroundWithBlock {
+            (foundObjs: [PFObject]?, error: NSError?) -> Void in
+            if error == nil {
+                if let foundObjs = foundObjs {
+                    for obj in foundObjs {
+                        self.objMap.addAnnotation(worldObject(title: obj["label"] as! String, coordinate: CLLocationCoordinate2D(latitude: obj["location"].latitude, longitude: obj["location"].longitude)))
+                    }
+                }
+            }
+            else {
+                print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+    }
     
     //initalize audio player instance
     var thePlayer : AVAudioPlayer!
@@ -253,87 +284,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         if let helloPlayer = self.setupAudioPlayerWithFile(file, type: type){
             self.thePlayer = helloPlayer
         }
-        
         //start playing!
         thePlayer?.play()
         
     }
     
-    
-    func playQueue(files:[String], types:[String]) -> AVQueuePlayer!{
-        
+    func playQueue(files:[String], types:[String]){
+        print("PLAYING")
         var qPlayer = AVQueuePlayer()
-        var prev : AVPlayerItem! = nil
-        
+        var items : [AVPlayerItem] = []
         for (var i = 0;  i < files.count; i++){
-            print("OK")
-            let sound = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource(files[i], ofType: types[i]))!))
-            qPlayer.insertItem(sound, afterItem: prev)
-            prev = sound;
-            
+            let path = NSBundle.mainBundle().pathForResource(files[i] as String, ofType: types[i] as String)
+            let url = NSURL.fileURLWithPath(path!)
+            let sound = AVPlayerItem.init(URL: url)
+            items.append(sound)
         }
-        print(qPlayer)
-        return qPlayer
-        
+        qPlayer = AVQueuePlayer(items: items)
+        qPlayer.play()
     }
-    
     
     var avPlayer = AVQueuePlayer()
-    
-    //given an audio file name, make it play
-    func makePlayGame(gName:String, gType:String){
-        print("makePlay called")
-        
-        
-        let intro = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("beep", ofType: "wav"))!))
-        let game = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource(gName as String, ofType: gType as String))!))
-        
-        avPlayer.insertItem(intro, afterItem: nil)
-        avPlayer.insertItem(game, afterItem: intro)
-        
-        avPlayer.play()
-        
-        let _ = NSTimer.scheduledTimerWithTimeInterval(28, target: self, selector: "sendConfirmation", userInfo: nil, repeats: false)
-        
-        /*
-        //call set-up using the give file name and type of mp3
-        if let helloPlayer = self.setupAudioPlayerWithFile(gName, type: gType){
-            self.thePlayer = helloPlayer
-        }else{
-            print("error in makePlay when called with \(gName)")
-        }
-        
-        //start playing!
-        thePlayer?.play()
-*/
-        let _ = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
-        
-    }
-    
-    func updateRecentlyPlayed(){
-        recentlyPlayed = false
-    }
-    
-    func sendConfirmation(){
-        let conf = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("confirm", ofType: "wav"))!))
-        
-        avPlayer.insertItem(conf, afterItem: nil)
-        avPlayer.play()
-    }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
         
     }
-
-    
-    
-    
-    
-    
-    
     
     //DELETE
     
@@ -457,6 +433,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     }
+    
+    // Deleted from saveLocation
+    //save User's current location in parse db
+    userData["location"] =  PFGeoPoint(location:currLocation)
+    userData.saveInBackgroundWithBlock {
+    (success: Bool, error: NSError?) -> Void in
+    if (success) {
+    // The object has been saved.
+    print("location saved")
+    } else {
+    // There was a problem, check error.description
+    print("error in SaveLocatoin")
+    }
+    }
+    
+    // Deleted from makeGamePlay
+    
+    /*
+    //call set-up using the give file name and type of mp3
+    if let helloPlayer = self.setupAudioPlayerWithFile(gName, type: gType){
+    self.thePlayer = helloPlayer
+    }else{
+    print("error in makePlay when called with \(gName)")
+    }
+    
+    //start playing!
+    thePlayer?.play()
+    */
 
 */
     

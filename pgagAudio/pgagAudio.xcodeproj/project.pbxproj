@@ -13,6 +13,7 @@
 		1F233E401C76233C00E7B0E4 /* S3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1F233E3A1C76233C00E7B0E4 /* S3.m4a */; };
 		1F233E411C76233C00E7B0E4 /* S2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1F233E3B1C76233C00E7B0E4 /* S2.m4a */; };
 		1F233E421C76233C00E7B0E4 /* S1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1F233E3C1C76233C00E7B0E4 /* S1.m4a */; };
+		1F71F4DF1C7BBD42005EC7E8 /* worldObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F71F4DE1C7BBD42005EC7E8 /* worldObject.swift */; };
 		3E0E5E451C7674F1005651CE /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E5E421C7674F0005651CE /* beep.wav */; };
 		3E0E5E461C7674F1005651CE /* confirm.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E5E431C7674F0005651CE /* confirm.wav */; };
 		3E0E5E471C7674F1005651CE /* theme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E0E5E441C7674F0005651CE /* theme.mp3 */; };
@@ -81,6 +82,7 @@
 		1F233E3A1C76233C00E7B0E4 /* S3.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = S3.m4a; sourceTree = "<group>"; };
 		1F233E3B1C76233C00E7B0E4 /* S2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = S2.m4a; sourceTree = "<group>"; };
 		1F233E3C1C76233C00E7B0E4 /* S1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = S1.m4a; sourceTree = "<group>"; };
+		1F71F4DE1C7BBD42005EC7E8 /* worldObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = worldObject.swift; sourceTree = "<group>"; };
 		3E0E5E421C7674F0005651CE /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		3E0E5E431C7674F0005651CE /* confirm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = confirm.wav; sourceTree = "<group>"; };
 		3E0E5E441C7674F0005651CE /* theme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = theme.mp3; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				3E4311DC1C5EB0ED001FFFB0 /* AppDelegate.swift */,
 				3E4311DE1C5EB0ED001FFFB0 /* ViewController.swift */,
 				3E4311E01C5EB0ED001FFFB0 /* Main.storyboard */,
+				1F71F4DE1C7BBD42005EC7E8 /* worldObject.swift */,
 				3E4311E31C5EB0ED001FFFB0 /* Assets.xcassets */,
 				3E4311E51C5EB0ED001FFFB0 /* LaunchScreen.storyboard */,
 				3E4311E81C5EB0ED001FFFB0 /* Info.plist */,
@@ -333,7 +336,7 @@
 				TargetAttributes = {
 					3E4311D81C5EB0EC001FFFB0 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = PVV5F3U637;
+						DevelopmentTeam = 25SY4WU9EN;
 					};
 					3E4311EC1C5EB0ED001FFFB0 = {
 						CreatedOnToolsVersion = 7.2;
@@ -427,6 +430,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F71F4DF1C7BBD42005EC7E8 /* worldObject.swift in Sources */,
 				3E4311DF1C5EB0ED001FFFB0 /* ViewController.swift in Sources */,
 				3E4311DD1C5EB0ED001FFFB0 /* AppDelegate.swift in Sources */,
 			);
@@ -572,7 +576,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -582,9 +586,9 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgapaud;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.paudio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -592,7 +596,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -602,9 +606,9 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgapaud;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.paudio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
