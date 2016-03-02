@@ -27,6 +27,8 @@
 		3E4311E71C5EB0ED001FFFB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E4311E51C5EB0ED001FFFB0 /* LaunchScreen.storyboard */; };
 		3E4311F21C5EB0ED001FFFB0 /* pgagAudioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4311F11C5EB0ED001FFFB0 /* pgagAudioTests.swift */; };
 		3E4311FD1C5EB0ED001FFFB0 /* pgagAudioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4311FC1C5EB0ED001FFFB0 /* pgagAudioUITests.swift */; };
+		3E5443871C7F9F14009F0062 /* goodWork.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3E5443861C7F9F14009F0062 /* goodWork.m4a */; };
+		3E5443891C7FA083009F0062 /* nothing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3E5443881C7FA083009F0062 /* nothing.mp3 */; };
 		3E5F94B71C60F9F500C8B9AD /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94B51C60F9F500C8B9AD /* Bolts.framework */; };
 		3E5F94B81C60F9F500C8B9AD /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94B61C60F9F500C8B9AD /* Parse.framework */; };
 		3E5F94BA1C60FA4D00C8B9AD /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94B91C60FA4D00C8B9AD /* AudioToolbox.framework */; };
@@ -102,6 +104,8 @@
 		3E4311F81C5EB0ED001FFFB0 /* pgagAudioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pgagAudioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E4311FC1C5EB0ED001FFFB0 /* pgagAudioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pgagAudioUITests.swift; sourceTree = "<group>"; };
 		3E4311FE1C5EB0EE001FFFB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E5443861C7F9F14009F0062 /* goodWork.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = goodWork.m4a; sourceTree = "<group>"; };
+		3E5443881C7FA083009F0062 /* nothing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = nothing.mp3; sourceTree = "<group>"; };
 		3E5F94B51C60F9F500C8B9AD /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		3E5F94B61C60F9F500C8B9AD /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		3E5F94B91C60FA4D00C8B9AD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -176,6 +180,8 @@
 		3E4311D01C5EB0EC001FFFB0 = {
 			isa = PBXGroup;
 			children = (
+				3E5443881C7FA083009F0062 /* nothing.mp3 */,
+				3E5443861C7F9F14009F0062 /* goodWork.m4a */,
 				3E0E5E421C7674F0005651CE /* beep.wav */,
 				3E0E5E431C7674F0005651CE /* confirm.wav */,
 				3E0E5E441C7674F0005651CE /* theme.mp3 */,
@@ -337,6 +343,11 @@
 					3E4311D81C5EB0EC001FFFB0 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = PVV5F3U637;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					3E4311EC1C5EB0ED001FFFB0 = {
 						CreatedOnToolsVersion = 7.2;
@@ -383,6 +394,7 @@
 				3EE98C9B1C758E3000E09095 /* J6.m4a in Resources */,
 				1F233E421C76233C00E7B0E4 /* S1.m4a in Resources */,
 				3EFBF0AA1C62624100EB9F3B /* Game1.end.m4a in Resources */,
+				3E5443871C7F9F14009F0062 /* goodWork.m4a in Resources */,
 				3E0E5E451C7674F1005651CE /* beep.wav in Resources */,
 				1F233E3E1C76233C00E7B0E4 /* S5.m4a in Resources */,
 				3E4311E71C5EB0ED001FFFB0 /* LaunchScreen.storyboard in Resources */,
@@ -392,6 +404,7 @@
 				3EFBF0AD1C62624100EB9F3B /* Game2.m4a in Resources */,
 				3E4311E41C5EB0ED001FFFB0 /* Assets.xcassets in Resources */,
 				1F233E3D1C76233C00E7B0E4 /* S6.m4a in Resources */,
+				3E5443891C7FA083009F0062 /* nothing.mp3 in Resources */,
 				3E0E5E471C7674F1005651CE /* theme.mp3 in Resources */,
 				3EFBF0AB1C62624100EB9F3B /* Game1.m4a in Resources */,
 				3EE6CDCB1C5EB4DB00B43022 /* 07. River Lea.mp3 in Resources */,
