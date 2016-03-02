@@ -25,6 +25,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     @IBOutlet weak var labelChangeLocation: UILabel!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var feedbackText: UILabel!
+    @IBOutlet weak var statusText: UILabel!
+    @IBOutlet weak var scoreText: UILabel!
     
     // Variables
     var nameText = "Name"
@@ -76,6 +78,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         print(manager.location?.coordinate)
         currLocation = manager.location
         saveLocation()
+        gamesNearby()
         if(!recentlyPlayed){
             print("calling find location")
             findLocation()
@@ -95,6 +98,55 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
         
         labelLat.text = String((currLocation?.coordinate.latitude)!) + ", " + String((currLocation?.coordinate.longitude)!)
+    }
+    
+    func gamesNearby() {
+        let query = PFQuery(className:"WorldObject")
+        query.whereKey("location", nearGeoPoint:PFGeoPoint(location:currLocation), withinMiles:0.1)
+        query.limit = 100
+        
+        query.findObjectsInBackgroundWithBlock {
+            (foundObjs: [PFObject]?, error: NSError?) -> Void in
+            if error == nil {
+                print("Successfully retrieved \(foundObjs!.count) locations.")
+                if (foundObjs!.count == 0){
+                    self.statusText.text = "ALERT: No tasks within 500 feet. Keep exploring."
+                    self.statusText.textColor = UIColor.redColor()
+                }
+                else if let foundObjs = foundObjs {
+                    for object in foundObjs {
+                        let queryGames = PFQuery(className:"WorldGame")
+                        queryGames.whereKey("object", equalTo: object["label"])
+                        queryGames.findObjectsInBackgroundWithBlock {
+                            (foundGames: [PFObject]?, error: NSError?) -> Void in
+                            if error == nil {
+                                if let foundGames = foundGames{
+                                    for game in foundGames{
+                                        let fileName = game["fileName"] as! String
+                                        self.currGame = fileName
+                                        
+                                        if (!self.playedGames.contains(fileName)){
+                                            self.statusText.text = "Tasks are nearby!"
+                                            self.statusText.textColor = UIColor.greenColor()
+                                            return
+                                        }
+                                    }
+                                    self.statusText.text = "ALERT: No tasks within 500 feet. Keep exploring."
+                                    self.statusText.textColor = UIColor.redColor()
+                                }
+                            }else{
+                                print("Error: \(error!) \(error!.userInfo)")
+                            }
+                        }
+                    }
+                }
+            } else {
+                print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+        
+        
+    
     }
     
     func findLocation(){
@@ -184,6 +236,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         let conf = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("goodWork", ofType: "m4a"))!))
         avPlayer.insertItem(conf, afterItem: nil)
         avPlayer.play()
+        let score = Int(scoreText.text!)! + 5
+        scoreText.text = String(score)
         
         askForFeedback()
     }
