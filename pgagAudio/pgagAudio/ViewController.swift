@@ -33,6 +33,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     var locationManager: CLLocationManager!
     var currLocation: CLLocation? = nil
     
+    var currGame: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,6 +56,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         submitButton.hidden = true
         ratingsValue.hidden = true
         ratingsSlider.hidden = true
+        
+        var silentPlayer : AVAudioPlayer!
+        let path = NSBundle.mainBundle().pathForResource("nothing" as String, ofType: "mp3" as String)
+        let url = NSURL.fileURLWithPath(path!)
+    
+        do {
+            try silentPlayer = AVAudioPlayer(contentsOfURL: url)
+        } catch {
+            print("can't play silence")
+        }
+
+        silentPlayer.play()
+    
         
     }
  
@@ -107,6 +122,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                         print(game)
                                         let fileName = game["fileName"] as! String
                                         let fileType = game["fileType"] as! String
+                                        self.currGame = fileName
                                         
                                         if (!self.recentlyPlayed && !self.playedGames.contains(fileName)){
                                             self.playedGames.append(fileName)
@@ -165,7 +181,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     func sendConfirmation(){
-        let conf = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("confirm", ofType: "wav"))!))
+        let conf = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("goodWork", ofType: "m4a"))!))
         avPlayer.insertItem(conf, afterItem: nil)
         avPlayer.play()
         
@@ -182,13 +198,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         feedbackText.hidden = false
         submitButton.hidden = false
         ratingsValue.hidden = false
+        ratingsSlider.value = 5
         ratingsSlider.hidden = false
     }
     
     @IBAction func submitRating(sender: UIButton) {
-        let gamePlay = PFObject(className:"GameRating")
+        let gamePlay = PFObject(className:"WorldGameRating")
         gamePlay["username"] = nameText
-        gamePlay["game"] =  PFGeoPoint(location:currLocation)
+        gamePlay["location"] =  PFGeoPoint(location:currLocation)
+        gamePlay["game"] = currGame
+        gamePlay["rating"] = ratingsSlider.value 
         gamePlay.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
@@ -254,6 +273,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             }
         }
     }
+
     
     //initalize audio player instance
     var thePlayer : AVAudioPlayer!
