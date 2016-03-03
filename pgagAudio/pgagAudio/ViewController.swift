@@ -39,6 +39,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         
         nameTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         self.nameTextField.delegate = self;
@@ -59,17 +60,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         ratingsValue.hidden = true
         ratingsSlider.hidden = true
         
-        var silentPlayer : AVAudioPlayer!
-        let path = NSBundle.mainBundle().pathForResource("nothing" as String, ofType: "mp3" as String)
-        let url = NSURL.fileURLWithPath(path!)
-    
-        do {
-            try silentPlayer = AVAudioPlayer(contentsOfURL: url)
-        } catch {
-            print("can't play silence")
-        }
-
-        silentPlayer.play()
+//        var silentPlayer : AVAudioPlayer!
+//        let path = NSBundle.mainBundle().pathForResource("nothing" as String, ofType: "mp3" as String)
+//        let url = NSURL.fileURLWithPath(path!)
+//    
+//        do {
+//            try silentPlayer = AVAudioPlayer(contentsOfURL: url)
+//        } catch {
+//            print("can't play silence")
+//        }
+//
+//        silentPlayer.play()
     
         
     }
@@ -291,11 +292,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     @IBAction func introGame() {
-        //playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"])
-        playSound("Intro1", type: "m4a")
-        let _ = NSTimer.scheduledTimerWithTimeInterval(26, target: self, selector: "introB", userInfo: nil, repeats: false)
-        let _ = NSTimer.scheduledTimerWithTimeInterval(41, target: self, selector: "introC", userInfo: nil, repeats: false)
-        let _ = NSTimer.scheduledTimerWithTimeInterval(57, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
+        playQueue(["Intro1", "Intro2", "theme"], types: ["m4a", "m4a", "mp3"])
+//        playSound("Intro1", type: "m4a")
+//        let _ = NSTimer.scheduledTimerWithTimeInterval(26, target: self, selector: "introB", userInfo: nil, repeats: false)
+//        let _ = NSTimer.scheduledTimerWithTimeInterval(41, target: self, selector: "introC", userInfo: nil, repeats: false)
+//        let _ = NSTimer.scheduledTimerWithTimeInterval(57, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
     }
     
     func introB() {
@@ -363,9 +364,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         
     }
     
+    var qPlayer = AVQueuePlayer()
+
+    
     func playQueue(files:[String], types:[String]){
         print("PLAYING")
-        var qPlayer = AVQueuePlayer()
         var items : [AVPlayerItem] = []
         for (var i = 0;  i < files.count; i++){
             let path = NSBundle.mainBundle().pathForResource(files[i] as String, ofType: types[i] as String)
