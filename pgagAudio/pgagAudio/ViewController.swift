@@ -71,9 +71,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
 //        }
 //
 //        silentPlayer.play()
-    
         
+        createLocalStorage()
     }
+    
+    func createLocalStorage() {
+        let queryObjects = PFQuery(className:"WorldObject")
+        queryObjects.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if error == nil {
+                print("Successfully retrieved \(objects!.count) scores.")
+                if let objects = objects {
+                    PFObject.pinAllInBackground(objects)
+                }
+            } else {
+                print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+        
+        let queryGames = PFQuery(className:"WorldGame")
+        queryGames.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if error == nil {
+                print("Successfully retrieved \(objects!.count) scores.")
+                if let objects = objects {
+                    PFObject.pinAllInBackground(objects)
+                }
+            } else {
+                print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+    }
+    
+    
  
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print(manager.location?.coordinate)
@@ -104,8 +134,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     func gamesNearby() {
         let query = PFQuery(className:"WorldObject")
         query.whereKey("location", nearGeoPoint:PFGeoPoint(location:currLocation), withinMiles:0.1)
+        query.fromLocalDatastore()
         query.limit = 100
-        
         query.findObjectsInBackgroundWithBlock {
             (foundObjs: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
@@ -118,6 +148,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     for object in foundObjs {
                         let queryGames = PFQuery(className:"WorldGame")
                         queryGames.whereKey("object", equalTo: object["label"])
+                        query.fromLocalDatastore()
                         queryGames.findObjectsInBackgroundWithBlock {
                             (foundGames: [PFObject]?, error: NSError?) -> Void in
                             if error == nil {
@@ -154,7 +185,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         let query = PFQuery(className:"WorldObject")
         query.whereKey("location", nearGeoPoint:PFGeoPoint(location:currLocation), withinMiles:0.01)
         query.limit = 5
-        
+        query.fromLocalDatastore()
         query.findObjectsInBackgroundWithBlock {
             (foundObjs: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
@@ -166,6 +197,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     for object in foundObjs {
                         let queryGames = PFQuery(className:"WorldGame")
                         queryGames.whereKey("object", equalTo: object["label"])
+                        queryGames.fromLocalDatastore()
                         queryGames.findObjectsInBackgroundWithBlock {
                             (foundGames: [PFObject]?, error: NSError?) -> Void in
                             if error == nil {
@@ -314,6 +346,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     func addAnnotations() {
         let query = PFQuery(className:"WorldObject")
         query.limit = 1000
+        query.fromLocalDatastore()
         query.findObjectsInBackgroundWithBlock {
             (foundObjs: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
