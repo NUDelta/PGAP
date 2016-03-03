@@ -77,10 +77,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     func createLocalStorage() {
         let queryObjects = PFQuery(className:"WorldObject")
+        queryObjects.limit = 1000
         queryObjects.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
-                print("Successfully retrieved \(objects!.count) scores.")
+                print("Successfully retrieved \(objects!.count) Objects for local storage.")
                 if let objects = objects {
                     PFObject.pinAllInBackground(objects)
                 }
@@ -90,10 +91,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
         
         let queryGames = PFQuery(className:"WorldGame")
+        queryGames.limit = 1000
         queryGames.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
-                print("Successfully retrieved \(objects!.count) scores.")
+                print("Successfully retrieved \(objects!.count) Games for Local Storage.")
                 if let objects = objects {
                     PFObject.pinAllInBackground(objects)
                 }
@@ -106,10 +108,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
  
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(manager.location?.coordinate)
+        //print(manager.location?.coordinate)
         currLocation = manager.location
         saveLocation()
-        gamesNearby()
+        //gamesNearby()
         if(!recentlyPlayed){
             print("calling find location")
             findLocation()
@@ -139,7 +141,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         query.findObjectsInBackgroundWithBlock {
             (foundObjs: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
-                print("Successfully retrieved \(foundObjs!.count) locations.")
                 if (foundObjs!.count == 0){
                     self.statusText.text = "ALERT: No tasks within 500 feet. Keep exploring."
                     self.statusText.textColor = UIColor.redColor()
@@ -189,7 +190,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         query.findObjectsInBackgroundWithBlock {
             (foundObjs: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
-                print("Successfully retrieved \(foundObjs!.count) locations.")
+                print("Successfully retrieved \(foundObjs!.count) nearby objects.")
                 if (foundObjs!.count == 0){
                     print("no nearby objects found")
                 }
@@ -201,20 +202,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                         queryGames.findObjectsInBackgroundWithBlock {
                             (foundGames: [PFObject]?, error: NSError?) -> Void in
                             if error == nil {
-                                print("Successfully retrieved \(foundGames!.count) games.")
+                                print("Successfully retrieved \(foundGames!.count) nearby games.")
                                 if let foundGames = foundGames{
                                     for game in foundGames{
                                         print(game)
                                         let fileName = game["fileName"] as! String
                                         let fileType = game["fileType"] as! String
+                                        let fileTime = game["timeNeeded"] as! Double
                                         self.currGame = fileName
                                         
                                         if (!self.recentlyPlayed && !self.playedGames.contains(fileName)){
                                             self.playedGames.append(fileName)
                                             print("About to play \(fileName)")
-                                            print("already played \(self.playedGames)")
                                             self.recentlyPlayed = true;
-                                            self.makePlayGame(fileName, gType: fileType)
+                                            self.makePlayGame(fileName, gType: fileType, gTime: fileTime)
                                             self.saveGamePlayData(object, game: game)
                                             return
                                         }
@@ -232,9 +233,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
     }
     
-    func makePlayGame(gName:String, gType:String){
+    func makePlayGame(gName:String, gType:String, gTime: Double){
         print("makePlay called")
-        
+
         let intro = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource("beep", ofType: "wav"))!))
         let game = AVPlayerItem.init(URL: NSURL.fileURLWithPath((NSBundle.mainBundle().pathForResource(gName as String, ofType: gType as String))!))
         
@@ -242,8 +243,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         avPlayer.insertItem(game, afterItem: intro)
         avPlayer.play()
         
-        let _ = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "sendConfirmation", userInfo: nil, repeats: false)
-        let _ = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
+        let _ = NSTimer.scheduledTimerWithTimeInterval(gTime, target: self, selector: "sendConfirmation", userInfo: nil, repeats: false)
+        let _ = NSTimer.scheduledTimerWithTimeInterval(gTime+15, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
         
     }
     
@@ -328,7 +329,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
 //        playSound("Intro1", type: "m4a")
 //        let _ = NSTimer.scheduledTimerWithTimeInterval(26, target: self, selector: "introB", userInfo: nil, repeats: false)
 //        let _ = NSTimer.scheduledTimerWithTimeInterval(41, target: self, selector: "introC", userInfo: nil, repeats: false)
-//        let _ = NSTimer.scheduledTimerWithTimeInterval(57, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
+          let _ = NSTimer.scheduledTimerWithTimeInterval(57, target: self, selector: "updateRecentlyPlayed", userInfo: nil, repeats: false)
     }
     
     func introB() {
