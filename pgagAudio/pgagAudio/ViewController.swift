@@ -27,7 +27,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     @IBOutlet weak var feedbackText: UILabel!
     @IBOutlet weak var statusText: UILabel!
     @IBOutlet weak var scoreText: UILabel!
+    @IBOutlet weak var mapToggle: UIButton!
+    @IBOutlet weak var mapImage: UIImageView!
 
+    @IBAction func toggleMapView(sender: UIButton) {
+        mapImage.hidden = !mapImage.hidden
+    }
+    
+    
     // Variables
     var locCalls = 0
     var nameText = "Name"
@@ -37,6 +44,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     var currLocation: CLLocation? = nil
     
     var currGame: String = ""
+    var lastObject : String = ""
+    var lastGame : String = ""
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -258,13 +268,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     func saveGamePlayData(object:String, game:PFObject) {
-        var gamePlay = PFObject(className:"WorldPlayUserData")
+
+        self.lastObject = object
+        
+        let gamePlay = PFObject(className:"WorldPlayUserData")
         gamePlay["username"] = nameText
         gamePlay["userLocation"] =  PFGeoPoint(location:currLocation)
         //gamePlay["objectID"] = object.objectId
         gamePlay["object"] = object
         gamePlay["gameID"] = game.objectId
         gamePlay["game"] = game["gameName"]
+        
+        self.lastGame = game["gameName"] as! String
+
         gamePlay.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
             if (success) {
@@ -299,11 +315,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         ratingsSlider.hidden = false
     }
     
+    
+
+    
     @IBAction func submitRating(sender: UIButton) {
         let gamePlay = PFObject(className:"WorldGameRating")
         gamePlay["username"] = nameText
         gamePlay["location"] =  PFGeoPoint(location:currLocation)
-        gamePlay["game"] = currGame
+        gamePlay["object"] =  lastObject
+        gamePlay["game"] = lastGame
         gamePlay["rating"] = ratingsSlider.value 
         gamePlay.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in

@@ -41,6 +41,8 @@
 		3E5F94C81C60FA7F00C8B9AD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */; };
 		3E5F94CA1C60FA8800C8B9AD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C91C60FA8800C8B9AD /* libz.tbd */; };
 		3E5F94CC1C60FA9000C8B9AD /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */; };
+		3ECF38011C89E6A700FA25FD /* croppedMap.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF38001C89E6A700FA25FD /* croppedMap.jpg */; };
+		3ECF38031C89E99300FA25FD /* croppedMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF38021C89E99300FA25FD /* croppedMap.png */; };
 		3EE6CDC71C5EB4B600B43022 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */; };
 		3EE98C961C758E3000E09095 /* J1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C901C758E2F00E09095 /* J1.m4a */; };
 		3EE98C971C758E3000E09095 /* J2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98C911C758E2F00E09095 /* J2.m4a */; };
@@ -108,6 +110,8 @@
 		3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E5F94C91C60FA8800C8B9AD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		3ECF38001C89E6A700FA25FD /* croppedMap.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = croppedMap.jpg; sourceTree = "<group>"; };
+		3ECF38021C89E99300FA25FD /* croppedMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = croppedMap.png; sourceTree = "<group>"; };
 		3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3EE98C901C758E2F00E09095 /* J1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J1.m4a; sourceTree = "<group>"; };
 		3EE98C911C758E2F00E09095 /* J2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = J2.m4a; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 				1FECB9601C875EE800B71A3F /* audioFiles */,
 				3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */,
 				3E5F94C91C60FA8800C8B9AD /* libz.tbd */,
+				3ECF38021C89E99300FA25FD /* croppedMap.png */,
+				3ECF38001C89E6A700FA25FD /* croppedMap.jpg */,
 				3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */,
 				3E5F94C51C60FA7300C8B9AD /* StoreKit.framework */,
 				3E5F94C31C60FA6D00C8B9AD /* Security.framework */,
@@ -316,7 +322,7 @@
 				TargetAttributes = {
 					3E4311D81C5EB0EC001FFFB0 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 25SY4WU9EN;
+						DevelopmentTeam = W4E2C6X642;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -368,8 +374,10 @@
 				3EE98C9B1C758E3000E09095 /* J6.m4a in Resources */,
 				1F233E421C76233C00E7B0E4 /* S1.m4a in Resources */,
 				3E5443871C7F9F14009F0062 /* goodWork.m4a in Resources */,
+				3ECF38011C89E6A700FA25FD /* croppedMap.jpg in Resources */,
 				3E0E5E451C7674F1005651CE /* beep.wav in Resources */,
 				1F233E3E1C76233C00E7B0E4 /* S5.m4a in Resources */,
+				3ECF38031C89E99300FA25FD /* croppedMap.png in Resources */,
 				3E4311E71C5EB0ED001FFFB0 /* LaunchScreen.storyboard in Resources */,
 				3E0E5E461C7674F1005651CE /* confirm.wav in Resources */,
 				3E4311E41C5EB0ED001FFFB0 /* Assets.xcassets in Resources */,
@@ -500,7 +508,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
@@ -540,7 +548,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
 				SDKROOT = iphoneos;
@@ -563,9 +571,9 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.PGAPAudioGame;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgapAudio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
 			};
 			name = Debug;
 		};
@@ -583,9 +591,9 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shawncaeiro.PGAPAudioGame;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgapAudio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
 			};
 			name = Release;
 		};
