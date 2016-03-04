@@ -27,8 +27,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     @IBOutlet weak var feedbackText: UILabel!
     @IBOutlet weak var statusText: UILabel!
     @IBOutlet weak var scoreText: UILabel!
-    
+
     // Variables
+    var locCalls = 0
     var nameText = "Name"
     var playedGames : [String] = []
     var recentlyPlayed = true
@@ -111,7 +112,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         //print(manager.location?.coordinate)
         currLocation = manager.location
         saveLocation()
-        //gamesNearby()
+        gamesNearby()
         if(!recentlyPlayed){
             print("calling find location")
             findLocation()
@@ -146,9 +147,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     self.statusText.textColor = UIColor.redColor()
                 }
                 else if let foundObjs = foundObjs {
-                    for object in foundObjs {
+                    var objectLabels = Set<String>()
+                    for obj in foundObjs {
+                        objectLabels.insert(obj["label"] as! String)
+                    }
+                    for label in objectLabels {
                         let queryGames = PFQuery(className:"WorldGame")
-                        queryGames.whereKey("object", equalTo: object["label"])
+                        queryGames.whereKey("object", equalTo: label)
                         query.fromLocalDatastore()
                         queryGames.findObjectsInBackgroundWithBlock {
                             (foundGames: [PFObject]?, error: NSError?) -> Void in
@@ -164,10 +169,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                                             return
                                         }
                                     }
-                                    self.statusText.text = "ALERT: No tasks within 500 feet. Keep exploring."
-                                    self.statusText.textColor = UIColor.redColor()
+                                    //self.statusText.text = "ALERT: No tasks within 500 feet. Keep exploring."
+                                    //self.statusText.textColor = UIColor.blueColor()
                                 }
-                            }else{
+                            } else{
                                 print("Error: \(error!) \(error!.userInfo)")
                             }
                         }
@@ -195,9 +200,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                     print("no nearby objects found")
                 }
                 else if let foundObjs = foundObjs {
-                    for object in foundObjs {
+                    var objectLabels = Set<String>()
+                    for obj in foundObjs {
+                        objectLabels.insert(obj["label"] as! String)
+                    }
+                    for object in objectLabels {
                         let queryGames = PFQuery(className:"WorldGame")
-                        queryGames.whereKey("object", equalTo: object["label"])
+                        queryGames.whereKey("object", equalTo: object)
                         queryGames.fromLocalDatastore()
                         queryGames.findObjectsInBackgroundWithBlock {
                             (foundGames: [PFObject]?, error: NSError?) -> Void in
@@ -248,12 +257,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         
     }
     
-    func saveGamePlayData(object:PFObject, game:PFObject) {
-        var gamePlay = PFObject(className:"WorldPlayData")
+    func saveGamePlayData(object:String, game:PFObject) {
+        var gamePlay = PFObject(className:"WorldPlayUserData")
         gamePlay["username"] = nameText
         gamePlay["userLocation"] =  PFGeoPoint(location:currLocation)
-        gamePlay["objectID"] = object.objectId
-        gamePlay["object"] = object["label"]
+        //gamePlay["objectID"] = object.objectId
+        gamePlay["object"] = object
         gamePlay["gameID"] = game.objectId
         gamePlay["game"] = game["gameName"]
         gamePlay.saveInBackgroundWithBlock {
