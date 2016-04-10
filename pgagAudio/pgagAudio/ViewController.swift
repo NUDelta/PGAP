@@ -13,10 +13,10 @@ import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     //Database Names
-    
     let OBJECT_DB = "WorldObject"   //label, location
     let MAPPING_DB = "WorldMapping" //name, affordance
     let GAMES_DB = "WorldTask" //title, task, conclusion, affordance duration, validated
+    let STATEMENTS_DB = "WorldStatement" //name, text
     
     var locationManager: CLLocationManager!
     var currLocation: CLLocation?
@@ -26,9 +26,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         case looking
         case postconclusion
     }
-    var currGameStatus = GameStatus.looking
+    var currGameStatus = GameStatus.preintro
     
     var gamesPlayed:[String] = []
+    
+    
+    
+    
+    
+    func playIntro(introText: String){
+        
+        
+        
+    }
+    
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,9 +68,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         if currGameStatus == .looking {
             let objects = getObjects(currLocation!)
             let affordances = getAffordances(objects)
-            print("about to get a game")
             let game = getGame(affordances, gamesPlayed: gamesPlayed)
-            print("we got a game yo")
             if (game != nil) {
                 playGame(game!)
                 gamesPlayed.append(game!.title)
@@ -68,6 +77,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
+        
+        currGameStatus = GameStatus.playing
         
         let synth = AVSpeechSynthesizer()
         synth.pauseSpeakingAtBoundary(.Word)
@@ -88,9 +99,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         
         // #HACK
         sleep(UInt32(game.duration))
+        
+        let synthC = AVSpeechSynthesizer()
         let conclusion_speech = makeSpeechUtterance(game.conclusion)
-        synth.speakUtterance(conclusion_speech)
-
+        synthC.speakUtterance(conclusion_speech)
+        
+        while synthC.speaking {
+            // Do Nothing
+        }
+        
+        sleep(UInt32(5))
+        currGameStatus = GameStatus.looking
         
     }
     
@@ -121,7 +140,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     
     func getObjects(loc: CLLocation) -> [String] {
-        print("entered objects")
         var objects:[String] = []
         var objects_nearby:[PFObject] = []
         
@@ -137,31 +155,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 }
             }
         } catch {}
-        print("return")
         return objects
     }
     
     func getAffordances(objects: [String]) -> [(affordance: String, obj: String)] {
-        print("1")
+        //print(objects)
         var affordance_objs:[(affordance: String, obj: String)] = []
         var affordance_names:[String] = []
         
         let query = PFQuery(className: MAPPING_DB)
-        query.whereKey("objectName", containedIn: objects)
+        query.whereKey("name", containedIn: objects)
         do {
-            print("2")
             var obj_affordances:[PFObject] = []
             try obj_affordances = query.findObjects()
             // Not necessarily in order of closest affordances!!!!!!!!!
+            //print(obj_affordances)
             for a in obj_affordances {
-                print("3")
                 if !(affordance_names.contains(a["affordance"] as! String)){
                     affordance_objs.append((affordance: a["affordance"] as! String, obj: a["name"] as! String))
                     affordance_names.append(a["affordance"] as! (String))
                 }
             }
         } catch {}
-        print("5")
         return affordance_objs
     }
     
@@ -174,30 +189,100 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             
             let query = PFQuery(className: GAMES_DB)
             query.whereKey("affordance", containedIn: affordance_names)
-            query.whereKey("titles", notContainedIn: gamesPlayed)
+            query.whereKey("title", notContainedIn: gamesPlayed)
             query.whereKey("validated", equalTo: true)
             query.limit = 1
 
             do {
                 var games_possible:[PFObject] = []
                 try games_possible = query.findObjects()
+
                 // Not in order
                     // TODO - How to use gamesPlayed... is it Global or do array references work as intended?
-                let g = games_possible[0]
-                var obj = ""
-                
-                for a in affordances {
-                    if a.affordance == g["affordance"] as! String {
-                        obj = a.obj
+                if(!games_possible.isEmpty){
+                    let g = games_possible[0]
+                    var obj = ""
+                    
+                    for a in affordances {
+                        if a.affordance == g["affordance"] as! String {
+                            obj = a.obj
+                        }
                     }
+                    
+                    return (g["title"] as! String, g["task"] as! String, g["conclusion"] as! String, g["duration"] as! Int, obj)
+                    
                 }
                 
-                return (g["title"] as! String, g["task"] as! String, g["conclusion"] as! String, g["duration"] as! Int, obj)
                 
             } catch {}
             
             return nil
     }
+    
+    
+    
+    
+    //UI objects
+    @IBAction func briefing() {
+        if (currGameStatus == .preintro){
+            let intro : [PFObject]
+            let query = PFQuery(className: STATEMENTS_DB)
+            query.whereKey("name", equalTo: "intro")
+            do{
+                try intro = query.findObjects()
+                let introText = intro[0]["text"] as! String
+                
+                let synth = AVSpeechSynthesizer()
+                let utt = makeSpeechUtterance(introText)
+                synth.speakUtterance(utt)
+                
+                while(synth.speaking){
+                    //do nothing
+                }
+                
+                let musicPlayer = makeAudioPlayer("theme", type: "mp3")
+                musicPlayer.play()
+                
+                while musicPlayer.playing {
+                    // Do Nothing
+                }
+                
+                sleep(UInt32(10))
+                currGameStatus = GameStatus.looking
+                
+            }catch{}
+            
+            
+        }
+    }
+    
+    @IBAction func debrief() {
+        if (currGameStatus == .looking || currGameStatus == .playing  ){
+            
+            currGameStatus = GameStatus.postconclusion
+
+            let concl : [PFObject]
+            let query = PFQuery(className: STATEMENTS_DB)
+            query.whereKey("name", equalTo: "conclusion")
+            do{
+                try concl = query.findObjects()
+                let conclText = concl[0]["text"] as! String
+                
+                let synth = AVSpeechSynthesizer()
+                let utt = makeSpeechUtterance(conclText)
+                synth.speakUtterance(utt)
+                
+                while(synth.speaking){
+                    //do nothing
+                }
+                
+                
+            }catch{}
+        }
+        
+    }
+
+        
     /*
     // MARK: - Navigation
     
