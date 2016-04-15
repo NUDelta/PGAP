@@ -11,8 +11,10 @@ import Parse
 import AVFoundation
 import CoreLocation
 
-class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
+    
     //Database Names
+    let USERINFO_DB = "WorldPlaying"
     let OBJECT_DB = "WorldObject"   //label, location
     let MAPPING_DB = "WorldMapping" //name, affordance
     let GAMES_DB = "WorldTask" //title, task, conclusion, affordance duration, validated
@@ -30,21 +32,42 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     var gamesPlayed:[String] = []
     
-    
-    
-    
-    
-    func playIntro(introText: String){
-        
-        
-        
+    @IBAction func missionBriefingButton() {
+        briefing()
+    }
+    @IBAction func missionDebriefingButton() {
+        debrief()
     }
     
-   
+    @IBOutlet weak var nameTextField: UITextField!
+    var nameText = ""
+    
+    func getNameText() -> String {
+        return nameText
+    }
+    
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if nameTextField.text != nil {
+            nameText = nameTextField.text!
+            print("CHANGED NAMETEXT")
+            
+        }
+        
+        return true
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
+        
+        if(nameTextField != nil ){
+            self.nameTextField.delegate = self;
+
+        }
+        
         
         // Create Location Manage
         locationManager = CLLocationManager();
@@ -57,6 +80,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+       
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        let svc = segue.destinationViewController as! ViewController2
+        svc.toPass = nameText
+        
     }
     
     
@@ -76,7 +106,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
     }
     
+
+    
     func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
+        
+        //str.replaceRange(str.rangeOfString("***")!, with: " MY OBJECT ")
+
         
         currGameStatus = GameStatus.playing
         
@@ -230,7 +265,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             query.whereKey("name", equalTo: "intro")
             do{
                 try intro = query.findObjects()
-                let introText = intro[0]["text"] as! String
+                var introText = intro[0]["text"] as! String
+                
+                if(introText.rangeOfString("***") != nil){
+                    introText.replaceRange(introText.rangeOfString("***")!, with: nameText)
+                    print("REPLACE")
+                    print(nameText)
+                }
+
                 
                 let synth = AVSpeechSynthesizer()
                 let utt = makeSpeechUtterance(introText)
