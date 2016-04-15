@@ -83,11 +83,12 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
        
     }
     
+    /*
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         let svc = segue.destinationViewController as! ViewController2
         svc.toPass = nameText
         
-    }
+    }*/
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
