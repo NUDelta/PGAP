@@ -12,6 +12,7 @@ import AVFoundation
 import CoreLocation
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
 ||||||| merged common ancestors
 class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
@@ -19,6 +20,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
 class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
     
 >>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
+||||||| merged common ancestors
+<<<<<<< Temporary merge branch 1
+class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
+    
+||||||| merged common ancestors
+class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
+=======
+class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
+>>>>>>> Temporary merge branch 2
+=======
+class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
+    
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
     //Database Names
     let USERINFO_DB = "WorldPlaying"
     let OBJECT_DB = "WorldObject"   //label, location
@@ -37,6 +51,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     var currGameStatus = GameStatus.preintro
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     let synth = AVSpeechSynthesizer()
 ||||||| merged common ancestors
     var gamesPlayed:[String] = []
@@ -44,6 +59,10 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     
     
 =======
+||||||| merged common ancestors
+<<<<<<< Temporary merge branch 1
+=======
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
     var gamesPlayed:[String] = []
     
     @IBAction func missionBriefingButton() {
@@ -59,13 +78,22 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     func getNameText() -> String {
         return nameText
     }
+<<<<<<< HEAD
 >>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
-    
-    var player : AVAudioPlayer! = nil
-
-
+||||||| merged common ancestors
+||||||| merged common ancestors
     var gamesPlayed:[String] = []
     
+    
+    
+=======
+    let synth = AVSpeechSynthesizer()
+>>>>>>> Temporary merge branch 2
+=======
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
+    
+    
+<<<<<<< HEAD
 <<<<<<< HEAD
     var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String)! = nil
 ||||||| merged common ancestors
@@ -75,6 +103,10 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         
     }
 =======
+||||||| merged common ancestors
+<<<<<<< Temporary merge branch 1
+=======
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if nameTextField.text != nil {
@@ -85,14 +117,38 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         
         return true
     }
+<<<<<<< HEAD
 >>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
+||||||| merged common ancestors
+||||||| merged common ancestors
+    func playIntro(introText: String){
+        
+        
+        
+    }
+=======
+    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String)! = nil
+>>>>>>> Temporary merge branch 2
     
+<<<<<<< Temporary merge branch 1
+=======
+    
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
+    
+<<<<<<< HEAD
 <<<<<<< HEAD
 ||||||| merged common ancestors
    
 =======
     
 >>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
+||||||| merged common ancestors
+||||||| merged common ancestors
+   
+=======
+>>>>>>> Temporary merge branch 2
+=======
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -109,9 +165,6 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-        
-        self.synth.pauseSpeakingAtBoundary(.Word)
-        self.synth.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -120,15 +173,16 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
        
     }
     
+    /*
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         let svc = segue.destinationViewController as! ViewController2
         svc.toPass = nameText
         
-    }
+    }*/
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(manager.location?.coordinate)
+        //print(manager.location?.coordinate)
         currLocation = manager.location
         // TODO Save location to DB
         
@@ -137,13 +191,13 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
             let affordances = getAffordances(objects)
             let game = getGame(affordances, gamesPlayed: gamesPlayed)
             if (game != nil) {
-                currGame = game!
-                playGame()
+                playGame(game!)
                 gamesPlayed.append(game!.title)
             }
         }
     }
     
+<<<<<<< HEAD
 <<<<<<< HEAD
     func playGame() {
         print("Game Playing")
@@ -151,6 +205,10 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
         
 =======
+||||||| merged common ancestors
+<<<<<<< Temporary merge branch 1
+=======
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
 
     
     func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
@@ -158,57 +216,53 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         //str.replaceRange(str.rangeOfString("***")!, with: " MY OBJECT ")
 
         
+<<<<<<< HEAD
 >>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
+||||||| merged common ancestors
+||||||| merged common ancestors
+    func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
+        
+=======
+    func playGame() {
+        print("Game Playing")
+>>>>>>> Temporary merge branch 2
+=======
+>>>>>>> 362f2cf6f456c0e857aa712735d52b85b6a1dfc9
         currGameStatus = GameStatus.playing
         
-        player = makeAudioPlayer("beep", type: "wav")
-        player.prepareToPlay()
-        player.delegate = self
-        player.play()
-    }
-    
-    func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
-        switch currGameStatus {
-        case .playing:
-            currGameStatus = GameStatus.looking
-        case .preintro:
-            
-            player = makeAudioPlayer("theme", type: "mp3")
-            player.prepareToPlay()
-            player.delegate = self
-            player.play()
-        case .postconclusion:
-            currGameStatus = GameStatus.preintro
-        default:
-            break
+        let synth = AVSpeechSynthesizer()
+        synth.pauseSpeakingAtBoundary(.Word)
+        
+        let alertPlayer = makeAudioPlayer("beep", type: "wav")
+        alertPlayer.play()
+        
+        while alertPlayer.playing {
+            // Do Nothing
         }
-    }
-    
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully: Bool) {
-        switch currGameStatus {
-        case .playing:
-            let task_speech = makeSpeechUtterance(currGame.task)
-            task_speech.preUtteranceDelay = 1
-            task_speech.postUtteranceDelay = Double(currGame.duration)
-            
-            let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-            conclusion_speech.postUtteranceDelay = 15
-            
-            synth.speakUtterance(task_speech)
-            synth.speakUtterance(conclusion_speech)
-        case .preintro:
-            _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
-        case .postconclusion:
-            break
-        default:
-            break
+        
+        let task_speech = makeSpeechUtterance(game.task)
+        synth.speakUtterance(task_speech)
+        
+        while synth.speaking {
+            // Do Nothing
         }
-    }
-    
-    func beginLooking() {
+        
+        // #HACK
+        sleep(UInt32(game.duration))
+        
+        let synthC = AVSpeechSynthesizer()
+        let conclusion_speech = makeSpeechUtterance(game.conclusion)
+        synthC.speakUtterance(conclusion_speech)
+        
+        while synthC.speaking {
+            // Do Nothing
+        }
+        
+        sleep(UInt32(5))
         currGameStatus = GameStatus.looking
+        
     }
-
+    
     func makeAudioPlayer(file: String, type: String) -> AVAudioPlayer {
         
         //define file path
@@ -276,7 +330,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         return affordance_objs
     }
     
-    func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
+    func getGame(affordances: [(affordance: String, obj: String)], var gamesPlayed: [String])
         -> (title: String, task: String, conclusion: String, duration: Int, obj: String)? {
             var affordance_names:[String] = []
             for a in affordances {
@@ -335,9 +389,27 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
                 }
 
                 
+                let synth = AVSpeechSynthesizer()
                 let utt = makeSpeechUtterance(introText)
                 synth.speakUtterance(utt)
+                
+                while(synth.speaking){
+                    //do nothing
+                }
+                
+                let musicPlayer = makeAudioPlayer("theme", type: "mp3")
+                musicPlayer.play()
+                
+                while musicPlayer.playing {
+                    // Do Nothing
+                }
+                
+                sleep(UInt32(10))
+                currGameStatus = GameStatus.looking
+                
             }catch{}
+            
+            
         }
     }
     
@@ -353,10 +425,18 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
                 try concl = query.findObjects()
                 let conclText = concl[0]["text"] as! String
                 
+                let synth = AVSpeechSynthesizer()
                 let utt = makeSpeechUtterance(conclText)
                 synth.speakUtterance(utt)
+                
+                while(synth.speaking){
+                    //do nothing
+                }
+                
+                
             }catch{}
         }
+        
     }
 
         

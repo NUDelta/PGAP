@@ -42,6 +42,10 @@
 		3E5F94C81C60FA7F00C8B9AD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */; };
 		3E5F94CA1C60FA8800C8B9AD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C91C60FA8800C8B9AD /* libz.tbd */; };
 		3E5F94CC1C60FA9000C8B9AD /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */; };
+		3E862FAD1CC1761000DCA0B8 /* introController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FAC1CC1761000DCA0B8 /* introController.swift */; };
+		3E862FAF1CC1762700DCA0B8 /* initController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FAE1CC1762700DCA0B8 /* initController.swift */; };
+		3E862FB31CC1767300DCA0B8 /* playController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FB21CC1767300DCA0B8 /* playController.swift */; };
+		3E862FB51CC1768100DCA0B8 /* endController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FB41CC1768100DCA0B8 /* endController.swift */; };
 		3ECF38011C89E6A700FA25FD /* croppedMap.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF38001C89E6A700FA25FD /* croppedMap.jpg */; };
 		3ECF38031C89E99300FA25FD /* croppedMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF38021C89E99300FA25FD /* croppedMap.png */; };
 		3EE6CDC71C5EB4B600B43022 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */; };
@@ -112,6 +116,10 @@
 		3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E5F94C91C60FA8800C8B9AD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		3E862FAC1CC1761000DCA0B8 /* introController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introController.swift; sourceTree = "<group>"; };
+		3E862FAE1CC1762700DCA0B8 /* initController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = initController.swift; sourceTree = "<group>"; };
+		3E862FB21CC1767300DCA0B8 /* playController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = playController.swift; sourceTree = "<group>"; };
+		3E862FB41CC1768100DCA0B8 /* endController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = endController.swift; sourceTree = "<group>"; };
 		3ECF38001C89E6A700FA25FD /* croppedMap.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = croppedMap.jpg; sourceTree = "<group>"; };
 		3ECF38021C89E99300FA25FD /* croppedMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = croppedMap.png; sourceTree = "<group>"; };
 		3EE6CDC61C5EB4B600B43022 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -234,7 +242,11 @@
 				3E4311E51C5EB0ED001FFFB0 /* LaunchScreen.storyboard */,
 				3E4311E81C5EB0ED001FFFB0 /* Info.plist */,
 				1F4127FF1CB82CEA00274A74 /* ViewControllerOLD.swift */,
+				3E862FAE1CC1762700DCA0B8 /* initController.swift */,
 				1F4128011CB82CFB00274A74 /* ViewController.swift */,
+				3E862FB21CC1767300DCA0B8 /* playController.swift */,
+				3E862FB41CC1768100DCA0B8 /* endController.swift */,
+				3E862FAC1CC1761000DCA0B8 /* introController.swift */,
 			);
 			path = pgagAudio;
 			sourceTree = "<group>";
@@ -419,9 +431,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F4128001CB82CEA00274A74 /* ViewControllerOLD.swift in Sources */,
+				3E862FB51CC1768100DCA0B8 /* endController.swift in Sources */,
+				3E862FAF1CC1762700DCA0B8 /* initController.swift in Sources */,
 				1F71F4DF1C7BBD42005EC7E8 /* worldObject.swift in Sources */,
+				3E862FAD1CC1761000DCA0B8 /* introController.swift in Sources */,
 				1F4128021CB82CFB00274A74 /* ViewController.swift in Sources */,
 				3E4311DD1C5EB0ED001FFFB0 /* AppDelegate.swift in Sources */,
+				3E862FB31CC1767300DCA0B8 /* playController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
