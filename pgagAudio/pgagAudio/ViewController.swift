@@ -11,8 +11,16 @@ import Parse
 import AVFoundation
 import CoreLocation
 
+<<<<<<< HEAD
 class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
+||||||| merged common ancestors
+class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
+=======
+class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
+    
+>>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
     //Database Names
+    let USERINFO_DB = "WorldPlaying"
     let OBJECT_DB = "WorldObject"   //label, location
     let MAPPING_DB = "WorldMapping" //name, affordance
     let GAMES_DB = "WorldTask" //title, task, conclusion, affordance duration, validated
@@ -28,19 +36,72 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     }
     var currGameStatus = GameStatus.preintro
     
+<<<<<<< HEAD
     let synth = AVSpeechSynthesizer()
+||||||| merged common ancestors
+    var gamesPlayed:[String] = []
+    
+    
+    
+=======
+    var gamesPlayed:[String] = []
+    
+    @IBAction func missionBriefingButton() {
+        briefing()
+    }
+    @IBAction func missionDebriefingButton() {
+        debrief()
+    }
+    
+    @IBOutlet weak var nameTextField: UITextField!
+    var nameText = ""
+    
+    func getNameText() -> String {
+        return nameText
+    }
+>>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
     
     var player : AVAudioPlayer! = nil
 
 
     var gamesPlayed:[String] = []
     
+<<<<<<< HEAD
     var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String)! = nil
+||||||| merged common ancestors
+    func playIntro(introText: String){
+        
+        
+        
+    }
+=======
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if nameTextField.text != nil {
+            nameText = nameTextField.text!
+            print("CHANGED NAMETEXT")
+            
+        }
+        
+        return true
+    }
+>>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
     
+<<<<<<< HEAD
+||||||| merged common ancestors
+   
+=======
+    
+>>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
+        
+        if(nameTextField != nil ){
+            self.nameTextField.delegate = self;
+
+        }
+        
         
         // Create Location Manage
         locationManager = CLLocationManager();
@@ -56,6 +117,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+       
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        let svc = segue.destinationViewController as! ViewController2
+        svc.toPass = nameText
+        
     }
     
     
@@ -76,8 +144,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
     }
     
+<<<<<<< HEAD
     func playGame() {
         print("Game Playing")
+||||||| merged common ancestors
+    func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
+        
+=======
+
+    
+    func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
+        
+        //str.replaceRange(str.rangeOfString("***")!, with: " MY OBJECT ")
+
+        
+>>>>>>> b08241f9729a24866b8212e7e5658d4906ddbc7f
         currGameStatus = GameStatus.playing
         
         player = makeAudioPlayer("beep", type: "wav")
@@ -245,7 +326,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             query.whereKey("name", equalTo: "intro")
             do{
                 try intro = query.findObjects()
-                let introText = intro[0]["text"] as! String
+                var introText = intro[0]["text"] as! String
+                
+                if(introText.rangeOfString("***") != nil){
+                    introText.replaceRange(introText.rangeOfString("***")!, with: nameText)
+                    print("REPLACE")
+                    print(nameText)
+                }
+
                 
                 let utt = makeSpeechUtterance(introText)
                 synth.speakUtterance(utt)
