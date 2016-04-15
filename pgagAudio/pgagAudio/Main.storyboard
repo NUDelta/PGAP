@@ -205,10 +205,10 @@
             </objects>
             <point key="canvasLocation" x="356" y="262"/>
         </scene>
-        <!--View Controller-->
+        <!--Init Controller-->
         <scene sceneID="550-I4-1em">
             <objects>
-                <viewController id="G0Q-iG-Oux" sceneMemberID="viewController">
+                <viewController id="G0Q-iG-Oux" customClass="initController" customModule="pgagAudio" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CCj-qZ-diI"/>
                         <viewControllerLayoutGuide type="bottom" id="iEc-8A-1Ob"/>
@@ -217,8 +217,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mda-Fs-SPO">
-                                <rect key="frame" x="223" y="285" width="156" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mda-Fs-SPO">
+                                <rect key="frame" x="222" y="285" width="156" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
@@ -254,15 +254,18 @@
                             <constraint firstItem="mda-Fs-SPO" firstAttribute="top" secondItem="mE2-n4-yMn" secondAttribute="bottom" constant="47" id="zZF-XE-z1g"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="nameField" destination="mda-Fs-SPO" id="Hkl-Ip-qUq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UVp-r1-GX0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="318" y="943"/>
         </scene>
-        <!--View Controller-->
+        <!--Intro Controller-->
         <scene sceneID="VVn-TU-wr2">
             <objects>
-                <viewController id="0d3-h7-btS" sceneMemberID="viewController">
+                <viewController id="0d3-h7-btS" customClass="introController" customModule="pgagAudio" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PPS-OK-qoC"/>
                         <viewControllerLayoutGuide type="bottom" id="g5j-WB-2Lf"/>
@@ -296,10 +299,10 @@
             </objects>
             <point key="canvasLocation" x="1016" y="943"/>
         </scene>
-        <!--View Controller-->
+        <!--End Controller-->
         <scene sceneID="xvR-A5-Flq">
             <objects>
-                <viewController id="0Gs-Cm-hFN" sceneMemberID="viewController">
+                <viewController id="0Gs-Cm-hFN" customClass="endController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kd1-He-aJ6"/>
                         <viewControllerLayoutGuide type="bottom" id="1Yb-7b-wcW"/>
@@ -327,10 +330,10 @@
             </objects>
             <point key="canvasLocation" x="318" y="1623"/>
         </scene>
-        <!--View Controller-->
+        <!--Play Controller-->
         <scene sceneID="gFU-0T-DS8">
             <objects>
-                <viewController id="gc1-Cp-Njm" sceneMemberID="viewController">
+                <viewController id="gc1-Cp-Njm" customClass="playController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fvS-3p-h1J"/>
                         <viewControllerLayoutGuide type="bottom" id="nfp-dP-6D2"/>

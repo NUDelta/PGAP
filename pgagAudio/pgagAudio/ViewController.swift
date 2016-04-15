@@ -11,6 +11,8 @@ import Parse
 import AVFoundation
 import CoreLocation
 
+
+
 class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
     //Database Names
     let OBJECT_DB = "WorldObject"   //label, location

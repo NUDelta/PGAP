@@ -1,9 +1,25 @@
-//
-//  introController.swift
-//  pgagAudio
-//
-//  Created by Jennie Werner on 4/15/16.
-//  Copyright © 2016 Jennie Werner. All rights reserved.
-//
+import UIKit
+import Parse
+import AVFoundation
+import CoreLocation
 
-import Foundation
+class introController: UIViewController, UITextFieldDelegate {
+    
+    
+    var userName : String = ""
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    
+}
