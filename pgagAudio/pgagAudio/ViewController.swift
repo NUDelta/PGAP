@@ -11,10 +11,8 @@ import Parse
 import AVFoundation
 import CoreLocation
 
-class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
-    
+class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
     //Database Names
-    let USERINFO_DB = "WorldPlaying"
     let OBJECT_DB = "WorldObject"   //label, location
     let MAPPING_DB = "WorldMapping" //name, affordance
     let GAMES_DB = "WorldTask" //title, task, conclusion, affordance duration, validated
@@ -30,44 +28,19 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     }
     var currGameStatus = GameStatus.preintro
     
+    let synth = AVSpeechSynthesizer()
+    
+    var player : AVAudioPlayer! = nil
+    
+    
     var gamesPlayed:[String] = []
     
-    @IBAction func missionBriefingButton() {
-        briefing()
-    }
-    @IBAction func missionDebriefingButton() {
-        debrief()
-    }
-    
-    @IBOutlet weak var nameTextField: UITextField!
-    var nameText = ""
-    
-    func getNameText() -> String {
-        return nameText
-    }
-    
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        if nameTextField.text != nil {
-            nameText = nameTextField.text!
-            print("CHANGED NAMETEXT")
-            
-        }
-        
-        return true
-    }
-    
+    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String)! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
-        
-        if(nameTextField != nil ){
-            self.nameTextField.delegate = self;
-
-        }
-        
         
         // Create Location Manage
         locationManager = CLLocationManager();
@@ -75,24 +48,19 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
+        
+        self.synth.pauseSpeakingAtBoundary(.Word)
+        self.synth.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-       
     }
-    
-    /*
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        let svc = segue.destinationViewController as! ViewController2
-        svc.toPass = nameText
-        
-    }*/
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //print(manager.location?.coordinate)
+        print(manager.location?.coordinate)
         currLocation = manager.location
         // TODO Save location to DB
         
@@ -101,52 +69,63 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
             let affordances = getAffordances(objects)
             let game = getGame(affordances, gamesPlayed: gamesPlayed)
             if (game != nil) {
-                playGame(game!)
+                currGame = game!
+                playGame()
                 gamesPlayed.append(game!.title)
             }
         }
     }
     
-
-    
-    func playGame(game: (title: String, task: String, conclusion: String, duration: Int, obj: String)) {
-        
-        //str.replaceRange(str.rangeOfString("***")!, with: " MY OBJECT ")
-
-        
+    func playGame() {
+        print("Game Playing")
         currGameStatus = GameStatus.playing
         
-        let synth = AVSpeechSynthesizer()
-        synth.pauseSpeakingAtBoundary(.Word)
-        
-        let alertPlayer = makeAudioPlayer("beep", type: "wav")
-        alertPlayer.play()
-        
-        while alertPlayer.playing {
-            // Do Nothing
+        player = makeAudioPlayer("beep", type: "wav")
+        player.prepareToPlay()
+        player.delegate = self
+        player.play()
+    }
+    
+    func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
+        switch currGameStatus {
+        case .playing:
+            currGameStatus = GameStatus.looking
+        case .preintro:
+            
+            player = makeAudioPlayer("theme", type: "mp3")
+            player.prepareToPlay()
+            player.delegate = self
+            player.play()
+        case .postconclusion:
+            currGameStatus = GameStatus.preintro
+        default:
+            break
         }
-        
-        let task_speech = makeSpeechUtterance(game.task)
-        synth.speakUtterance(task_speech)
-        
-        while synth.speaking {
-            // Do Nothing
+    }
+    
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully: Bool) {
+        switch currGameStatus {
+        case .playing:
+            let task_speech = makeSpeechUtterance(currGame.task)
+            task_speech.preUtteranceDelay = 1
+            task_speech.postUtteranceDelay = Double(currGame.duration)
+            
+            let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+            conclusion_speech.postUtteranceDelay = 15
+            
+            synth.speakUtterance(task_speech)
+            synth.speakUtterance(conclusion_speech)
+        case .preintro:
+            _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
+        case .postconclusion:
+            break
+        default:
+            break
         }
-        
-        // #HACK
-        sleep(UInt32(game.duration))
-        
-        let synthC = AVSpeechSynthesizer()
-        let conclusion_speech = makeSpeechUtterance(game.conclusion)
-        synthC.speakUtterance(conclusion_speech)
-        
-        while synthC.speaking {
-            // Do Nothing
-        }
-        
-        sleep(UInt32(5))
+    }
+    
+    func beginLooking() {
         currGameStatus = GameStatus.looking
-        
     }
     
     func makeAudioPlayer(file: String, type: String) -> AVAudioPlayer {
@@ -216,7 +195,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         return affordance_objs
     }
     
-    func getGame(affordances: [(affordance: String, obj: String)], var gamesPlayed: [String])
+    func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
         -> (title: String, task: String, conclusion: String, duration: Int, obj: String)? {
             var affordance_names:[String] = []
             for a in affordances {
@@ -228,13 +207,13 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
             query.whereKey("title", notContainedIn: gamesPlayed)
             query.whereKey("validated", equalTo: true)
             query.limit = 1
-
+            
             do {
                 var games_possible:[PFObject] = []
                 try games_possible = query.findObjects()
-
+                
                 // Not in order
-                    // TODO - How to use gamesPlayed... is it Global or do array references work as intended?
+                // TODO - How to use gamesPlayed... is it Global or do array references work as intended?
                 if(!games_possible.isEmpty){
                     let g = games_possible[0]
                     var obj = ""
@@ -266,36 +245,11 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
             query.whereKey("name", equalTo: "intro")
             do{
                 try intro = query.findObjects()
-                var introText = intro[0]["text"] as! String
+                let introText = intro[0]["text"] as! String
                 
-                if(introText.rangeOfString("***") != nil){
-                    introText.replaceRange(introText.rangeOfString("***")!, with: nameText)
-                    print("REPLACE")
-                    print(nameText)
-                }
-
-                
-                let synth = AVSpeechSynthesizer()
                 let utt = makeSpeechUtterance(introText)
                 synth.speakUtterance(utt)
-                
-                while(synth.speaking){
-                    //do nothing
-                }
-                
-                let musicPlayer = makeAudioPlayer("theme", type: "mp3")
-                musicPlayer.play()
-                
-                while musicPlayer.playing {
-                    // Do Nothing
-                }
-                
-                sleep(UInt32(10))
-                currGameStatus = GameStatus.looking
-                
             }catch{}
-            
-            
         }
     }
     
@@ -303,7 +257,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         if (currGameStatus == .looking || currGameStatus == .playing  ){
             
             currGameStatus = GameStatus.postconclusion
-
+            
             let concl : [PFObject]
             let query = PFQuery(className: STATEMENTS_DB)
             query.whereKey("name", equalTo: "conclusion")
@@ -311,21 +265,13 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
                 try concl = query.findObjects()
                 let conclText = concl[0]["text"] as! String
                 
-                let synth = AVSpeechSynthesizer()
                 let utt = makeSpeechUtterance(conclText)
                 synth.speakUtterance(utt)
-                
-                while(synth.speaking){
-                    //do nothing
-                }
-                
-                
             }catch{}
         }
-        
     }
-
-        
+    
+    
     /*
     // MARK: - Navigation
     
