@@ -22,10 +22,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     var locationManager: CLLocationManager!
     var currLocation: CLLocation?
     enum GameStatus {
+        case preintro
         case playing
         case looking
+        case postconclusion
     }
-    var currGameStatus = GameStatus.looking
+    var currGameStatus = GameStatus.preintro
+    
+    var userName : String = ""
+
     
     let synth = AVSpeechSynthesizer()
     
@@ -38,6 +43,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        breifing()
         
         // Do any additional setup after loading the view.
         
@@ -62,7 +68,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
          if currGameStatus == .looking {
             print(manager.location?.coordinate)
             currLocation = manager.location
-            // TODO Save location to DB
+        // TODO Save location to DB
             print(currGameStatus)
         
        
@@ -76,6 +82,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             }
         }
     }
+    
+     func breifing() {
+        print("hi")
+        
+        
+        let intro : [PFObject]
+        let query = PFQuery(className: STATEMENTS_DB)
+        
+        query.whereKey("name", equalTo: "intro")
+        do{
+            try intro = query.findObjects()
+            var introText = intro[0]["text"] as! String
+            introText.replaceRange(introText.rangeOfString("***")!, with: userName )
+            let utt = makeSpeechUtterance(introText)
+            synth.speakUtterance(utt)
+            
+        }catch{}
+    }
+
     
     func playGame() {
         print("Game Playing")
@@ -91,6 +116,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         switch currGameStatus {
         case .playing:
             currGameStatus = GameStatus.looking
+        case .preintro:
+            
+            player = makeAudioPlayer("theme", type: "mp3")
+            player.prepareToPlay()
+            player.delegate = self
+            player.play()
+        case .postconclusion:
+            currGameStatus = GameStatus.preintro
         default:
             break
         }
@@ -108,7 +141,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             
             synth.speakUtterance(task_speech)
             synth.speakUtterance(conclusion_speech)
-
+        case .preintro:
+            _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
+        case .postconclusion:
+            break
         default:
             break
         }
@@ -228,7 +264,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     @IBAction func debrief() {
         if (currGameStatus == .looking || currGameStatus == .playing  ){
-                    
+            
+            currGameStatus = GameStatus.postconclusion
+            
             let concl : [PFObject]
             let query = PFQuery(className: STATEMENTS_DB)
             query.whereKey("name", equalTo: "conclusion")

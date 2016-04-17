@@ -37,7 +37,7 @@ class initController: UIViewController, UITextFieldDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        let svc = segue.destinationViewController as! introController
+        let svc = segue.destinationViewController as! ViewController
         svc.userName = nameText
         
     }
