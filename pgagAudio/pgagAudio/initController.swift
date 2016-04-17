@@ -8,8 +8,6 @@
 
 import UIKit
 import Parse
-import AVFoundation
-import CoreLocation
 
 class initController: UIViewController, UITextFieldDelegate {
     

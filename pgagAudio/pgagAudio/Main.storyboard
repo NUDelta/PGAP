@@ -229,10 +229,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iWq-SI-pPq">
-                                <rect key="frame" x="284" y="508" width="32" height="30"/>
-                                <state key="normal" title="Next"/>
+                                <rect key="frame" x="253" y="508" width="95" height="30"/>
+                                <state key="normal" title="Begin Mission"/>
                                 <connections>
-                                    <segue destination="0d3-h7-btS" kind="show" animates="NO" id="wh1-vP-31L"/>
+                                    <segue destination="gc1-Cp-Njm" kind="show" id="7vm-oH-gEB"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to PGAP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mE2-n4-yMn">
@@ -277,13 +277,13 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H5A-Ew-Ddp">
                                 <rect key="frame" x="284" y="508" width="32" height="30"/>
                                 <state key="normal" title="Next"/>
-                                <connections>
-                                    <segue destination="gc1-Cp-Njm" kind="show" animates="NO" id="0UF-6D-lqd"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="53f-EL-XwW">
                                 <rect key="frame" x="245" y="285" width="110" height="30"/>
                                 <state key="normal" title="Mission Briefing"/>
+                                <connections>
+                                    <action selector="breifing" destination="0d3-h7-btS" eventType="touchUpInside" id="6Gb-DH-EKe"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -297,7 +297,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wa6-8K-XqD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1016" y="943"/>
+            <point key="canvasLocation" x="1275" y="726"/>
         </scene>
         <!--End Controller-->
         <scene sceneID="xvR-A5-Flq">
@@ -328,12 +328,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vcK-9w-opU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="318" y="1623"/>
+            <point key="canvasLocation" x="212" y="1709"/>
         </scene>
-        <!--Play Controller-->
+        <!--View Controller-->
         <scene sceneID="gFU-0T-DS8">
             <objects>
-                <viewController id="gc1-Cp-Njm" customClass="playController" sceneMemberID="viewController">
+                <viewController id="gc1-Cp-Njm" customClass="ViewController" customModule="pgagAudio" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fvS-3p-h1J"/>
                         <viewControllerLayoutGuide type="bottom" id="nfp-dP-6D2"/>
@@ -346,6 +346,7 @@
                                 <rect key="frame" x="236" y="508" width="128" height="30"/>
                                 <state key="normal" title="Mission Debriefing"/>
                                 <connections>
+                                    <action selector="debrief" destination="gc1-Cp-Njm" eventType="touchUpInside" id="d7K-5e-Nhk"/>
                                     <segue destination="0Gs-Cm-hFN" kind="show" animates="NO" id="t6w-Jy-mUc"/>
                                 </connections>
                             </button>
@@ -359,7 +360,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="riT-zY-key" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1019" y="1623"/>
+            <point key="canvasLocation" x="1137" y="1373"/>
         </scene>
     </scenes>
     <resources>

@@ -12,8 +12,7 @@ import AVFoundation
 import CoreLocation
 
 
-
-class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
     //Database Names
     let OBJECT_DB = "WorldObject"   //label, location
     let MAPPING_DB = "WorldMapping" //name, affordance
@@ -23,12 +22,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     var locationManager: CLLocationManager!
     var currLocation: CLLocation?
     enum GameStatus {
-        case preintro
         case playing
         case looking
-        case postconclusion
     }
-    var currGameStatus = GameStatus.preintro
+    var currGameStatus = GameStatus.looking
     
     let synth = AVSpeechSynthesizer()
     
@@ -62,11 +59,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(manager.location?.coordinate)
-        currLocation = manager.location
-        // TODO Save location to DB
+         if currGameStatus == .looking {
+            print(manager.location?.coordinate)
+            currLocation = manager.location
+            // TODO Save location to DB
+            print(currGameStatus)
         
-        if currGameStatus == .looking {
+       
             let objects = getObjects(currLocation!)
             let affordances = getAffordances(objects)
             let game = getGame(affordances, gamesPlayed: gamesPlayed)
@@ -92,14 +91,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         switch currGameStatus {
         case .playing:
             currGameStatus = GameStatus.looking
-        case .preintro:
-            
-            player = makeAudioPlayer("theme", type: "mp3")
-            player.prepareToPlay()
-            player.delegate = self
-            player.play()
-        case .postconclusion:
-            currGameStatus = GameStatus.preintro
         default:
             break
         }
@@ -117,10 +108,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             
             synth.speakUtterance(task_speech)
             synth.speakUtterance(conclusion_speech)
-        case .preintro:
-            _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
-        case .postconclusion:
-            break
+
         default:
             break
         }
@@ -151,7 +139,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     func makeSpeechUtterance(speech: String) -> AVSpeechUtterance {
         let game_speech = AVSpeechUtterance(string: speech)
         game_speech.rate = 0.5
-        game_speech.voice = AVSpeechSynthesisVoice(language: "en-GB")
+        //game_speech.voice = AVSpeechSynthesisVoice(language: "en-GB")
         game_speech.pitchMultiplier = 1.5
         return game_speech
     }
@@ -238,28 +226,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     
     
-    
-    //UI objects
-    @IBAction func briefing() {
-        if (currGameStatus == .preintro){
-            let intro : [PFObject]
-            let query = PFQuery(className: STATEMENTS_DB)
-            query.whereKey("name", equalTo: "intro")
-            do{
-                try intro = query.findObjects()
-                let introText = intro[0]["text"] as! String
-                
-                let utt = makeSpeechUtterance(introText)
-                synth.speakUtterance(utt)
-            }catch{}
-        }
-    }
-    
     @IBAction func debrief() {
         if (currGameStatus == .looking || currGameStatus == .playing  ){
-            
-            currGameStatus = GameStatus.postconclusion
-            
+                    
             let concl : [PFObject]
             let query = PFQuery(className: STATEMENTS_DB)
             query.whereKey("name", equalTo: "conclusion")
@@ -273,6 +242,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         }
     }
     
+      
     
     /*
     // MARK: - Navigation

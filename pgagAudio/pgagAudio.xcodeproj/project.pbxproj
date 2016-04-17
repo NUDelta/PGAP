@@ -43,7 +43,6 @@
 		3E5F94CC1C60FA9000C8B9AD /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */; };
 		3E862FAD1CC1761000DCA0B8 /* introController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FAC1CC1761000DCA0B8 /* introController.swift */; };
 		3E862FAF1CC1762700DCA0B8 /* initController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FAE1CC1762700DCA0B8 /* initController.swift */; };
-		3E862FB31CC1767300DCA0B8 /* playController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FB21CC1767300DCA0B8 /* playController.swift */; };
 		3E862FB51CC1768100DCA0B8 /* endController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E862FB41CC1768100DCA0B8 /* endController.swift */; };
 		3EB790591CC1790C00A71F47 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EB790581CC1790C00A71F47 /* Main.storyboard */; };
 		3ECF38011C89E6A700FA25FD /* croppedMap.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF38001C89E6A700FA25FD /* croppedMap.jpg */; };
@@ -117,7 +116,6 @@
 		3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		3E862FAC1CC1761000DCA0B8 /* introController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introController.swift; sourceTree = "<group>"; };
 		3E862FAE1CC1762700DCA0B8 /* initController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = initController.swift; sourceTree = "<group>"; };
-		3E862FB21CC1767300DCA0B8 /* playController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = playController.swift; sourceTree = "<group>"; };
 		3E862FB41CC1768100DCA0B8 /* endController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = endController.swift; sourceTree = "<group>"; };
 		3EB790581CC1790C00A71F47 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3ECF38001C89E6A700FA25FD /* croppedMap.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = croppedMap.jpg; sourceTree = "<group>"; };
@@ -244,7 +242,6 @@
 				1F4127FF1CB82CEA00274A74 /* ViewControllerOLD.swift */,
 				3E862FAE1CC1762700DCA0B8 /* initController.swift */,
 				1F4128011CB82CFB00274A74 /* ViewController.swift */,
-				3E862FB21CC1767300DCA0B8 /* playController.swift */,
 				3E862FB41CC1768100DCA0B8 /* endController.swift */,
 				3E862FAC1CC1761000DCA0B8 /* introController.swift */,
 			);
@@ -437,7 +434,6 @@
 				3E862FAD1CC1761000DCA0B8 /* introController.swift in Sources */,
 				1F4128021CB82CFB00274A74 /* ViewController.swift in Sources */,
 				3E4311DD1C5EB0ED001FFFB0 /* AppDelegate.swift in Sources */,
-				3E862FB31CC1767300DCA0B8 /* playController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
