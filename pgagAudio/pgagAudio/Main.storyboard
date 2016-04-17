@@ -232,7 +232,7 @@
                                 <rect key="frame" x="253" y="508" width="95" height="30"/>
                                 <state key="normal" title="Begin Mission"/>
                                 <connections>
-                                    <segue destination="gc1-Cp-Njm" kind="show" id="7vm-oH-gEB"/>
+                                    <segue destination="gc1-Cp-Njm" kind="show" animates="NO" id="7vm-oH-gEB"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to PGAP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mE2-n4-yMn">
@@ -297,7 +297,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wa6-8K-XqD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1275" y="726"/>
+            <point key="canvasLocation" x="1235" y="475"/>
         </scene>
         <!--End Controller-->
         <scene sceneID="xvR-A5-Flq">

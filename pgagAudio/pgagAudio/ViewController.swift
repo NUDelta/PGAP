@@ -84,9 +84,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
      func breifing() {
-        print("hi")
-        
-        
         let intro : [PFObject]
         let query = PFQuery(className: STATEMENTS_DB)
         
@@ -115,9 +112,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
         switch currGameStatus {
         case .playing:
-            currGameStatus = GameStatus.looking
-        case .preintro:
+            if(needConcl){
+                let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+                synth.speakUtterance(conclusion_speech)
+                needConcl = false
+            }else{
+                //after conclusion finishes playing
+                needConcl = true
+                _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
+            }
             
+        case .preintro:
             player = makeAudioPlayer("theme", type: "mp3")
             player.prepareToPlay()
             player.delegate = self
@@ -129,18 +134,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
+    var needConcl = true
+    
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully: Bool) {
         switch currGameStatus {
         case .playing:
             let task_speech = makeSpeechUtterance(currGame.task)
             task_speech.preUtteranceDelay = 1
             task_speech.postUtteranceDelay = Double(currGame.duration)
-            
-            let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-            conclusion_speech.postUtteranceDelay = 15
-            
             synth.speakUtterance(task_speech)
-            synth.speakUtterance(conclusion_speech)
         case .preintro:
             _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
         case .postconclusion:
