@@ -282,6 +282,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        let svc = segue.destinationViewController as! endController
+        svc.name = userName
+        
+    }
       
     
     /*

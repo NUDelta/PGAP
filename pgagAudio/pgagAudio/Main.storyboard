@@ -203,7 +203,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="356" y="262"/>
+            <point key="canvasLocation" x="212" y="188"/>
         </scene>
         <!--Init Controller-->
         <scene sceneID="550-I4-1em">
@@ -229,8 +229,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iWq-SI-pPq">
-                                <rect key="frame" x="253" y="508" width="95" height="30"/>
-                                <state key="normal" title="Begin Mission"/>
+                                <rect key="frame" x="245" y="504" width="111" height="34"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                <state key="normal" title="Begin Mission">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="gc1-Cp-Njm" kind="show" animates="NO" id="7vm-oH-gEB"/>
                                 </connections>
@@ -279,8 +283,12 @@
                                 <state key="normal" title="Next"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="53f-EL-XwW">
-                                <rect key="frame" x="245" y="285" width="110" height="30"/>
-                                <state key="normal" title="Mission Briefing"/>
+                                <rect key="frame" x="237" y="283" width="126" height="34"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                <state key="normal" title="Mission Briefing">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="breifing" destination="0d3-h7-btS" eventType="touchUpInside" id="6Gb-DH-EKe"/>
                                 </connections>
@@ -302,7 +310,7 @@
         <!--End Controller-->
         <scene sceneID="xvR-A5-Flq">
             <objects>
-                <viewController id="0Gs-Cm-hFN" customClass="endController" sceneMemberID="viewController">
+                <viewController id="0Gs-Cm-hFN" customClass="endController" customModule="pgagAudio" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kd1-He-aJ6"/>
                         <viewControllerLayoutGuide type="bottom" id="1Yb-7b-wcW"/>
@@ -311,20 +319,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5fy-FG-xUX">
-                                <rect key="frame" x="275" y="508" width="50" height="30"/>
-                                <state key="normal" title="Restart"/>
-                                <connections>
-                                    <segue destination="G0Q-iG-Oux" kind="show" animates="NO" id="qB0-4P-Glj"/>
-                                </connections>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7A-DR-qmA">
+                                <rect key="frame" x="236" y="237" width="128" height="127"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="106"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="points" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ani-ZS-G3K">
+                                <rect key="frame" x="267" y="354" width="67" height="30"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Work!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AV3-YX-dn8">
+                                <rect key="frame" x="219" y="151" width="163" height="37"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="you earned" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7XA-0A-bFM">
+                                <rect key="frame" x="239" y="217" width="123" height="30"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="5fy-FG-xUX" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="RA6-Jx-Y9q"/>
-                            <constraint firstItem="1Yb-7b-wcW" firstAttribute="top" secondItem="5fy-FG-xUX" secondAttribute="bottom" constant="62" id="yVE-HK-Vzg"/>
+                            <constraint firstItem="j7A-DR-qmA" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="2PE-Ze-UxN"/>
+                            <constraint firstItem="7XA-0A-bFM" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="4HA-3V-K5m"/>
+                            <constraint firstItem="j7A-DR-qmA" firstAttribute="top" secondItem="7XA-0A-bFM" secondAttribute="bottom" constant="-10" id="Gfv-qR-dfL"/>
+                            <constraint firstItem="ani-ZS-G3K" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="JSZ-Ui-AtK"/>
+                            <constraint firstItem="ani-ZS-G3K" firstAttribute="top" secondItem="j7A-DR-qmA" secondAttribute="bottom" constant="-10" id="WQe-s0-ae8"/>
+                            <constraint firstItem="AV3-YX-dn8" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="bQK-6W-Jns"/>
+                            <constraint firstItem="7XA-0A-bFM" firstAttribute="top" secondItem="AV3-YX-dn8" secondAttribute="bottom" constant="29" id="cPd-JQ-JYp"/>
+                            <constraint firstItem="j7A-DR-qmA" firstAttribute="centerY" secondItem="bLc-TU-XnU" secondAttribute="centerY" id="un7-IO-mcA"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="goodWorkL" destination="AV3-YX-dn8" id="ELz-aY-aly"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vcK-9w-opU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -343,18 +377,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPM-DW-gGk">
-                                <rect key="frame" x="236" y="508" width="128" height="30"/>
-                                <state key="normal" title="Mission Debriefing"/>
+                                <rect key="frame" x="228" y="504" width="144" height="34"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                <state key="normal" title="Mission Debriefing">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="debrief" destination="gc1-Cp-Njm" eventType="touchUpInside" id="d7K-5e-Nhk"/>
                                     <segue destination="0Gs-Cm-hFN" kind="show" animates="NO" id="t6w-Jy-mUc"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="croppedMap.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="58b-lb-cpk">
+                                <rect key="frame" x="-757" y="20" width="2114" height="464"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="IPM-DW-gGk" firstAttribute="centerX" secondItem="p6A-JW-LtT" secondAttribute="centerX" id="SRj-KU-FMp"/>
                             <constraint firstItem="nfp-dP-6D2" firstAttribute="top" secondItem="IPM-DW-gGk" secondAttribute="bottom" constant="62" id="Xq7-pO-vLo"/>
+                            <constraint firstItem="58b-lb-cpk" firstAttribute="centerX" secondItem="p6A-JW-LtT" secondAttribute="centerX" id="i1h-Ac-6CJ"/>
+                            <constraint firstItem="58b-lb-cpk" firstAttribute="top" secondItem="fvS-3p-h1J" secondAttribute="bottom" id="n3h-rq-POa"/>
+                            <constraint firstItem="IPM-DW-gGk" firstAttribute="top" secondItem="58b-lb-cpk" secondAttribute="bottom" constant="20" id="sR1-Gw-0v8"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -364,6 +408,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="croppedMap.jpg" width="2114" height="2226"/>
         <image name="croppedMap.png" width="2114" height="2474"/>
     </resources>
 </document>
