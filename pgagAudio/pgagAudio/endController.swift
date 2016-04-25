@@ -13,17 +13,20 @@ class endController: UIViewController, UITextFieldDelegate {
     
     let aD = UIApplication.sharedApplication().delegate as! AppDelegate
     var numGamesPlayed : Int!
-
-    var name : String = ""
+    
+    var userName : String = ""
+    @IBOutlet weak var points: UILabel!
     
     @IBOutlet weak var goodWorkL: UILabel!
     
        override func viewDidLoad() {
         super.viewDidLoad()
+        self.userName = aD.userName
         
-        numGamesPlayed = aD.numberGamesPlayed
-        print(numGamesPlayed)
-        goodWorkL.text = "Good work" + name
+        self.numGamesPlayed = aD.numberGamesPlayed
+        points.text = String(self.numGamesPlayed)
+        
+        goodWorkL.text = "Good work " + userName
         self.endMissionButton.hidden = true
         
         if(numGamesPlayed > 4){

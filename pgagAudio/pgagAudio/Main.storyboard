@@ -381,6 +381,7 @@
                     <connections>
                         <outlet property="endMissionButton" destination="ppC-1y-ZbL" id="tTr-HA-AhW"/>
                         <outlet property="goodWorkL" destination="AV3-YX-dn8" id="ELz-aY-aly"/>
+                        <outlet property="points" destination="j7A-DR-qmA" id="JTN-pl-j46"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vcK-9w-opU" userLabel="First Responder" sceneMemberID="firstResponder"/>
