@@ -29,6 +29,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     var currGameStatus = GameStatus.preintro
     
+    let aD = UIApplication.sharedApplication().delegate as! AppDelegate
+    var numGamesPlayed : Int!
+    
     var userName : String = ""
 
     
@@ -44,6 +47,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     override func viewDidLoad() {
         super.viewDidLoad()
         breifing()
+        
+        
+        self.numGamesPlayed = aD.numberGamesPlayed
+        print(numGamesPlayed)
         
         // Do any additional setup after loading the view.
         
@@ -101,6 +108,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func playGame() {
         print("Game Playing")
+        self.numGamesPlayed = numGamesPlayed + 1
         currGameStatus = GameStatus.playing
         
         player = makeAudioPlayer("beep", type: "wav")
