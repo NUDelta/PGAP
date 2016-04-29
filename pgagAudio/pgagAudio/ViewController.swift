@@ -25,6 +25,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case preintro
         case playing
         case looking
+        case snippet
         case postconclusion
     }
     var currGameStatus = GameStatus.preintro
@@ -39,7 +40,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     var gamesPlayed:[String] = []
     
-    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String)! = nil
+    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?)! = nil
+    
+    @IBAction func replayAudio(sender: UIButton) {
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,9 +125,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             }else{
                 //after conclusion finishes playing
                 needConcl = true
-                _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
+                _ = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
+                if ((currGame.snippet) != nil) {
+                    _ = NSTimer.scheduledTimerWithTimeInterval(100, target:self, selector:"playSnippet", userInfo: currGame.snippet, repeats:false)
+                }
             }
-            
+        case .snippet:
+            currGameStatus = GameStatus.looking
         case .preintro:
             player = makeAudioPlayer("theme", type: "mp3")
             player.prepareToPlay()
@@ -154,6 +164,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func beginLooking() {
         currGameStatus = GameStatus.looking
+    }
+    
+    func playSnippet(timer: NSTimer) {
+        if currGameStatus == .looking {
+            currGameStatus = GameStatus.snippet
+            let snippet = timer.userInfo as! String
+            let snippet_speech = makeSpeechUtterance(snippet)
+            snippet_speech.preUtteranceDelay = 5
+            snippet_speech.postUtteranceDelay = 5
+            synth.speakUtterance(snippet_speech)
+        }
     }
     
     func makeAudioPlayer(file: String, type: String) -> AVAudioPlayer {
@@ -224,7 +245,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
-        -> (title: String, task: String, conclusion: String, duration: Int, obj: String)? {
+        -> (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?)? {
             var affordance_names:[String] = []
             for a in affordances {
                 affordance_names.append(a.affordance)
@@ -252,7 +273,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                         }
                     }
                     
-                    return (g["title"] as! String, g["task"] as! String, g["conclusion"] as! String, g["duration"] as! Int, obj)
+                    return (g["title"] as! String, g["task"] as! String, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?)
                     
                 }
                 
