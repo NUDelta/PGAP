@@ -54,6 +54,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     
     override func viewDidLoad() {
+        print("Load the View")
         super.viewDidLoad()
         if( aD.firstLoad! == true){
             breifing()
@@ -131,18 +132,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     func waitForAction(aff: String, duration: Int) {
-        _ = NSTimer.scheduledTimerWithTimeInterval(Double(duration), target: self, selector: Selector("timedOut"), userInfo: nil, repeats: false)
+        let time_out = NSTimer.scheduledTimerWithTimeInterval(Double(duration), target: self, selector: Selector("timedOut"), userInfo: nil, repeats: false)
         
         let affordance = aff.componentsSeparatedByString(" ")[0]
         switch affordance {
         case "standing", "sitting":
-            isStationary()
+            print("Action detection available")
+            isStationary(time_out)
         default:
+            //isStationary(time_out)
             print("No action detection available")
         }
     }
     
     func timedOut() {
+        print("Timed Out")
         self.activityManager.stopActivityUpdates()
         let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
         synth.speakUtterance(conclusion_speech)
@@ -150,7 +154,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         
     }
     
-    func gameSucceeded() {
+    func gameSucceeded(timer:NSTimer) {
+        self.activityManager.stopActivityUpdates()
+        let timer = timer.userInfo as! NSTimer
+        timer.invalidate()
         let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
         synth.speakUtterance(conclusion_speech)
         needConcl = false
@@ -158,7 +165,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     
     
-    func isStationary() {
+    func isStationary(time_out:NSTimer) {
         
         var standingTimer = NSTimer()
         print("IS IT WORKING?")
@@ -168,8 +175,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if(data!.stationary == true){
-                        standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+                        print("Stationary!")
+                        standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded:"), userInfo: time_out, repeats: false)
                     } else {
+                        print("Not Stationary")
                         standingTimer.invalidate()
                     }
                 })
@@ -264,7 +273,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func makeSpeechUtterance(speech: String) -> AVSpeechUtterance {
         let game_speech = AVSpeechUtterance(string: speech)
-        game_speech.rate = 0.52
+//        game_speech.rate = 0.52
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
         game_speech.pitchMultiplier = 1.5
         return game_speech
