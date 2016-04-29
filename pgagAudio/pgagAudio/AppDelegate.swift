@@ -14,7 +14,10 @@ import Bolts
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    var numberGamesPlayed: Int!
+    var userName : String!
+    var firstLoad : Bool!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -28,7 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
 
-        
+        self.numberGamesPlayed = 0
+        self.userName = ""
+       self.firstLoad = true
         
         return true
     }

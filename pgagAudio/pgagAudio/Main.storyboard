@@ -343,6 +343,24 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndj-Wg-THf">
+                                <rect key="frame" x="283" y="508" width="34" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <segue destination="gc1-Cp-Njm" kind="show" animates="NO" id="Xmc-FC-nKP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ppC-1y-ZbL">
+                                <rect key="frame" x="251" y="449" width="99" height="34"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                <state key="normal" title="End Mission">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="debrief" destination="gc1-Cp-Njm" eventType="touchUpInside" id="iIT-pv-0eP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -350,19 +368,25 @@
                             <constraint firstItem="7XA-0A-bFM" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="4HA-3V-K5m"/>
                             <constraint firstItem="j7A-DR-qmA" firstAttribute="top" secondItem="7XA-0A-bFM" secondAttribute="bottom" constant="-10" id="Gfv-qR-dfL"/>
                             <constraint firstItem="ani-ZS-G3K" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="JSZ-Ui-AtK"/>
+                            <constraint firstItem="ndj-Wg-THf" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="LP0-pw-Ls6"/>
+                            <constraint firstItem="ppC-1y-ZbL" firstAttribute="top" secondItem="j7A-DR-qmA" secondAttribute="bottom" constant="85" id="PMd-xB-B2T"/>
+                            <constraint firstItem="ppC-1y-ZbL" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="QtK-mE-2hm"/>
                             <constraint firstItem="ani-ZS-G3K" firstAttribute="top" secondItem="j7A-DR-qmA" secondAttribute="bottom" constant="-10" id="WQe-s0-ae8"/>
                             <constraint firstItem="AV3-YX-dn8" firstAttribute="centerX" secondItem="bLc-TU-XnU" secondAttribute="centerX" id="bQK-6W-Jns"/>
                             <constraint firstItem="7XA-0A-bFM" firstAttribute="top" secondItem="AV3-YX-dn8" secondAttribute="bottom" constant="29" id="cPd-JQ-JYp"/>
+                            <constraint firstItem="1Yb-7b-wcW" firstAttribute="top" secondItem="ndj-Wg-THf" secondAttribute="bottom" constant="62" id="fx6-UJ-OBH"/>
                             <constraint firstItem="j7A-DR-qmA" firstAttribute="centerY" secondItem="bLc-TU-XnU" secondAttribute="centerY" id="un7-IO-mcA"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="endMissionButton" destination="ppC-1y-ZbL" id="tTr-HA-AhW"/>
                         <outlet property="goodWorkL" destination="AV3-YX-dn8" id="ELz-aY-aly"/>
+                        <outlet property="points" destination="j7A-DR-qmA" id="JTN-pl-j46"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vcK-9w-opU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="212" y="1709"/>
+            <point key="canvasLocation" x="485" y="1784"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="gFU-0T-DS8">
@@ -377,14 +401,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPM-DW-gGk">
-                                <rect key="frame" x="228" y="504" width="144" height="34"/>
+                                <rect key="frame" x="238" y="504" width="125" height="34"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                                <state key="normal" title="Mission Debriefing">
+                                <state key="normal" title="Check Progress">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="debrief" destination="gc1-Cp-Njm" eventType="touchUpInside" id="d7K-5e-Nhk"/>
                                     <segue destination="0Gs-Cm-hFN" kind="show" animates="NO" id="t6w-Jy-mUc"/>
                                 </connections>
                             </button>
@@ -418,4 +441,7 @@
         <image name="croppedMap.jpg" width="2114" height="2226"/>
         <image name="croppedMap.png" width="2114" height="2474"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Xmc-FC-nKP"/>
+    </inferredMetricsTieBreakers>
 </document>

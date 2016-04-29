@@ -30,7 +30,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     var currGameStatus = GameStatus.preintro
     
+    let aD = UIApplication.sharedApplication().delegate as! AppDelegate
+    var numGamesPlayed : Int!
+    
     var userName : String = ""
+    var firstLoad : Bool!
 
     
     let synth = AVSpeechSynthesizer()
@@ -49,7 +53,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        breifing()
+        if( aD.firstLoad! == true){
+            breifing()
+            aD.firstLoad = false
+        }
+        
+        self.userName = aD.userName
+        self.numGamesPlayed = aD.numberGamesPlayed
+        print(numGamesPlayed)
         
         // Do any additional setup after loading the view.
         
@@ -107,6 +118,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func playGame() {
         print("Game Playing")
+        self.numGamesPlayed = numGamesPlayed + 1
+        aD.numberGamesPlayed = self.numGamesPlayed
         currGameStatus = GameStatus.playing
         
         player = makeAudioPlayer("beep", type: "wav")
@@ -273,8 +286,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                         }
                     }
                     
-                    return (g["title"] as! String, g["task"] as! String, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?)
+                    var theGame = g["task"] as! String
+                    var range = theGame.rangeOfString("[OBJECT]")
+
+                    while(range != nil){
+                        theGame.replaceRange(range!, with: obj )
+                        range = theGame.rangeOfString("[OBJECT]")
+
+                    }
                     
+                    print(theGame)
+
+                    return (g["title"] as! String, theGame, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?)
                 }
                 
                 
@@ -303,12 +326,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-        let svc = segue.destinationViewController as! endController
-        svc.name = userName
-        
-    }
-      
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+//        let svc = segue.destinationViewController as! endController
+//        svc.name = userName
+//        
+//    }
+    
     
     /*
     // MARK: - Navigation
