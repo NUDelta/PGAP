@@ -10,6 +10,7 @@ import UIKit
 import Parse
 import AVFoundation
 import CoreLocation
+import CoreMotion
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
@@ -35,16 +36,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     var userName : String = ""
     var firstLoad : Bool!
-
+    
     
     let synth = AVSpeechSynthesizer()
     
     var player : AVAudioPlayer! = nil
     
+    let activityManager = CMMotionActivityManager()
     
     var gamesPlayed:[String] = []
     
-    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?)! = nil
+    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?, affordance: String)! = nil
     
     @IBAction func replayAudio(sender: UIButton) {
         
@@ -82,13 +84,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-         if currGameStatus == .looking {
+        if currGameStatus == .looking {
             print(manager.location?.coordinate)
             currLocation = manager.location
-        // TODO Save location to DB
+            // TODO Save location to DB
             print(currGameStatus)
-        
-       
+            
+            
             let objects = getObjects(currLocation!)
             let affordances = getAffordances(objects)
             let game = getGame(affordances, gamesPlayed: gamesPlayed)
@@ -100,7 +102,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
-     func breifing() {
+    func breifing() {
         let intro : [PFObject]
         let query = PFQuery(className: STATEMENTS_DB)
         
@@ -114,7 +116,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             
         }catch{}
     }
-
+    
     
     func playGame() {
         print("Game Playing")
@@ -128,20 +130,72 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         player.play()
     }
     
+    func waitForAction(aff: String, duration: Int) {
+        _ = NSTimer.scheduledTimerWithTimeInterval(Double(duration), target: self, selector: Selector("timedOut"), userInfo: nil, repeats: false)
+        
+        let affordance = aff.componentsSeparatedByString(" ")[0]
+        switch affordance {
+        case "standing", "sitting":
+            isStationary()
+        default:
+            print("No action detection available")
+        }
+    }
+    
+    func timedOut() {
+        self.activityManager.stopActivityUpdates()
+        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+        synth.speakUtterance(conclusion_speech)
+        needConcl = false
+        
+    }
+    
+    func gameSucceeded() {
+        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+        synth.speakUtterance(conclusion_speech)
+        needConcl = false
+    }
+    
+    
+    
+    func isStationary() {
+        
+        var standingTimer = NSTimer()
+        print("IS IT WORKING?")
+        
+        if(CMMotionActivityManager.isActivityAvailable()){
+            print("WORKING")
+            self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if(data!.stationary == true){
+                        standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+                    } else {
+                        standingTimer.invalidate()
+                    }
+                })
+                
+            })
+        }
+        
+    }
+    
+    
+    
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
         switch currGameStatus {
         case .playing:
             if(needConcl){
-                let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-                synth.speakUtterance(conclusion_speech)
-                needConcl = false
+                waitForAction(currGame.affordance, duration: currGame.duration)
+                //                let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+                //                synth.speakUtterance(conclusion_speech)
+                //                needConcl = false
             }else{
                 //after conclusion finishes playing
                 needConcl = true
                 _ = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
-                if ((currGame.snippet) != nil) {
-                    _ = NSTimer.scheduledTimerWithTimeInterval(100, target:self, selector:"playSnippet", userInfo: currGame.snippet, repeats:false)
-                }
+                //                if ((currGame.snippet) != nil) {
+                //                    _ = NSTimer.scheduledTimerWithTimeInterval(100, target:self, selector:"playSnippet", userInfo: currGame.snippet, repeats:false)
+                //                }
             }
         case .snippet:
             currGameStatus = GameStatus.looking
@@ -164,7 +218,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case .playing:
             let task_speech = makeSpeechUtterance(currGame.task)
             task_speech.preUtteranceDelay = 1
-            task_speech.postUtteranceDelay = Double(currGame.duration)
+            //task_speech.postUtteranceDelay = Double(currGame.duration)
             synth.speakUtterance(task_speech)
         case .preintro:
             _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
@@ -210,8 +264,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func makeSpeechUtterance(speech: String) -> AVSpeechUtterance {
         let game_speech = AVSpeechUtterance(string: speech)
-        game_speech.rate = 0.5
-        //game_speech.voice = AVSpeechSynthesisVoice(language: "en-GB")
+        game_speech.rate = 0.52
+        game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
         game_speech.pitchMultiplier = 1.5
         return game_speech
     }
@@ -258,7 +312,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
-        -> (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?)? {
+        -> (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?, affordance: String)? {
             var affordance_names:[String] = []
             for a in affordances {
                 affordance_names.append(a.affordance)
@@ -288,16 +342,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     
                     var theGame = g["task"] as! String
                     var range = theGame.rangeOfString("[OBJECT]")
-
+                    
                     while(range != nil){
                         theGame.replaceRange(range!, with: obj )
                         range = theGame.rangeOfString("[OBJECT]")
-
+                        
                     }
                     
                     print(theGame)
-
-                    return (g["title"] as! String, theGame, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?)
+                    
+                    return (g["title"] as! String, theGame, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String)
                 }
                 
                 
@@ -326,11 +380,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
-//        let svc = segue.destinationViewController as! endController
-//        svc.name = userName
-//        
-//    }
+    //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+    //        let svc = segue.destinationViewController as! endController
+    //        svc.name = userName
+    //
+    //    }
     
     
     /*
