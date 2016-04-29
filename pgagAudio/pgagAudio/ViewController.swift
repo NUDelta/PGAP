@@ -138,7 +138,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case "standing", "sitting":
             isStationary()
         default:
-            print("No action detection available")
+            isStationary()
+
+            //print("No action detection available")
         }
     }
     
@@ -157,9 +159,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     
+    @IBOutlet weak var testLabel: UILabel!
     
     func isStationary() {
-        
+        self.testLabel.text = "ready"
+
         var standingTimer = NSTimer()
         print("IS IT WORKING?")
         
@@ -168,9 +172,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if(data!.stationary == true){
+                        self.testLabel.text = "YES!"
                         standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
                     } else {
                         standingTimer.invalidate()
+                        self.testLabel.text = "NO!"
+
                     }
                 })
                 

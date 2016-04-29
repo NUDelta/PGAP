@@ -29,7 +29,7 @@ class endController: UIViewController, UITextFieldDelegate {
         goodWorkL.text = "Good work " + userName
         self.endMissionButton.hidden = true
         
-        if(numGamesPlayed > 4){
+        if(numGamesPlayed > 2){
             self.endMissionButton.hidden = false
 
         }
