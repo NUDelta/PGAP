@@ -55,6 +55,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var altimeter = CMAltimeter()
+        if(CMAltimeter.isRelativeAltitudeAvailable()){
+            print("WE CAN JUMP YAYA FOR TIGGER")
+        }
+        
+        
+        
         if( aD.firstLoad! == true){
             breifing()
             aD.firstLoad = false
@@ -136,9 +144,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         let affordance = aff.componentsSeparatedByString(" ")[0]
         switch affordance {
         case "standing", "sitting":
-            isStationary()
+            //isStationary()
+            isJumping()
         default:
-            isStationary()
+            //isStationary()
+            isJumping()
 
             //print("No action detection available")
         }
@@ -185,6 +195,54 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
         
     }
+    
+    
+    
+    var altimeter = CMAltimeter()
+    
+    func isJumping() {
+        print("checking for a jump")
+        let manager = CMMotionManager()
+        
+        if manager.accelerometerAvailable {
+            print("check now")
+            manager.accelerometerUpdateInterval = 0.01
+            manager.startAccelerometerUpdatesToQueue(NSOperationQueue.mainQueue()) {
+                [weak self] (data: CMAccelerometerData?, error: NSError?) in
+                if let acceleration = data?.acceleration {
+                    print("THE ACCELERATION IS")
+                    print(acceleration.y)
+                    print(acceleration.z)
+
+                }
+            }
+        }
+        print("cannot check boo")
+
+    }
+    
+        
+//        if(CMAltimeter.isRelativeAltitudeAvailable()){
+//           self.altimeter.startRelativeAltitudeUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (altitudeData:CMAltitudeData?, error:NSError?) in
+//                    
+//                    if (error != nil) {
+//                        
+//                        // If there's an error, stop updating and alert the user
+//                        
+//                        self.altimeter.stopRelativeAltitudeUpdates()
+//                        print("error")
+//                        
+//                    } else {
+//                        
+//                        let altitude = altitudeData!.relativeAltitude.floatValue    // Relative altitude in meters
+//                        print("WORKING")
+//                        print(altitude)
+//                    }
+//                    
+//                })
+//        }
+//        print("not data avalible")
+//    }
     
     
     
@@ -271,7 +329,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func makeSpeechUtterance(speech: String) -> AVSpeechUtterance {
         let game_speech = AVSpeechUtterance(string: speech)
-        game_speech.rate = 0.52
+        //game_speech.rate = 0.52
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
         game_speech.pitchMultiplier = 1.5
         return game_speech

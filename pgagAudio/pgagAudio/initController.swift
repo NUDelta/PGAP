@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreMotion
 import Parse
 
 class initController: UIViewController, UITextFieldDelegate {
@@ -32,15 +33,46 @@ class initController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
+                super.viewDidLoad()
         self.nameField.delegate = self
         self.userName = ""
-        
+        isJumping()
         // Do any additional setup after loading the view.
         
     }
     
+    func isJumping() {
+        var motionManager: CMMotionManager!
+        
+        motionManager = CMMotionManager()
+        //manager.accelerometerUpdateInterval = 0.01
+
+        motionManager.startAccelerometerUpdates()
+        while true{
+            
+            if let accelerometerData = motionManager.accelerometerData {
+                let x = accelerometerData.acceleration.z
+                let y = accelerometerData.acceleration.y
+                let z = accelerometerData.acceleration.z
+                
+                let threshold = 0.6
+                
+                if(x > threshold || y > threshold || z > threshold){
+                    print("woah")
+                    print(x)
+                    print(y)
+                    print(z)
+            
+                }else{
+                    print("chill")
+                }
+                
+            }
+        }
+    }
 
     
     override func didReceiveMemoryWarning() {
