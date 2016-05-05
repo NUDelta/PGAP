@@ -22,6 +22,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     var locationManager: CLLocationManager!
     var currLocation: CLLocation?
+    
     enum GameStatus {
         case preintro
         case playing
@@ -29,8 +30,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case snippet
         case postconclusion
     }
-    var currGameStatus = GameStatus.preintro
     
+    var currGameStatus = GameStatus.preintro
+    var needConcl = true
+
     let aD = UIApplication.sharedApplication().delegate as! AppDelegate
     var numGamesPlayed : Int!
     
@@ -39,22 +42,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     
     let synth = AVSpeechSynthesizer()
-    
     var player : AVAudioPlayer! = nil
     
-    let activityManager = CMMotionActivityManager()
+    var activityManager: CMMotionActivityManager!
+    var motionManager: CMMotionManager!
+    var recorder: AVAudioRecorder!
+    var lowPassResults: Double = 0.0
+
     
     var gamesPlayed:[String] = []
+    var snippetQ: [String] = []
     
     var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?, affordance: String)! = nil
     
+    // Timers
+    var time_out_timer = NSTimer()
+    var voice_timer = NSTimer()
+    var jump_timer = NSTimer()
+    
     @IBAction func replayAudio(sender: UIButton) {
-        
     }
     
-    
     override func viewDidLoad() {
-        print("Load the View")
         super.viewDidLoad()
         if( aD.firstLoad! == true){
             breifing()
@@ -76,6 +85,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         
         self.synth.pauseSpeakingAtBoundary(.Word)
         self.synth.delegate = self
+        
+        createAudioRecorder()
+        motionManager = CMMotionManager()
+        activityManager = CMMotionActivityManager()
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -83,6 +97,115 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         // Dispose of any resources that can be recreated.
     }
     
+    /*****************************
+     // Action Checker Logic
+     ******************************/
+    
+    func waitForAction(aff: String, duration: Int) {
+        time_out_timer = NSTimer.scheduledTimerWithTimeInterval(Double(duration), target: self, selector: Selector("timedOut"), userInfo: nil, repeats: false)
+        
+        let affordance = aff.componentsSeparatedByString(" ")[0]
+        switch affordance {
+        case "standing", "sitting":
+            print("Stationary detection available")
+            isStationary()
+        case "jumping":
+            print("Jump action available")
+            isJumping()
+        default:
+            print("No action detection available")
+            isVoice()
+        }
+    }
+    
+    func timedOut() {
+        print("Timed Out")
+        time_out_timer.invalidate()
+        voice_timer.invalidate()
+        jump_timer.invalidate()
+        self.activityManager.stopActivityUpdates()
+        motionManager.stopAccelerometerUpdates()
+        recorder.stop()
+        
+        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+        synth.speakUtterance(conclusion_speech)
+        needConcl = false
+        
+    }
+    
+    func gameSucceeded() {
+        time_out_timer.invalidate()
+        voice_timer.invalidate()
+        jump_timer.invalidate()
+        self.activityManager.stopActivityUpdates()
+        motionManager.stopAccelerometerUpdates()
+        recorder.stop()
+        
+        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+        synth.speakUtterance(conclusion_speech)
+        needConcl = false
+    }
+    
+    /*****************************
+     // Action Checkers
+     ******************************/
+    
+    func isVoice() {
+        
+        recorder.prepareToRecord()
+        recorder.meteringEnabled = true
+        
+        recorder.record()
+        voice_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("voiceTimerCallback"), userInfo: nil, repeats: true)
+    }
+    
+    func voiceTimerCallback() {
+        recorder.updateMeters()
+        if (recorder.averagePowerForChannel(0) > -10) {
+            gameSucceeded()
+        }
+    }
+    
+    func isJumping() {
+        print("checking for a jump")
+        motionManager.startAccelerometerUpdates()
+        jump_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("jumpTimerCallback"), userInfo: nil, repeats: true)
+    }
+    
+    func jumpTimerCallback() {
+        if let accelerometerData = motionManager.accelerometerData {
+            if (accelerometerData.acceleration.x > 1) || (accelerometerData.acceleration.y > 1) || (accelerometerData.acceleration.z > 1) {
+                gameSucceeded()
+            }
+        }
+    }
+
+    func isStationary() {
+        
+        var standingTimer = NSTimer()
+        print("IS IT WORKING?")
+        
+        if(CMMotionActivityManager.isActivityAvailable()){
+            print("WORKING")
+            self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if(data!.stationary == true){
+                        print("Stationary!")
+                        standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+                    } else {
+                        print("Not Stationary")
+                        standingTimer.invalidate()
+                    }
+                })
+                
+            })
+        }
+    }
+    
+
+    /*****************************
+     // Delegates
+     ******************************/
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if currGameStatus == .looking {
@@ -98,113 +221,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             if (game != nil) {
                 currGame = game!
                 playGame()
+                if (game!.snippet != nil) {
+                    snippetQ.append(game!.snippet!)
+                }
                 gamesPlayed.append(game!.title)
             }
         }
     }
     
-    func breifing() {
-        let intro : [PFObject]
-        let query = PFQuery(className: STATEMENTS_DB)
-        
-        query.whereKey("name", equalTo: "intro")
-        do{
-            try intro = query.findObjects()
-            var introText = intro[0]["text"] as! String
-            introText.replaceRange(introText.rangeOfString("***")!, with: userName )
-            let utt = makeSpeechUtterance(introText)
-            synth.speakUtterance(utt)
-            
-        }catch{}
-    }
-    
-    
-    func playGame() {
-        print("Game Playing")
-        self.numGamesPlayed = numGamesPlayed + 1
-        aD.numberGamesPlayed = self.numGamesPlayed
-        currGameStatus = GameStatus.playing
-        
-        player = makeAudioPlayer("beep", type: "wav")
-        player.prepareToPlay()
-        player.delegate = self
-        player.play()
-    }
-    
-    func waitForAction(aff: String, duration: Int) {
-        let time_out = NSTimer.scheduledTimerWithTimeInterval(Double(duration), target: self, selector: Selector("timedOut"), userInfo: nil, repeats: false)
-        
-        let affordance = aff.componentsSeparatedByString(" ")[0]
-        switch affordance {
-        case "standing", "sitting":
-            print("Action detection available")
-            isStationary(time_out)
-        default:
-            //isStationary(time_out)
-            print("No action detection available")
-        }
-    }
-    
-    func timedOut() {
-        print("Timed Out")
-        self.activityManager.stopActivityUpdates()
-        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-        synth.speakUtterance(conclusion_speech)
-        needConcl = false
-        
-    }
-    
-    func gameSucceeded(timer:NSTimer) {
-        self.activityManager.stopActivityUpdates()
-        let timer = timer.userInfo as! NSTimer
-        timer.invalidate()
-        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-        synth.speakUtterance(conclusion_speech)
-        needConcl = false
-    }
-    
-    
-    
-    func isStationary(time_out:NSTimer) {
-        
-        var standingTimer = NSTimer()
-        print("IS IT WORKING?")
-        
-        if(CMMotionActivityManager.isActivityAvailable()){
-            print("WORKING")
-            self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if(data!.stationary == true){
-                        print("Stationary!")
-                        standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded:"), userInfo: time_out, repeats: false)
-                    } else {
-                        print("Not Stationary")
-                        standingTimer.invalidate()
-                    }
-                })
-                
-            })
-        }
-        
-    }
-    
-    
-    
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
+        
+        var snippet_timer = NSTimer()
+        
         switch currGameStatus {
         case .playing:
             if(needConcl){
+                snippet_timer.invalidate()
                 waitForAction(currGame.affordance, duration: currGame.duration)
-                //                let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-                //                synth.speakUtterance(conclusion_speech)
-                //                needConcl = false
             }else{
                 //after conclusion finishes playing
                 needConcl = true
+                snippet_timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "playSnippet", userInfo: nil, repeats: false)
                 _ = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
-                //                if ((currGame.snippet) != nil) {
-                //                    _ = NSTimer.scheduledTimerWithTimeInterval(100, target:self, selector:"playSnippet", userInfo: currGame.snippet, repeats:false)
-                //                }
             }
         case .snippet:
             currGameStatus = GameStatus.looking
@@ -220,7 +258,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
-    var needConcl = true
     
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully: Bool) {
         switch currGameStatus {
@@ -238,45 +275,43 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
+
+    /*****************************
+     // Game Queue Logic
+     ******************************/
     func beginLooking() {
         currGameStatus = GameStatus.looking
     }
     
-    func playSnippet(timer: NSTimer) {
-        if currGameStatus == .looking {
+    func playSnippet() {
+        if currGameStatus == .looking && !snippetQ.isEmpty {
             currGameStatus = GameStatus.snippet
-            let snippet = timer.userInfo as! String
+            let snippet = snippetQ.removeFirst()
             let snippet_speech = makeSpeechUtterance(snippet)
             snippet_speech.preUtteranceDelay = 5
-            snippet_speech.postUtteranceDelay = 5
+            snippet_speech.postUtteranceDelay = 2
             synth.speakUtterance(snippet_speech)
         }
     }
     
-    func makeAudioPlayer(file: String, type: String) -> AVAudioPlayer {
-        
-        //define file path
-        let path = NSBundle.mainBundle().pathForResource(file as String, ofType: type as String)
-        let url = NSURL.fileURLWithPath(path!)
-        
-        var audioPlayer:AVAudioPlayer!
-        
-        //create the player with the specific audio file
-        do {
-            try audioPlayer = AVAudioPlayer(contentsOfURL: url)
-        } catch {
-            print("Player not available")
-        }
-        
-        return audioPlayer
-    }
-    
     func makeSpeechUtterance(speech: String) -> AVSpeechUtterance {
         let game_speech = AVSpeechUtterance(string: speech)
-//        game_speech.rate = 0.52
+        //game_speech.rate = 0.52
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
         game_speech.pitchMultiplier = 1.5
         return game_speech
+    }
+    
+    func playGame() {
+        print("Game Playing")
+        self.numGamesPlayed = numGamesPlayed + 1
+        aD.numberGamesPlayed = self.numGamesPlayed
+        currGameStatus = GameStatus.playing
+        
+        player = makeAudioPlayer("beep", type: "wav")
+        player.prepareToPlay()
+        player.delegate = self
+        player.play()
     }
     
     func getObjects(loc: CLLocation) -> [String] {
@@ -357,7 +392,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                         range = theGame.rangeOfString("[OBJECT]")
                         
                     }
-                    
+
                     print(theGame)
                     
                     return (g["title"] as! String, theGame, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String)
@@ -370,6 +405,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     
+    /*****************************
+    // Briefing and Debriefing
+    ******************************/
+    
+    func breifing() {
+        let intro : [PFObject]
+        let query = PFQuery(className: STATEMENTS_DB)
+        
+        query.whereKey("name", equalTo: "intro")
+        do{
+            try intro = query.findObjects()
+            var introText = intro[0]["text"] as! String
+            introText.replaceRange(introText.rangeOfString("***")!, with: userName )
+            let utt = makeSpeechUtterance(introText)
+            synth.speakUtterance(utt)
+            
+        }catch{}
+    }
     
     @IBAction func debrief() {
         if (currGameStatus == .looking || currGameStatus == .playing  ){
@@ -387,6 +440,59 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                 synth.speakUtterance(utt)
             }catch{}
         }
+    }
+    
+    /*****************************
+     // Audio Builders
+     ******************************/
+    
+    func createAudioRecorder() {
+        do {
+            let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try audioSession.setActive(true)
+        }
+        catch {
+        }
+        
+        //set up the URL for the audio file
+        let documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
+        let str =  documents.stringByAppendingPathComponent("recordTest.caf")
+        let url = NSURL.fileURLWithPath(str as String)
+        
+        // make a dictionary to hold the recording settings so we can instantiate our AVAudioRecorder
+        let recordSettings: [String : AnyObject] = [
+            AVSampleRateKey:44100.0,
+            AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
+            AVLinearPCMBitDepthKey:16,
+            AVEncoderAudioQualityKey:AVAudioQuality.Max.rawValue
+        ]
+        
+        //Instantiate an AVAudioRecorder
+        do {
+            try recorder = AVAudioRecorder(URL:url, settings: recordSettings)
+        }
+        catch {
+            
+        }
+    }
+    
+    func makeAudioPlayer(file: String, type: String) -> AVAudioPlayer {
+        
+        //define file path
+        let path = NSBundle.mainBundle().pathForResource(file as String, ofType: type as String)
+        let url = NSURL.fileURLWithPath(path!)
+        
+        var audioPlayer:AVAudioPlayer!
+        
+        //create the player with the specific audio file
+        do {
+            try audioPlayer = AVAudioPlayer(contentsOfURL: url)
+        } catch {
+            print("Player not available")
+        }
+        
+        return audioPlayer
     }
     
     //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
