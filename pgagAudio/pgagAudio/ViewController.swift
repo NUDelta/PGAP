@@ -53,7 +53,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     var gamesPlayed:[String] = []
     var snippetQ: [String] = []
     
-    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?, affordance: String)! = nil
+    var currGame: (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String)! = nil
     
     // Timers
     var time_out_timer = NSTimer()
@@ -127,8 +127,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         motionManager.stopAccelerometerUpdates()
         recorder.stop()
         
-        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-        synth.speakUtterance(conclusion_speech)
+        let failure_speech = makeSpeechUtterance(currGame.failure)
+        synth.speakUtterance(failure_speech)
         needConcl = false
         
     }
@@ -457,7 +457,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
-        -> (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?, affordance: String)? {
+        -> (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String)? {
             var affordance_names:[String] = []
             for a in affordances {
                 affordance_names.append(a.affordance)
@@ -496,7 +496,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
                     print(theGame)
                     
-                    return (g["title"] as! String, theGame, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String)
+                    return (g["title"] as! String, theGame, g["conclusion"] as! String,  g["failure"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String)
                 }
                 
                 
