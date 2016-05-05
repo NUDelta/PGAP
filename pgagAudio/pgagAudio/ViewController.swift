@@ -53,7 +53,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     var gamesPlayed:[String] = []
     var snippetQ: [String] = []
     
-    var currGame: (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?, affordance: String)! = nil
+    var currGame: (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String)! = nil
     
     // Timers
     var time_out_timer = NSTimer()
@@ -112,7 +112,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             isStationary()
         case "jumping":
             print("Jump action available")
-            isJumping()
+            checkForJump()
         default:
             print("No action detection available")
             isVoice()
@@ -128,8 +128,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         motionManager.stopAccelerometerUpdates()
         recorder.stop()
         
-        let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
-        synth.speakUtterance(conclusion_speech)
+        let failure_speech = makeSpeechUtterance(currGame.failure)
+        synth.speakUtterance(failure_speech)
         needConcl = false
         
     }
@@ -137,7 +137,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     func gameSucceeded() {
         time_out_timer.invalidate()
         voice_timer.invalidate()
-        jump_timer.invalidate()
+        //jump_timer.invalidate()
         self.activityManager.stopActivityUpdates()
         motionManager.stopAccelerometerUpdates()
         recorder.stop()
@@ -167,19 +167,120 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
     
-    func isJumping() {
-        print("checking for a jump")
-        motionManager.startAccelerometerUpdates()
-        jump_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("jumpTimerCallback"), userInfo: nil, repeats: true)
+    /*****************************
+     // is Jumping check
+     ******************************/
+
+    
+    let motionMan = CMMotionManager()
+    var timer : NSTimer!
+    var resetTimer : NSTimer!
+    var doneWaiting : NSTimer!
+    
+    var numSpikes : Int = 0
+    var oldX : Double = 0
+    var oldY : Double = 0
+    var oldZ : Double = 0
+    
+    func checkForJump(){
+        
+        if self.motionMan.accelerometerActive {
+            self.stopAccelerometer()
+            return
+        }
+        
+        self.motionMan.startAccelerometerUpdates()
+        
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(self.motionMan.accelerometerUpdateInterval, target: self, selector: Selector("pollAccel"), userInfo: nil, repeats: true)
+        
+        //reset count of spikes every 3 seconds
+        self.resetTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("resetCount"), userInfo: nil, repeats: true)
+        
+        self.doneWaiting = NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: Selector("stopAccelometer"), userInfo: nil, repeats: true)
+        
+        print("done with checkforJump")
     }
     
-    func jumpTimerCallback() {
-        if let accelerometerData = motionManager.accelerometerData {
-            if (accelerometerData.acceleration.x > 1) || (accelerometerData.acceleration.y > 1) || (accelerometerData.acceleration.z > 1) {
-                gameSucceeded()
-            }
-        }
+    
+    func resetCount(){
+        self.numSpikes = 0
+        
     }
+    
+    func pollAccel() {
+        guard let dat = self.motionMan.accelerometerData else {return}
+        self.receiveAccel(dat)
+    }
+    
+    func receiveAccel(dat:CMAccelerometerData){
+        
+        let spiked = didSpike(dat)
+        if(spiked){
+            self.numSpikes++
+        }
+        if(didJump()){
+            print("JUMPED")
+        }
+        
+    }
+    
+    func didJump() -> Bool{
+        if(numSpikes > 15){
+            timer?.invalidate()
+            resetTimer?.invalidate()
+            doneWaiting?.invalidate()
+            gameSucceeded()
+            return true
+        }else{
+            return false
+        }
+        
+    }
+    
+    func didSpike(dat:CMAccelerometerData) -> Bool{
+        let x = dat.acceleration.x
+        let y = dat.acceleration.y
+        let z = dat.acceleration.z
+        
+        var dif  : [Double] = [0, 0, 0]
+        dif[0] = oldX + abs(x)
+        dif[1] = oldY + abs(y)
+        dif[2] = oldZ + abs(z)
+        
+        
+        if(dif[0] + dif[1] + dif[2] > 5){
+            //print("hype " + String(dif[0] + dif[1] + dif[2] ))
+            return true
+            //print(numSpikes)
+        }
+        
+        return false
+        
+    }
+    
+    func stopAccelerometer () {
+        self.timer?.invalidate()
+        self.timer = nil
+        self.motionMan.stopAccelerometerUpdates()
+        print("stop")
+    }
+    
+
+///////////
+    
+//    func isJumping() {
+//        print("checking for a jump")
+//        motionManager.startAccelerometerUpdates()
+//        jump_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("jumpTimerCallback"), userInfo: nil, repeats: true)
+//    }
+//    
+//    func jumpTimerCallback() {
+//        if let accelerometerData = motionManager.accelerometerData {
+//            if (accelerometerData.acceleration.x > 1) || (accelerometerData.acceleration.y > 1) || (accelerometerData.acceleration.z > 1) {
+//                gameSucceeded()
+//            }
+//        }
+//    }
 
     func isStationary() {
         
@@ -358,7 +459,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
-        -> (title: String, task: String, conclusion: String, duration: Int, obj: String, snippet: String?, affordance: String)? {
+        -> (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String)? {
             var affordance_names:[String] = []
             for a in affordances {
                 affordance_names.append(a.affordance)
@@ -397,7 +498,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
                     print(theGame)
                     
-                    return (g["title"] as! String, theGame, g["conclusion"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String)
+                    return (g["title"] as! String, theGame, g["conclusion"] as! String,  g["failure"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String)
                 }
                 
                 
