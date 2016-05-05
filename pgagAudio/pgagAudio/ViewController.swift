@@ -65,13 +65,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.userName = aD.userName
+        self.numGamesPlayed = aD.numberGamesPlayed
+
         if( aD.firstLoad! == true){
             breifing()
             aD.firstLoad = false
         }
         
-        self.userName = aD.userName
-        self.numGamesPlayed = aD.numberGamesPlayed
         print(numGamesPlayed)
         
         // Do any additional setup after loading the view.
@@ -296,7 +297,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func makeSpeechUtterance(speech: String) -> AVSpeechUtterance {
         let game_speech = AVSpeechUtterance(string: speech)
-        //game_speech.rate = 0.52
+        game_speech.rate = 1.1 * AVSpeechUtteranceDefaultSpeechRate
+        print(AVSpeechUtteranceDefaultSpeechRate)
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
         game_speech.pitchMultiplier = 1.5
         return game_speech
@@ -417,6 +419,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         do{
             try intro = query.findObjects()
             var introText = intro[0]["text"] as! String
+            print(userName)
             introText.replaceRange(introText.rangeOfString("***")!, with: userName )
             let utt = makeSpeechUtterance(introText)
             synth.speakUtterance(utt)
