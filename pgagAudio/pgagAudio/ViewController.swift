@@ -14,6 +14,7 @@ import CoreMotion
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
+    
     //Database Names
     let OBJECT_DB = "WorldObject"   //label, location
     let MAPPING_DB = "WorldMapping" //name, affordance
@@ -35,6 +36,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     var needConcl = true
 
     let aD = UIApplication.sharedApplication().delegate as! AppDelegate
+
     var numGamesPlayed : Int!
     
     var userName : String = ""
@@ -163,7 +165,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     func voiceTimerCallback() {
         recorder.updateMeters()
         if (recorder.averagePowerForChannel(0) > -10) {
-            gameSucceeded()
+            time_out_timer.invalidate()
+            voice_timer.invalidate()
+            _ = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
         }
     }
     
@@ -294,7 +298,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     if(data!.stationary == true){
                         print("Stationary!")
                         standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
-                    } else {
+                    } else if (data!.walking == true){
                         print("Not Stationary")
                         standingTimer.invalidate()
                     }
@@ -310,6 +314,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
      ******************************/
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if (aD.endGame == true) {
+            debrief()
+        }
         if currGameStatus == .looking {
             print(manager.location?.coordinate)
             currLocation = manager.location
@@ -529,21 +536,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
     
     @IBAction func debrief() {
-        if (currGameStatus == .looking || currGameStatus == .playing  ){
+        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Word)
+        player.stop()
+        locationManager.stopUpdatingLocation()
+        currGameStatus = GameStatus.postconclusion
+        print("Conclusion")
+        let concl : [PFObject]
+        let query = PFQuery(className: STATEMENTS_DB)
+        query.whereKey("name", equalTo: "conclusion")
+        do{
+            try concl = query.findObjects()
+            let conclText = concl[0]["text"] as! String
             
-            currGameStatus = GameStatus.postconclusion
-            
-            let concl : [PFObject]
-            let query = PFQuery(className: STATEMENTS_DB)
-            query.whereKey("name", equalTo: "conclusion")
-            do{
-                try concl = query.findObjects()
-                let conclText = concl[0]["text"] as! String
-                
-                let utt = makeSpeechUtterance(conclText)
-                synth.speakUtterance(utt)
-            }catch{}
-        }
+            let utt = makeSpeechUtterance(conclText)
+            utt.preUtteranceDelay = 1
+            synth.speakUtterance(utt)
+        }catch{}
     }
     
     /*****************************

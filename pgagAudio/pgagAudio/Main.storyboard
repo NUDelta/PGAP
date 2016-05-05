@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="G0Q-iG-Oux">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="G0Q-iG-Oux">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -239,8 +239,8 @@
                                     <segue destination="gc1-Cp-Njm" kind="show" animates="NO" id="7vm-oH-gEB"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to PGAP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mE2-n4-yMn">
-                                <rect key="frame" x="215" y="214" width="170" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to PGAP V2.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mE2-n4-yMn">
+                                <rect key="frame" x="191" y="214" width="219" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -318,6 +318,7 @@
                                 </state>
                                 <connections>
                                     <action selector="debrief" destination="gc1-Cp-Njm" eventType="touchUpInside" id="iIT-pv-0eP"/>
+                                    <action selector="endGame:" destination="0Gs-Cm-hFN" eventType="touchUpInside" id="IWS-vI-zUM"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -401,6 +402,6 @@
         <image name="croppedMap.png" width="2114" height="2474"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7vm-oH-gEB"/>
+        <segue reference="Xmc-FC-nKP"/>
     </inferredMetricsTieBreakers>
 </document>

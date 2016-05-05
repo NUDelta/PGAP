@@ -22,7 +22,7 @@ class endController: UIViewController, UITextFieldDelegate {
        override func viewDidLoad() {
         super.viewDidLoad()
         self.userName = aD.userName
-        
+
         self.numGamesPlayed = aD.numberGamesPlayed
         points.text = String(self.numGamesPlayed)
         
@@ -33,7 +33,7 @@ class endController: UIViewController, UITextFieldDelegate {
             self.endMissionButton.hidden = false
 
         }
-        
+
         // Do any additional setup after loading the view.
         
     }
@@ -46,7 +46,9 @@ class endController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var endMissionButton: UIButton!
     
-    @IBAction func endMission() {
+    @IBAction func endGame(sender: UIButton) {
+            aD.endGame = true
     }
+
     
 }

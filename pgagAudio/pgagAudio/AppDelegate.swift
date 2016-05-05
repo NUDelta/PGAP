@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var numberGamesPlayed: Int!
     var userName : String!
     var firstLoad : Bool!
+    var endGame: Bool!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -33,7 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.numberGamesPlayed = 0
         self.userName = ""
-       self.firstLoad = true
+        self.firstLoad = true
+        self.endGame = false
         
         return true
     }

@@ -8,7 +8,6 @@
 
 import UIKit
 import Parse
-
 class initController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var nameField: UITextField!
@@ -36,13 +35,10 @@ class initController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.nameField.delegate = self
         self.userName = ""
-        
         // Do any additional setup after loading the view.
         
     }
-    
 
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
