@@ -46,8 +46,30 @@ class endController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var endMissionButton: UIButton!
     
+<<<<<<< Updated upstream
     @IBAction func endGame(sender: UIButton) {
             aD.endGame = true
+=======
+    @IBAction func endMission() {
+        debrief()
+>>>>>>> Stashed changes
+    }
+
+    
+    var VC : ViewController = ViewController()
+    
+    func debrief(){
+        
+        let concl : [PFObject]
+        let query = PFQuery(className: VC.STATEMENTS_DB)
+        query.whereKey("name", equalTo: "conclusion")
+        do{
+            try concl = query.findObjects()
+            let conclText = concl[0]["text"] as! String
+            
+            let utt = VC.makeSpeechUtterance(conclText)
+            VC.synth.speakUtterance(utt)
+        }catch{}
     }
 
     
