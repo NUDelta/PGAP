@@ -453,7 +453,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         let query = PFQuery(className: OBJECT_DB)
         let user_loc = PFGeoPoint(location:loc)
-        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 1) //0.01
+        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 0.01) //0.01
         do {
             try objects_nearby = query.findObjects()
             for obj in objects_nearby {
