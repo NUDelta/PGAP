@@ -46,13 +46,8 @@ class endController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var endMissionButton: UIButton!
     
-<<<<<<< Updated upstream
     @IBAction func endGame(sender: UIButton) {
             aD.endGame = true
-=======
-    @IBAction func endMission() {
-        debrief()
->>>>>>> Stashed changes
     }
 
     

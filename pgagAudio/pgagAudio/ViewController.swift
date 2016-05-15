@@ -107,6 +107,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
      ******************************/
 
     func waitForAction(aff: String, duration: Int) {
+        time_out_timer = NSTimer()
         time_out_timer = NSTimer.scheduledTimerWithTimeInterval(Double(duration), target: self, selector: Selector("timedOut"), userInfo: nil, repeats: false)
 
         let affordance = aff.componentsSeparatedByString(" ")[0]
@@ -114,11 +115,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case "standing", "sitting":
             print("Stationary detection available")
             isStationary()
+            //checkForJump()
         case "jumping":
             print("Jump action available")
             checkForJump()
         default:
             print("No action detection available")
+            //checkForJump()
             isVoice()
         }
     }
@@ -129,26 +132,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         voice_timer.invalidate()
         jump_timer.invalidate()
         self.activityManager.stopActivityUpdates()
-        motionManager.stopAccelerometerUpdates()
+        self.stopAccelerometer()
+
         recorder.stop()
         self.currGame.userAttempt = false
         let failure_speech = makeSpeechUtterance(currGame.failure)
         synth.speakUtterance(failure_speech)
         needConcl = false
+        
+        storeData()
+
 
     }
 
     func gameSucceeded() {
+        print("game Succeeded")
         time_out_timer.invalidate()
         voice_timer.invalidate()
-        //jump_timer.invalidate()
+        jump_timer.invalidate()
         self.activityManager.stopActivityUpdates()
-        motionManager.stopAccelerometerUpdates()
+        self.motionManager.stopAccelerometerUpdates()
         recorder.stop()
         self.currGame.userAttempt = true
         let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
         synth.speakUtterance(conclusion_speech)
         needConcl = false
+        
+        storeData()
+
     }
 
     /*****************************
@@ -179,7 +190,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
 
     let motionMan = CMMotionManager()
-    var timer : NSTimer!
+    var Jtimer : NSTimer!
     var resetTimer : NSTimer!
     var doneWaiting : NSTimer!
 
@@ -197,14 +208,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         self.motionMan.startAccelerometerUpdates()
 
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(self.motionMan.accelerometerUpdateInterval, target: self, selector: Selector("pollAccel"), userInfo: nil, repeats: true)
+        self.Jtimer = NSTimer.scheduledTimerWithTimeInterval(self.motionMan.accelerometerUpdateInterval, target: self, selector: Selector("pollAccel"), userInfo: nil, repeats: true)
 
         //reset count of spikes every 3 seconds
         self.resetTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("resetCount"), userInfo: nil, repeats: true)
 
-        self.doneWaiting = NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: Selector("stopAccelometer"), userInfo: nil, repeats: true)
+        //self.doneWaiting = NSTimer.scheduledTimerWithTimeInterval(20, target: self, selector: Selector("stopAccelometer"), userInfo: nil, repeats: true)
 
-        print("done with checkforJump")
     }
 
 
@@ -232,7 +242,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     func didJump() -> Bool{
         if(numSpikes > 15){
-            timer?.invalidate()
+            self.Jtimer?.invalidate()
             resetTimer?.invalidate()
             doneWaiting?.invalidate()
             gameSucceeded()
@@ -265,10 +275,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
 
     func stopAccelerometer () {
-        self.timer?.invalidate()
-        self.timer = nil
+        self.Jtimer?.invalidate()
+        self.Jtimer = nil
         self.motionMan.stopAccelerometerUpdates()
-        print("stop")
     }
 
 
@@ -346,6 +355,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         switch currGameStatus {
         case .playing:
+            print("playing")
             if(needConcl){
                 snippet_timer.invalidate()
                 waitForAction(currGame.affordance, duration: currGame.duration)
@@ -362,6 +372,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             player.prepareToPlay()
             player.delegate = self
             player.play()
+            print("preintro")
         case .postconclusion:
             currGameStatus = GameStatus.preintro
         default:
@@ -414,7 +425,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case (9, _, _):
             game_speech.rate = 0.52
         default:
-            game_speech.rate = 0.25
+            game_speech.rate = 0.3
         }
         
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
@@ -432,7 +443,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         player.prepareToPlay()
         player.delegate = self
         player.play()
-        storeData()
 
     }
 
@@ -522,7 +532,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     print(theGame)
 
 
-                    return (g["title"] as! String, theGame, g["conclusion"] as! String,  g["failure"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String, nil)
+                    return (g["title"] as! String, theGame, g["conclusion"] as! String,  g["failure"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String, false)
                 }
 
 
@@ -636,6 +646,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         userPlayData["game_played"] = self.currGame.title
         userPlayData["object_played_on"] = self.currGame.obj
         userPlayData["location"] = PFGeoPoint(location:currLocation)
+        userPlayData["succeded"] = self.currGame.userAttempt
+        
+        userPlayData.saveInBackgroundWithBlock {
+            (success: Bool, error: NSError?) -> Void in
+            if (success) {
+            } else {
+            }
+        }
+
 
     }
 
