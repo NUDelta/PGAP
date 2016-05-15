@@ -344,7 +344,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             }else{
                 //after conclusion finishes playing
                 needConcl = true
-                snippet_timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "playSnippet", userInfo: nil, repeats: false)
+                if (!snippet_timer.valid){
+                    snippet_timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "playSnippet", userInfo: nil, repeats: false)
+                }
                 _ = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
             }
         case .snippet:
@@ -451,9 +453,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     }
 
-    func getAffordances(objects: [String]) -> [(affordance: String, obj: String)] {
+    func getAffordances(objects: [String]) -> [(affordance: String, obj: String, objName: String?)] {
         //print(objects)
-        var affordance_objs:[(affordance: String, obj: String)] = []
+        var affordance_objs:[(affordance: String, obj: String, objName: String?)] = []
         var affordance_names:[String] = []
 
         let query = PFQuery(className: MAPPING_DB)
@@ -465,7 +467,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             //print(obj_affordances)
             for a in obj_affordances {
                 if !(affordance_names.contains(a["affordance"] as! String)){
-                    affordance_objs.append((affordance: a["affordance"] as! String, obj: a["name"] as! String))
+                    affordance_objs.append((affordance: a["affordance"] as! String, obj: a["name"] as! String, objName: a["audioName"] as! String?))
                     affordance_names.append(a["affordance"] as! (String))
                 }
             }
@@ -473,7 +475,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         return affordance_objs
     }
 
-    func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
+    func getGame(affordances: [(affordance: String, obj: String, objName: String?)], gamesPlayed: [String])
         -> (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, userAttempt: Bool?)? {
             var affordance_names:[String] = []
             for a in affordances {
@@ -495,10 +497,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                 if(!games_possible.isEmpty){
                     let g = games_possible[0]
                     var obj = ""
+                    var objName = ""
 
                     for a in affordances {
                         if a.affordance == g["affordance"] as! String {
                             obj = a.obj
+                            if a.objName != nil {
+                                objName = a.objName!
+                            }
+                            else {
+                                objName = obj
+                            }
                         }
                     }
 
@@ -506,7 +515,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     var range = theGame.rangeOfString("[OBJECT]")
 
                     while(range != nil){
-                        theGame.replaceRange(range!, with: obj )
+                        theGame.replaceRange(range!, with: objName )
                         range = theGame.rangeOfString("[OBJECT]")
 
                     }
