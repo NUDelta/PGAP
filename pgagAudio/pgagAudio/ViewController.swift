@@ -113,17 +113,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         switch affordance {
         case "standing", "sitting":
             print("Stationary detection available")
-            //isStationary()
-            checkForJump()
+            isStationary()
+            //checkForJump()
         case "jumping":
             print("Jump action available")
             checkForJump()
         default:
             print("No action detection available")
-            checkForJump()
-            isVoice()
+            voiceInstructions = true
+            
+            let instructions = makeSpeechUtterance("Once you've completed the task, say Roger that into your mic to confirm")
+            synth.speakUtterance(instructions)
+
+            //checkForJump()
+            
         }
     }
+    
+    var voiceInstructions : Bool = false
 
     func timedOut() {
         print("Timed Out")
@@ -155,7 +162,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         
         self.Jtimer.invalidate()
         self.motionMan.stopAccelerometerUpdates()
-
+        print("timers ok")
 
         self.activityManager.stopActivityUpdates()
 
@@ -198,9 +205,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
 
     let motionMan = CMMotionManager()
-    var Jtimer : NSTimer!
-    var resetTimer : NSTimer!
-    var doneWaiting : NSTimer!
+    var Jtimer = NSTimer()
+    var resetTimer = NSTimer()
 
     var numSpikes : Int = 0
     var oldX : Double = 0
@@ -346,7 +352,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         switch currGameStatus {
         case .playing:
             print("playing")
-            if(needConcl){
+            if(voiceInstructions){
+                isVoice()
+                voiceInstructions = false
+            }else if(needConcl){
                 snippet_timer.invalidate()
                 waitForAction(currGame.affordance, duration: currGame.duration)
             }else{
