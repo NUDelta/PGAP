@@ -22,7 +22,7 @@ class endController: UIViewController, UITextFieldDelegate {
        override func viewDidLoad() {
         super.viewDidLoad()
         self.userName = aD.userName
-        
+
         self.numGamesPlayed = aD.numberGamesPlayed
         points.text = String(self.numGamesPlayed)
         
@@ -33,7 +33,7 @@ class endController: UIViewController, UITextFieldDelegate {
             self.endMissionButton.hidden = false
 
         }
-        
+
         // Do any additional setup after loading the view.
         
     }
@@ -46,7 +46,26 @@ class endController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var endMissionButton: UIButton!
     
-    @IBAction func endMission() {
+    @IBAction func endGame(sender: UIButton) {
+            aD.endGame = true
     }
+
+    
+    var VC : ViewController = ViewController()
+    
+    func debrief(){
+        
+        let concl : [PFObject]
+        let query = PFQuery(className: VC.STATEMENTS_DB)
+        query.whereKey("name", equalTo: "conclusion")
+        do{
+            try concl = query.findObjects()
+            let conclText = concl[0]["text"] as! String
+            
+            let utt = VC.makeSpeechUtterance(conclText)
+            VC.synth.speakUtterance(utt)
+        }catch{}
+    }
+
     
 }
