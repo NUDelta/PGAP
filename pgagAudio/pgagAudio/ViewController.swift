@@ -62,11 +62,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     // Timers
     var time_out_timer = NSTimer()
     var voice_timer = NSTimer()
-    var jump_timer = NSTimer()
 
     @IBAction func replayAudio(sender: UIButton) {
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.userName = aD.userName
@@ -130,7 +129,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         print("Timed Out")
         time_out_timer.invalidate()
         voice_timer.invalidate()
-        jump_timer.invalidate()
         self.activityManager.stopActivityUpdates()
         self.stopAccelerometer()
 
@@ -149,7 +147,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         print("game Succeeded")
         time_out_timer.invalidate()
         voice_timer.invalidate()
-        jump_timer.invalidate()
         self.activityManager.stopActivityUpdates()
         self.motionManager.stopAccelerometerUpdates()
         recorder.stop()
@@ -280,23 +277,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         self.motionMan.stopAccelerometerUpdates()
     }
 
-
-///////////
-
-//    func isJumping() {
-//        print("checking for a jump")
-//        motionManager.startAccelerometerUpdates()
-//        jump_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("jumpTimerCallback"), userInfo: nil, repeats: true)
-//    }
-//
-//    func jumpTimerCallback() {
-//        if let accelerometerData = motionManager.accelerometerData {
-//            if (accelerometerData.acceleration.x > 1) || (accelerometerData.acceleration.y > 1) || (accelerometerData.acceleration.z > 1) {
-//                gameSucceeded()
-//            }
-//        }
-//    }
-
     func isStationary() {
 
         var standingTimer = NSTimer()
@@ -308,7 +288,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if(data!.stationary == true){
                         print("Stationary!")
-                        standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+                        if (!standingTimer.valid) {
+                            standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+                        }
                     } else if (data!.walking == true){
                         print("Not Stationary")
                         standingTimer.invalidate()
@@ -658,6 +640,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     }
 
+    
+    ///////////
+    
+    //    func isJumping() {
+    //        print("checking for a jump")
+    //        motionManager.startAccelerometerUpdates()
+    //        jump_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("jumpTimerCallback"), userInfo: nil, repeats: true)
+    //    }
+    //
+    //    func jumpTimerCallback() {
+    //        if let accelerometerData = motionManager.accelerometerData {
+    //            if (accelerometerData.acceleration.x > 1) || (accelerometerData.acceleration.y > 1) || (accelerometerData.acceleration.z > 1) {
+    //                gameSucceeded()
+    //            }
+    //        }
+    //    }
 
 
     //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
