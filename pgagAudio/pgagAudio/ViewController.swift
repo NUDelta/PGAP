@@ -136,6 +136,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         print("Timed Out")
         time_out_timer.invalidate()
         voice_timer.invalidate()
+        standingTimer.invalidate()
         self.activityManager.stopActivityUpdates()
         self.stopAccelerometer()
         
@@ -159,6 +160,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         print("game Succeeded")
         time_out_timer.invalidate()
         voice_timer.invalidate()
+        standingTimer.invalidate()
         
         self.Jtimer.invalidate()
         self.motionMan.stopAccelerometerUpdates()
@@ -291,30 +293,72 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         self.motionMan.stopAccelerometerUpdates()
     }
 
+//    func isStationary() {
+//
+//        var standingTimer = NSTimer()
+//        print("IS IT WORKING?")
+//
+//        if(CMMotionActivityManager.isActivityAvailable()){
+//            print("WORKING")
+//            self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    if(data!.stationary == true){
+//                        print("Stationary!")
+//                        if (!standingTimer.valid) {
+//                            standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+//                        }
+//                    } else if (data!.walking == true){
+//                        print("Not Stationary")
+//                        standingTimer.invalidate()
+//                    }
+//                })
+//
+//            })
+//        }
+//    }
+    
+    var standingTimer = NSTimer()
+    var timeStanding = 0.0
+    var standing = false
+
     func isStationary() {
-
-        var standingTimer = NSTimer()
+        timeStanding = 0.0
+        standing = false
         print("IS IT WORKING?")
-
+        standingTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("standingTime"), userInfo: nil, repeats: false)
+        
         if(CMMotionActivityManager.isActivityAvailable()){
             print("WORKING")
             self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if(data!.stationary == true){
                         print("Stationary!")
-                        if (!standingTimer.valid) {
-                            standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
-                        }
+                        self.standing = true
                     } else if (data!.walking == true){
                         print("Not Stationary")
-                        standingTimer.invalidate()
+                        self.standing = false
                     }
                 })
-
+                
             })
         }
     }
-
+    
+    func standingTime() {
+        if standing {
+            timeStanding += 0.1
+        }
+        else {
+            timeStanding -= 0.1
+            print("BLAH")
+        }
+        if timeStanding > 4 {
+            gameSucceeded()
+        }
+        print(timeStanding)
+    }
+    
+    
 
     /*****************************
      // Delegates
@@ -455,7 +499,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         let query = PFQuery(className: OBJECT_DB)
         let user_loc = PFGeoPoint(location:loc)
-        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 0.01) //0.01
+        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 1) //0.01
         do {
             try objects_nearby = query.findObjects()
             for obj in objects_nearby {
