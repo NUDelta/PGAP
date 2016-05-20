@@ -120,10 +120,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             checkForJump()
         default:
             print("No action detection available")
+            voiceInstructions = true
+            
+            let instructions = makeSpeechUtterance("Once you've completed the task, say Roger that into your mic to confirm")
+            synth.speakUtterance(instructions)
+
             //checkForJump()
-            isVoice()
+            
         }
     }
+    
+    var voiceInstructions : Bool = false
 
     func timedOut() {
         print("Timed Out")
@@ -131,10 +138,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         voice_timer.invalidate()
         self.activityManager.stopActivityUpdates()
         self.stopAccelerometer()
+        
+        self.Jtimer.invalidate()
+        self.motionMan.stopAccelerometerUpdates()
+
 
         recorder.stop()
         self.currGame.userAttempt = false
         let failure_speech = makeSpeechUtterance(currGame.failure)
+        print(currGame.failure)
         synth.speakUtterance(failure_speech)
         needConcl = false
         
@@ -147,11 +159,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         print("game Succeeded")
         time_out_timer.invalidate()
         voice_timer.invalidate()
+        
+        self.Jtimer.invalidate()
+        self.motionMan.stopAccelerometerUpdates()
+        print("timers ok")
+
         self.activityManager.stopActivityUpdates()
-        self.motionManager.stopAccelerometerUpdates()
+
         recorder.stop()
         self.currGame.userAttempt = true
         let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+        print(currGame.conclusion)
         synth.speakUtterance(conclusion_speech)
         needConcl = false
         
@@ -187,9 +205,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
 
     let motionMan = CMMotionManager()
-    var Jtimer : NSTimer!
-    var resetTimer : NSTimer!
-    var doneWaiting : NSTimer!
+    var Jtimer = NSTimer()
+    var resetTimer = NSTimer()
 
     var numSpikes : Int = 0
     var oldX : Double = 0
@@ -231,17 +248,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         if(spiked){
             self.numSpikes++
         }
-        if(didJump()){
-            print("JUMPED")
-        }
-
+        didJump()
     }
 
     func didJump() -> Bool{
-        if(numSpikes > 15){
-            self.Jtimer?.invalidate()
-            resetTimer?.invalidate()
-            doneWaiting?.invalidate()
+        print(numSpikes)
+        if(numSpikes > 5){
+            resetTimer.invalidate()
+            self.resetCount()
+            print("JUMPED")
             gameSucceeded()
             return true
         }else{
@@ -260,8 +275,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         dif[1] = oldY + abs(y)
         dif[2] = oldZ + abs(z)
 
-
-        if(dif[0] + dif[1] + dif[2] > 5){
+        print(dif[0] + dif[1] + dif[2])
+        if(dif[0] + dif[1] + dif[2] > 4){
             //print("hype " + String(dif[0] + dif[1] + dif[2] ))
             return true
             //print(numSpikes)
@@ -272,8 +287,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
 
     func stopAccelerometer () {
-        self.Jtimer?.invalidate()
-        self.Jtimer = nil
+
         self.motionMan.stopAccelerometerUpdates()
     }
 
@@ -338,7 +352,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         switch currGameStatus {
         case .playing:
             print("playing")
-            if(needConcl){
+            if(voiceInstructions){
+                isVoice()
+                voiceInstructions = false
+            }else if(needConcl){
                 snippet_timer.invalidate()
                 waitForAction(currGame.affordance, duration: currGame.duration)
             }else{
@@ -397,6 +414,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             snippet_speech.preUtteranceDelay = 5
             snippet_speech.postUtteranceDelay = 2
             synth.speakUtterance(snippet_speech)
+            print("snippet")
+            print(snippet)
         }
     }
 
@@ -436,7 +455,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         let query = PFQuery(className: OBJECT_DB)
         let user_loc = PFGeoPoint(location:loc)
-        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 0.01)
+        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 0.01) //0.01
         do {
             try objects_nearby = query.findObjects()
             for obj in objects_nearby {
