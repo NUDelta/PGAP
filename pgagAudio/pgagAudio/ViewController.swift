@@ -429,7 +429,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case (9, _, _):
             game_speech.rate = 0.52
         default:
-            game_speech.rate = 0.3
+            game_speech.rate = 0.2
         }
         
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
