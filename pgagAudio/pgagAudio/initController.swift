@@ -35,7 +35,7 @@ class initController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.nameField.delegate = self
         self.userName = ""
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view.        
         
         getWeather("Evanston")
         

@@ -37,7 +37,6 @@
 		3E5F94C01C60FA5F00C8B9AD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94BF1C60FA5F00C8B9AD /* CoreLocation.framework */; };
 		3E5F94C21C60FA6600C8B9AD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C11C60FA6600C8B9AD /* QuartzCore.framework */; };
 		3E5F94C41C60FA6D00C8B9AD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C31C60FA6D00C8B9AD /* Security.framework */; };
-		3E5F94C61C60FA7300C8B9AD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C51C60FA7300C8B9AD /* StoreKit.framework */; };
 		3E5F94C81C60FA7F00C8B9AD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */; };
 		3E5F94CA1C60FA8800C8B9AD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94C91C60FA8800C8B9AD /* libz.tbd */; };
 		3E5F94CC1C60FA9000C8B9AD /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */; };
@@ -110,7 +109,6 @@
 		3E5F94BF1C60FA5F00C8B9AD /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3E5F94C11C60FA6600C8B9AD /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3E5F94C31C60FA6D00C8B9AD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		3E5F94C51C60FA7300C8B9AD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E5F94C91C60FA8800C8B9AD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		3E5F94CB1C60FA9000C8B9AD /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -138,7 +136,6 @@
 				3E5F94CC1C60FA9000C8B9AD /* libsqlite3.tbd in Frameworks */,
 				3E5F94CA1C60FA8800C8B9AD /* libz.tbd in Frameworks */,
 				3E5F94C81C60FA7F00C8B9AD /* SystemConfiguration.framework in Frameworks */,
-				3E5F94C61C60FA7300C8B9AD /* StoreKit.framework in Frameworks */,
 				3E5F94C41C60FA6D00C8B9AD /* Security.framework in Frameworks */,
 				3E5F94C21C60FA6600C8B9AD /* QuartzCore.framework in Frameworks */,
 				3E5F94C01C60FA5F00C8B9AD /* CoreLocation.framework in Frameworks */,
@@ -203,7 +200,6 @@
 				3ECF38021C89E99300FA25FD /* croppedMap.png */,
 				3ECF38001C89E6A700FA25FD /* croppedMap.jpg */,
 				3E5F94C71C60FA7F00C8B9AD /* SystemConfiguration.framework */,
-				3E5F94C51C60FA7300C8B9AD /* StoreKit.framework */,
 				3E5F94C31C60FA6D00C8B9AD /* Security.framework */,
 				3E5F94C11C60FA6600C8B9AD /* QuartzCore.framework */,
 				3E5F94BF1C60FA5F00C8B9AD /* CoreLocation.framework */,
@@ -334,10 +330,13 @@
 				TargetAttributes = {
 					3E4311D81C5EB0EC001FFFB0 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = W4E2C6X642;
+						DevelopmentTeam = PVV5F3U637;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 0;
 							};
 						};
 					};
@@ -519,7 +518,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -543,7 +542,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -558,7 +557,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "228df4d3-4dc3-45b4-9b57-f30e5c4da934";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -579,7 +578,7 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgagAudio;
+				PRODUCT_BUNDLE_IDENTIFIER = hsadfedu.northwestern.delta.pgagAudio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -599,7 +598,7 @@
 				INFOPLIST_FILE = pgagAudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.pgagAudio;
+				PRODUCT_BUNDLE_IDENTIFIER = hsadfedu.northwestern.delta.pgagAudio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

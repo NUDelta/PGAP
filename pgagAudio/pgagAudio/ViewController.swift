@@ -120,12 +120,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             checkForJump()
         default:
             print("No action detection available")
+            //checkForJump()
             voiceInstructions = true
             
             let instructions = makeSpeechUtterance("Once you've completed the task, say Roger that into your mic to confirm")
             synth.speakUtterance(instructions)
 
-            //checkForJump()
+            
             
         }
     }
@@ -141,6 +142,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         self.stopAccelerometer()
         
         self.Jtimer.invalidate()
+        self.resetTimer.invalidate()
         self.motionMan.stopAccelerometerUpdates()
 
 
@@ -163,6 +165,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         standingTimer.invalidate()
         
         self.Jtimer.invalidate()
+        self.resetTimer.invalidate()
         self.motionMan.stopAccelerometerUpdates()
         print("timers ok")
 
@@ -472,7 +475,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case (9, _, _):
             game_speech.rate = 0.52
         default:
-            game_speech.rate = 0.3
+            game_speech.rate = 0.2
         }
         
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
