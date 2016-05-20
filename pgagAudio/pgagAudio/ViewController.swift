@@ -120,12 +120,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             checkForJump()
         default:
             print("No action detection available")
+            //checkForJump()
             voiceInstructions = true
             
             let instructions = makeSpeechUtterance("Once you've completed the task, say Roger that into your mic to confirm")
             synth.speakUtterance(instructions)
 
-            //checkForJump()
+            
             
         }
     }
@@ -140,6 +141,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         self.stopAccelerometer()
         
         self.Jtimer.invalidate()
+        self.resetTimer.invalidate()
         self.motionMan.stopAccelerometerUpdates()
 
 
@@ -161,6 +163,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         voice_timer.invalidate()
         
         self.Jtimer.invalidate()
+        self.resetTimer.invalidate()
         self.motionMan.stopAccelerometerUpdates()
         print("timers ok")
 
@@ -453,7 +456,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         let query = PFQuery(className: OBJECT_DB)
         let user_loc = PFGeoPoint(location:loc)
-        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 0.01) //0.01
+        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 1) //0.01
         do {
             try objects_nearby = query.findObjects()
             for obj in objects_nearby {
