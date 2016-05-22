@@ -40,6 +40,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     let aD = UIApplication.sharedApplication().delegate as! AppDelegate
 
     var numGamesPlayed : Int!
+    var userDifficulty : Int = 1
 
     var userName : String = ""
     var firstLoad : Bool!
@@ -57,7 +58,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     var gamesPlayed:[String] = []
     var snippetQ: [String] = []
 
-    var currGame: (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, userAttempt: Bool?)! = nil
+    var currGame: (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, difficulty: Int, userAttempt: Bool?)! = nil
 
     // Timers
     var time_out_timer = NSTimer()
@@ -377,7 +378,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             // TODO Save location to DB
             print(currGameStatus)
 
-
             let objects = getObjects(currLocation!)
             let affordances = getAffordances(objects)
             let game = getGame(affordances, gamesPlayed: gamesPlayed)
@@ -388,6 +388,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     snippetQ.append(game!.snippet!)
                 }
                 gamesPlayed.append(game!.title)
+                userDifficulty = numGamesPlayed
             }
         }
     }
@@ -519,9 +520,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     }
 
-    func getAffordances(objects: [String]) -> [(affordance: String, obj: String, objName: String?)] {
+    func getAffordances(objects: [String]) -> [(affordance: String, obj: String, objName: String?, difficulty: Int)] {
         //print(objects)
-        var affordance_objs:[(affordance: String, obj: String, objName: String?)] = []
+        var affordance_objs:[(affordance: String, obj: String, objName: String?, difficulty: Int)] = []
         var affordance_names:[String] = []
 
         let query = PFQuery(className: MAPPING_DB)
@@ -533,7 +534,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             //print(obj_affordances)
             for a in obj_affordances {
                 if !(affordance_names.contains(a["affordance"] as! String)){
-                    affordance_objs.append((affordance: a["affordance"] as! String, obj: a["name"] as! String, objName: a["audioName"] as! String?))
+                    affordance_objs.append((affordance: a["affordance"] as! String, obj: a["name"] as! String, objName: a["audioName"] as! String?, a["difficulty"] as! Int))
                     affordance_names.append(a["affordance"] as! (String))
                 }
             }
@@ -541,8 +542,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         return affordance_objs
     }
 
-    func getGame(affordances: [(affordance: String, obj: String, objName: String?)], gamesPlayed: [String])
-        -> (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, userAttempt: Bool?)? {
+    func getGame(affordances: [(affordance: String, obj: String, objName: String?, difficulty: Int)], gamesPlayed: [String])
+        -> (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, difficulty: Int,  userAttempt: Bool?)? {
             var affordance_names:[String] = []
             for a in affordances {
                 affordance_names.append(a.affordance)
@@ -552,36 +553,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             query.whereKey("affordance", containedIn: affordance_names)
             query.whereKey("title", notContainedIn: gamesPlayed)
             query.whereKey("validated", equalTo: true)
-            query.limit = 1
+            query.limit = 5
 
             do {
                 var games_possible:[PFObject] = []
                 try games_possible = query.findObjects()
 
+                /// V Sloppy (FIX)
+                var likelyGame : (lg: PFObject?, lo: String, ld: Int) = (nil, "", 0)
+
                 // Not in order
                 // TODO - How to use gamesPlayed... is it Global or do array references work as intended?
-                if(!games_possible.isEmpty){
-                    let g = games_possible[0]
+                for g in games_possible {
                     var obj = ""
                     var objName = ""
-
                     for a in affordances {
                         if a.affordance == g["affordance"] as! String {
-                            obj = a.obj
-                            if a.objName != nil {
-                                objName = a.objName!
-                            }
-                            else {
-                                objName = obj
+                            if a.difficulty <= userDifficulty && a.difficulty > likelyGame.ld {
+                                obj = a.obj
+                                if a.objName != nil {
+                                    objName = a.objName!
+                                }
+                                else {
+                                    objName = obj
+                                }
+                                likelyGame = (g, objName, a.difficulty)
                             }
                         }
                     }
 
-                    var theGame = g["task"] as! String
+                    var theGame = likelyGame.lg!["task"] as! String
                     var range = theGame.rangeOfString("[OBJECT]")
 
                     while(range != nil){
-                        theGame.replaceRange(range!, with: objName )
+                        theGame.replaceRange(range!, with: likelyGame.lo )
                         range = theGame.rangeOfString("[OBJECT]")
 
                     }
@@ -589,7 +594,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     print(theGame)
 
 
-                    return (g["title"] as! String, theGame, g["conclusion"] as! String,  g["failure"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String, false)
+                    return (likelyGame.lg!["title"] as! String, theGame, likelyGame.lg!["conclusion"] as! String,  likelyGame.lg!["failure"] as! String, likelyGame.lg!["duration"] as! Int, likelyGame.lo, likelyGame.lg!["snippet"] as! String?, likelyGame.lg!["affordance"] as! String, likelyGame.ld, false)
                 }
 
 
