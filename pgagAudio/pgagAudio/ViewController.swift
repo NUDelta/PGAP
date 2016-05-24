@@ -85,6 +85,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         locationManager = CLLocationManager();
         self.locationManager.delegate = self;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter =  kCLDistanceFilterNone
+        print (locationManager.distanceFilter )
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
 
@@ -259,7 +261,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     func didJump() -> Bool{
         print(numSpikes)
-        if(numSpikes > 5){
+        if(numSpikes > 5 && time_out_timer.timeInterval > 2){
             resetTimer.invalidate()
             self.resetCount()
             print("JUMPED")
@@ -361,14 +363,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
         print(timeStanding)
     }
-    
-    
+
 
     /*****************************
      // Delegates
      ******************************/
+    
+    
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        manager.pausesLocationUpdatesAutomatically = false
+        
+        print("in location manager")
+        
         if (aD.endGame == true) {
             debrief()
         }
@@ -393,6 +400,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }
     }
 
+    func locationManagerDidPauseLocationUpdates(manager: CLLocationManager) {
+        print("paused")
+    
+    }
+    func locationManagerDidResumeLocationUpdates(manager: CLLocationManager) {
+    
+        print("resumed")
+
+    }
+    
+    
+    
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
 
         var snippet_timer = NSTimer()
@@ -451,6 +470,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
      // Game Queue Logic
      ******************************/
     func beginLooking() {
+        print("set to looking")
         currGameStatus = GameStatus.looking
     }
 
@@ -581,6 +601,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                             }
                         }
                     }
+                    
 
                     var theGame = likelyGame.lg!["task"] as! String
                     var range = theGame.rangeOfString("[OBJECT]")
