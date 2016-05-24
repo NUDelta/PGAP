@@ -40,6 +40,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     let aD = UIApplication.sharedApplication().delegate as! AppDelegate
 
     var numGamesPlayed : Int!
+    var userDifficulty : Int = 1
 
     var userName : String = ""
     var firstLoad : Bool!
@@ -57,16 +58,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     var gamesPlayed:[String] = []
     var snippetQ: [String] = []
 
-    var currGame: (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, userAttempt: Bool?)! = nil
+    var currGame: (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, difficulty: Int, userAttempt: Bool?)! = nil
 
     // Timers
     var time_out_timer = NSTimer()
     var voice_timer = NSTimer()
-    var jump_timer = NSTimer()
 
     @IBAction func replayAudio(sender: UIButton) {
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.userName = aD.userName
@@ -122,21 +122,35 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         default:
             print("No action detection available")
             //checkForJump()
-            isVoice()
+            voiceInstructions = true
+            
+            let instructions = makeSpeechUtterance("Once you've completed the task, say Roger that into your mic to confirm")
+            synth.speakUtterance(instructions)
+
+            
+            
         }
     }
+    
+    var voiceInstructions : Bool = false
 
     func timedOut() {
         print("Timed Out")
         time_out_timer.invalidate()
         voice_timer.invalidate()
-        jump_timer.invalidate()
+        standingTimer.invalidate()
         self.activityManager.stopActivityUpdates()
         self.stopAccelerometer()
+        
+        self.Jtimer.invalidate()
+        self.resetTimer.invalidate()
+        self.motionMan.stopAccelerometerUpdates()
+
 
         recorder.stop()
         self.currGame.userAttempt = false
         let failure_speech = makeSpeechUtterance(currGame.failure)
+        print(currGame.failure)
         synth.speakUtterance(failure_speech)
         needConcl = false
         
@@ -149,12 +163,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         print("game Succeeded")
         time_out_timer.invalidate()
         voice_timer.invalidate()
-        jump_timer.invalidate()
+        standingTimer.invalidate()
+        
+        self.Jtimer.invalidate()
+        self.resetTimer.invalidate()
+        self.motionMan.stopAccelerometerUpdates()
+        print("timers ok")
+
         self.activityManager.stopActivityUpdates()
-        self.motionManager.stopAccelerometerUpdates()
+
         recorder.stop()
         self.currGame.userAttempt = true
         let conclusion_speech = makeSpeechUtterance(currGame.conclusion)
+        print(currGame.conclusion)
         synth.speakUtterance(conclusion_speech)
         needConcl = false
         
@@ -190,9 +211,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
 
     let motionMan = CMMotionManager()
-    var Jtimer : NSTimer!
-    var resetTimer : NSTimer!
-    var doneWaiting : NSTimer!
+    var Jtimer = NSTimer()
+    var resetTimer = NSTimer()
 
     var numSpikes : Int = 0
     var oldX : Double = 0
@@ -234,17 +254,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         if(spiked){
             self.numSpikes++
         }
-        if(didJump()){
-            print("JUMPED")
-        }
-
+        didJump()
     }
 
     func didJump() -> Bool{
-        if(numSpikes > 15){
-            self.Jtimer?.invalidate()
-            resetTimer?.invalidate()
-            doneWaiting?.invalidate()
+        print(numSpikes)
+        if(numSpikes > 5){
+            resetTimer.invalidate()
+            self.resetCount()
+            print("JUMPED")
             gameSucceeded()
             return true
         }else{
@@ -263,8 +281,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         dif[1] = oldY + abs(y)
         dif[2] = oldZ + abs(z)
 
-
-        if(dif[0] + dif[1] + dif[2] > 5){
+        print(dif[0] + dif[1] + dif[2])
+        if(dif[0] + dif[1] + dif[2] > 4){
             //print("hype " + String(dif[0] + dif[1] + dif[2] ))
             return true
             //print(numSpikes)
@@ -275,50 +293,76 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
 
     func stopAccelerometer () {
-        self.Jtimer?.invalidate()
-        self.Jtimer = nil
+
         self.motionMan.stopAccelerometerUpdates()
     }
 
-
-///////////
-
-//    func isJumping() {
-//        print("checking for a jump")
-//        motionManager.startAccelerometerUpdates()
-//        jump_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("jumpTimerCallback"), userInfo: nil, repeats: true)
-//    }
+//    func isStationary() {
 //
-//    func jumpTimerCallback() {
-//        if let accelerometerData = motionManager.accelerometerData {
-//            if (accelerometerData.acceleration.x > 1) || (accelerometerData.acceleration.y > 1) || (accelerometerData.acceleration.z > 1) {
-//                gameSucceeded()
-//            }
+//        var standingTimer = NSTimer()
+//        print("IS IT WORKING?")
+//
+//        if(CMMotionActivityManager.isActivityAvailable()){
+//            print("WORKING")
+//            self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    if(data!.stationary == true){
+//                        print("Stationary!")
+//                        if (!standingTimer.valid) {
+//                            standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+//                        }
+//                    } else if (data!.walking == true){
+//                        print("Not Stationary")
+//                        standingTimer.invalidate()
+//                    }
+//                })
+//
+//            })
 //        }
 //    }
+    
+    var standingTimer = NSTimer()
+    var timeStanding = 0.0
+    var standing = false
 
     func isStationary() {
-
-        var standingTimer = NSTimer()
+        timeStanding = 0.0
+        standing = false
         print("IS IT WORKING?")
-
+        standingTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("standingTime"), userInfo: nil, repeats: false)
+        
         if(CMMotionActivityManager.isActivityAvailable()){
             print("WORKING")
             self.activityManager.startActivityUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (data: CMMotionActivity?) -> Void in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if(data!.stationary == true){
                         print("Stationary!")
-                        standingTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+                        self.standing = true
                     } else if (data!.walking == true){
                         print("Not Stationary")
-                        standingTimer.invalidate()
+                        self.standing = false
                     }
                 })
-
+                
             })
         }
     }
-
+    
+    func standingTime() {
+        if standing {
+            timeStanding += 0.1
+        }
+        else {
+            timeStanding -= 0.1
+            print("BLAH")
+        }
+        if timeStanding > 4 {
+            gameSucceeded()
+        }
+        print(timeStanding)
+    }
+    
+    
 
     /*****************************
      // Delegates
@@ -334,7 +378,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             // TODO Save location to DB
             print(currGameStatus)
 
-
             let objects = getObjects(currLocation!)
             let affordances = getAffordances(objects)
             let game = getGame(affordances, gamesPlayed: gamesPlayed)
@@ -345,6 +388,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     snippetQ.append(game!.snippet!)
                 }
                 gamesPlayed.append(game!.title)
+                userDifficulty = numGamesPlayed
             }
         }
     }
@@ -356,13 +400,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         switch currGameStatus {
         case .playing:
             print("playing")
-            if(needConcl){
+            if(voiceInstructions){
+                isVoice()
+                voiceInstructions = false
+            }else if(needConcl){
                 snippet_timer.invalidate()
                 waitForAction(currGame.affordance, duration: currGame.duration)
             }else{
                 //after conclusion finishes playing
                 needConcl = true
-                snippet_timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "playSnippet", userInfo: nil, repeats: false)
+                if (!snippet_timer.valid){
+                    snippet_timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "playSnippet", userInfo: nil, repeats: false)
+                }
                 _ = NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: "beginLooking", userInfo: nil, repeats: false)
             }
         case .snippet:
@@ -413,6 +462,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             snippet_speech.preUtteranceDelay = 5
             snippet_speech.postUtteranceDelay = 2
             synth.speakUtterance(snippet_speech)
+            print("snippet")
+            print(snippet)
         }
     }
 
@@ -425,7 +476,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         case (9, _, _):
             game_speech.rate = 0.52
         default:
-            game_speech.rate = 0.3
+            game_speech.rate = 0.2
         }
         
         game_speech.voice = AVSpeechSynthesisVoice(language: "en-ZA")
@@ -452,7 +503,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         let query = PFQuery(className: OBJECT_DB)
         let user_loc = PFGeoPoint(location:loc)
-        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 0.01)
+        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 1) //0.01
         do {
             try objects_nearby = query.findObjects()
             for obj in objects_nearby {
@@ -469,9 +520,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     }
 
-    func getAffordances(objects: [String]) -> [(affordance: String, obj: String)] {
+    func getAffordances(objects: [String]) -> [(affordance: String, obj: String, objName: String?, difficulty: Int)] {
         //print(objects)
-        var affordance_objs:[(affordance: String, obj: String)] = []
+        var affordance_objs:[(affordance: String, obj: String, objName: String?, difficulty: Int)] = []
         var affordance_names:[String] = []
 
         let query = PFQuery(className: MAPPING_DB)
@@ -483,7 +534,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             //print(obj_affordances)
             for a in obj_affordances {
                 if !(affordance_names.contains(a["affordance"] as! String)){
-                    affordance_objs.append((affordance: a["affordance"] as! String, obj: a["name"] as! String))
+                    affordance_objs.append((affordance: a["affordance"] as! String, obj: a["name"] as! String, objName: a["audioName"] as! String?, a["difficulty"] as! Int))
                     affordance_names.append(a["affordance"] as! (String))
                 }
             }
@@ -491,8 +542,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         return affordance_objs
     }
 
-    func getGame(affordances: [(affordance: String, obj: String)], gamesPlayed: [String])
-        -> (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, userAttempt: Bool?)? {
+    func getGame(affordances: [(affordance: String, obj: String, objName: String?, difficulty: Int)], gamesPlayed: [String])
+        -> (title: String, task: String, conclusion: String, failure: String, duration: Int, obj: String, snippet: String?, affordance: String, difficulty: Int,  userAttempt: Bool?)? {
             var affordance_names:[String] = []
             for a in affordances {
                 affordance_names.append(a.affordance)
@@ -502,29 +553,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             query.whereKey("affordance", containedIn: affordance_names)
             query.whereKey("title", notContainedIn: gamesPlayed)
             query.whereKey("validated", equalTo: true)
-            query.limit = 1
+            query.limit = 5
 
             do {
                 var games_possible:[PFObject] = []
                 try games_possible = query.findObjects()
 
+                /// V Sloppy (FIX)
+                var likelyGame : (lg: PFObject?, lo: String, ld: Int) = (nil, "", 0)
+
                 // Not in order
                 // TODO - How to use gamesPlayed... is it Global or do array references work as intended?
-                if(!games_possible.isEmpty){
-                    let g = games_possible[0]
+                for g in games_possible {
                     var obj = ""
-
+                    var objName = ""
                     for a in affordances {
                         if a.affordance == g["affordance"] as! String {
-                            obj = a.obj
+                            if a.difficulty <= userDifficulty && a.difficulty > likelyGame.ld {
+                                obj = a.obj
+                                if a.objName != nil {
+                                    objName = a.objName!
+                                }
+                                else {
+                                    objName = obj
+                                }
+                                likelyGame = (g, objName, a.difficulty)
+                            }
                         }
                     }
 
-                    var theGame = g["task"] as! String
+                    var theGame = likelyGame.lg!["task"] as! String
                     var range = theGame.rangeOfString("[OBJECT]")
 
                     while(range != nil){
-                        theGame.replaceRange(range!, with: obj )
+                        theGame.replaceRange(range!, with: likelyGame.lo )
                         range = theGame.rangeOfString("[OBJECT]")
 
                     }
@@ -532,7 +594,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                     print(theGame)
 
 
-                    return (g["title"] as! String, theGame, g["conclusion"] as! String,  g["failure"] as! String, g["duration"] as! Int, obj, g["snippet"] as! String?, g["affordance"] as! String, false)
+                    return (likelyGame.lg!["title"] as! String, theGame, likelyGame.lg!["conclusion"] as! String,  likelyGame.lg!["failure"] as! String, likelyGame.lg!["duration"] as! Int, likelyGame.lo, likelyGame.lg!["snippet"] as! String?, likelyGame.lg!["affordance"] as! String, likelyGame.ld, false)
                 }
 
 
@@ -658,6 +720,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     }
 
+    
+    ///////////
+    
+    //    func isJumping() {
+    //        print("checking for a jump")
+    //        motionManager.startAccelerometerUpdates()
+    //        jump_timer = NSTimer.scheduledTimerWithTimeInterval(0.02, target: self, selector: Selector("jumpTimerCallback"), userInfo: nil, repeats: true)
+    //    }
+    //
+    //    func jumpTimerCallback() {
+    //        if let accelerometerData = motionManager.accelerometerData {
+    //            if (accelerometerData.acceleration.x > 1) || (accelerometerData.acceleration.y > 1) || (accelerometerData.acceleration.z > 1) {
+    //                gameSucceeded()
+    //            }
+    //        }
+    //    }
 
 
     //    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
