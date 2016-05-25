@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="G0Q-iG-Oux">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="G0Q-iG-Oux">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -360,37 +360,69 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPM-DW-gGk">
-                                <rect key="frame" x="238" y="504" width="125" height="34"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="croppedMap.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="58b-lb-cpk">
+                                <rect key="frame" x="-757" y="20" width="2114" height="463"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7GY-69-pld">
+                                <rect key="frame" x="232" y="546" width="137" height="34"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                                <state key="normal" title="Check Progress">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="contentEdgeInsets" minX="27" minY="8" maxX="27" maxY="8"/>
+                                <state key="normal" title="End Mission">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="0Gs-Cm-hFN" kind="show" animates="NO" id="t6w-Jy-mUc"/>
+                                    <action selector="endMission" destination="gc1-Cp-Njm" eventType="touchUpInside" id="7Va-TA-cxw"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="croppedMap.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="58b-lb-cpk">
-                                <rect key="frame" x="-757" y="20" width="2114" height="464"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHE-Vg-yNF">
-                                <rect key="frame" x="380" y="506" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="replayAudio:" destination="gc1-Cp-Njm" eventType="touchUpInside" id="bCX-Y1-Z2f"/>
-                                </connections>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Points:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pkb-TG-ddn">
+                                <rect key="frame" x="253" y="504" width="94" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uuk-S7-Vpb">
+                                <rect key="frame" x="380" y="491" width="26" height="47"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="39"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="IPM-DW-gGk" firstAttribute="centerX" secondItem="p6A-JW-LtT" secondAttribute="centerX" id="SRj-KU-FMp"/>
-                            <constraint firstItem="nfp-dP-6D2" firstAttribute="top" secondItem="IPM-DW-gGk" secondAttribute="bottom" constant="62" id="Xq7-pO-vLo"/>
+                            <constraint firstItem="Uuk-S7-Vpb" firstAttribute="centerY" secondItem="Pkb-TG-ddn" secondAttribute="centerY" id="0va-fo-5rz"/>
+                            <constraint firstItem="Pkb-TG-ddn" firstAttribute="top" secondItem="58b-lb-cpk" secondAttribute="bottom" constant="21" id="Apr-fm-vDh"/>
+                            <constraint firstItem="Uuk-S7-Vpb" firstAttribute="leading" secondItem="Pkb-TG-ddn" secondAttribute="trailing" constant="9" id="Jf9-iQ-aD6"/>
+                            <constraint firstItem="Uuk-S7-Vpb" firstAttribute="centerY" secondItem="Pkb-TG-ddn" secondAttribute="centerY" id="QId-Nj-hia"/>
+                            <constraint firstItem="Pkb-TG-ddn" firstAttribute="leading" secondItem="7GY-69-pld" secondAttribute="leading" id="Ugj-DZ-cxz"/>
+                            <constraint firstItem="nfp-dP-6D2" firstAttribute="top" secondItem="Uuk-S7-Vpb" secondAttribute="bottom" constant="77" id="ZtZ-Pz-js1"/>
+                            <constraint firstItem="7GY-69-pld" firstAttribute="top" secondItem="Pkb-TG-ddn" secondAttribute="bottom" constant="36" id="aA7-hX-3gl"/>
+                            <constraint firstItem="7GY-69-pld" firstAttribute="top" secondItem="Pkb-TG-ddn" secondAttribute="bottom" constant="21" id="e2h-fu-I3l"/>
                             <constraint firstItem="58b-lb-cpk" firstAttribute="centerX" secondItem="p6A-JW-LtT" secondAttribute="centerX" id="i1h-Ac-6CJ"/>
+                            <constraint firstItem="Pkb-TG-ddn" firstAttribute="centerX" secondItem="p6A-JW-LtT" secondAttribute="centerX" id="k6D-yh-6WQ"/>
+                            <constraint firstItem="nfp-dP-6D2" firstAttribute="top" secondItem="7GY-69-pld" secondAttribute="bottom" constant="20" id="kVN-KH-4IB"/>
+                            <constraint firstItem="Uuk-S7-Vpb" firstAttribute="leading" secondItem="Pkb-TG-ddn" secondAttribute="trailing" constant="9" id="l9W-4t-NaK"/>
+                            <constraint firstItem="Pkb-TG-ddn" firstAttribute="leading" secondItem="p6A-JW-LtT" secondAttribute="leading" constant="251" id="lPU-JT-I78"/>
                             <constraint firstItem="58b-lb-cpk" firstAttribute="top" secondItem="fvS-3p-h1J" secondAttribute="bottom" id="n3h-rq-POa"/>
-                            <constraint firstItem="IPM-DW-gGk" firstAttribute="top" secondItem="58b-lb-cpk" secondAttribute="bottom" constant="20" id="sR1-Gw-0v8"/>
+                            <constraint firstItem="7GY-69-pld" firstAttribute="centerX" secondItem="p6A-JW-LtT" secondAttribute="centerX" id="pNX-IA-wG5"/>
+                            <constraint firstItem="7GY-69-pld" firstAttribute="centerX" secondItem="p6A-JW-LtT" secondAttribute="centerX" id="u1W-pE-TiW"/>
+                            <constraint firstItem="Pkb-TG-ddn" firstAttribute="top" secondItem="58b-lb-cpk" secondAttribute="bottom" constant="7" id="ubc-vZ-Jpt"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Ugj-DZ-cxz"/>
+                                <exclude reference="lPU-JT-I78"/>
+                                <exclude reference="ubc-vZ-Jpt"/>
+                                <exclude reference="aA7-hX-3gl"/>
+                                <exclude reference="u1W-pE-TiW"/>
+                                <exclude reference="ZtZ-Pz-js1"/>
+                                <exclude reference="0va-fo-5rz"/>
+                                <exclude reference="l9W-4t-NaK"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="pointsLabel" destination="Uuk-S7-Vpb" id="hDd-A6-nOE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="riT-zY-key" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -402,6 +434,6 @@
         <image name="croppedMap.png" width="2114" height="2474"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Xmc-FC-nKP"/>
+        <segue reference="7vm-oH-gEB"/>
     </inferredMetricsTieBreakers>
 </document>

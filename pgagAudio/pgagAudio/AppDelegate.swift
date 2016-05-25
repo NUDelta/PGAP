@@ -32,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
 
-        self.numberGamesPlayed = 0
         self.userName = ""
         self.firstLoad = true
         self.endGame = false

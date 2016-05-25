@@ -39,7 +39,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     let aD = UIApplication.sharedApplication().delegate as! AppDelegate
 
-    var numGamesPlayed : Int!
+    @IBOutlet weak var pointsLabel: UILabel!
+    var numGamesPlayed = 0
     var userDifficulty : Int = 1
     var objectId : String = ""
 
@@ -64,21 +65,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     // Timers
     var time_out_timer = NSTimer()
     var voice_timer = NSTimer()
+        
 
-    @IBAction func replayAudio(sender: UIButton) {
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.userName = aD.userName
-        self.numGamesPlayed = aD.numberGamesPlayed
 
         if( aD.firstLoad! == true){
             breifing()
             aD.firstLoad = false
         }
 
-        print(numGamesPlayed)
+
 
         // Do any additional setup after loading the view.
 
@@ -122,7 +121,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             checkForJump()
         default:
             print("No action detection available")
-            //checkForJump()
+//            checkForJump()
             voiceInstructions = true
             
             let instructions = makeSpeechUtterance("Once you've completed the task, say Roger that into your mic to confirm")
@@ -202,7 +201,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         if (recorder.averagePowerForChannel(0) > -10) {
             time_out_timer.invalidate()
             voice_timer.invalidate()
-            _ = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+            _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
         }
     }
 
@@ -221,6 +220,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     var oldZ : Double = 0
 
     func checkForJump(){
+        print("calling check for jump")
 
         if self.motionMan.accelerometerActive {
             self.stopAccelerometer()
@@ -245,27 +245,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     }
 
     func pollAccel() {
+        print("calling poll accell")
         guard let dat = self.motionMan.accelerometerData else {return}
         self.receiveAccel(dat)
     }
 
     func receiveAccel(dat:CMAccelerometerData){
+        print("calling recieve accel")
 
         let spiked = didSpike(dat)
         if(spiked){
             self.numSpikes++
         }
+  
         didJump()
     }
 
     func didJump() -> Bool{
+        print("calling did jump")
         print(numSpikes)
         if(numSpikes > 5){
             resetTimer.invalidate()
             self.resetCount()
+            self.Jtimer.invalidate()
             print("JUMPED")
-            gameSucceeded()
+            _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: Selector("gameSucceeded"), userInfo: nil, repeats: false)
+            
             return true
+
         }else{
             return false
         }
@@ -283,7 +290,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         dif[2] = oldZ + abs(z)
 
         print(dif[0] + dif[1] + dif[2])
-        if(dif[0] + dif[1] + dif[2] > 4){
+        if(dif[0] + dif[1] + dif[2] > 5){
             //print("hype " + String(dif[0] + dif[1] + dif[2] ))
             return true
             //print(numSpikes)
@@ -330,7 +337,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         timeStanding = 0.0
         standing = false
         print("IS IT WORKING?")
-        standingTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("standingTime"), userInfo: nil, repeats: false)
+        standingTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("standingTime"), userInfo: nil, repeats: true)
         
         if(CMMotionActivityManager.isActivityAvailable()){
             print("WORKING")
@@ -351,19 +358,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     
     func standingTime() {
         if standing {
-            timeStanding += 0.1
+            timeStanding += 0.01
         }
         else {
-            timeStanding -= 0.1
+            if(timeStanding > 0){
+                timeStanding -= 0.01
+            }else{
+                timeStanding = 0
+            }
             print("BLAH")
         }
-        if timeStanding > 4 {
+        print(timeStanding)
+        if timeStanding > 1.5 && self.standingTimer.timeInterval > 2{
             gameSucceeded()
         }
         print(timeStanding)
     }
     
-    
+
 
     /*****************************
      // Delegates
@@ -371,7 +383,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if (aD.endGame == true) {
-            debrief()
+            self.currGameStatus = .postconclusion
+
         }
         if currGameStatus == .looking {
             print(manager.location?.coordinate)
@@ -390,9 +403,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
                 }
                 gamesPlayed.append(game!.title)
                 userDifficulty = numGamesPlayed
+
+                
             }
         }
     }
+    
+    
+  
+
+    
+    
+    @IBAction func endMission() {
+       
+        aD.endGame = true
+        let query = PFQuery(className: STATEMENTS_DB)
+        query.whereKey("name", equalTo: "conclusion")
+        do{
+            let concl = try query.findObjects()
+            var conclText = concl[0]["text"] as! String
+            conclText.replaceRange(conclText.rangeOfString("***")!, with: userName )
+            
+            let utt = makeSpeechUtterance(conclText)
+            synth.speakUtterance(utt)
+        }catch{}
+    }
+  
 
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
 
@@ -487,8 +523,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     func playGame() {
         print("Game Playing")
-        self.numGamesPlayed = numGamesPlayed + 1
-        aD.numberGamesPlayed = self.numGamesPlayed
+        self.numGamesPlayed = self.numGamesPlayed + 1
         currGameStatus = GameStatus.playing
 
         player = makeAudioPlayer("beep", type: "wav")
@@ -506,7 +541,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
         let query = PFQuery(className: OBJECT_DB)
         let user_loc = PFGeoPoint(location:loc)
-        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 1) //0.01
+        query.whereKey("location", nearGeoPoint: user_loc, withinMiles: 0.01) //0.01
         do {
             try objects_nearby = query.findObjects()
             for obj in objects_nearby {
@@ -640,24 +675,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         }catch{}
     }
 
-    @IBAction func debrief() {
-        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Word)
-        player.stop()
-        locationManager.stopUpdatingLocation()
-        currGameStatus = GameStatus.postconclusion
-        print("Conclusion")
-        let concl : [PFObject]
-        let query = PFQuery(className: STATEMENTS_DB)
-        query.whereKey("name", equalTo: "conclusion")
-        do{
-            try concl = query.findObjects()
-            let conclText = concl[0]["text"] as! String
 
-            let utt = makeSpeechUtterance(conclText)
-            utt.preUtteranceDelay = 1
-            synth.speakUtterance(utt)
-        }catch{}
-    }
 
     /*****************************
      // Audio Builders
@@ -719,10 +737,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
 
     func storeData(){
         print("storing data")
+        
+        pointsLabel.text = String(numGamesPlayed)
+
+        
         let userPlayData = PFObject(className: USER_DB)
         userPlayData["username"] = self.userName
         userPlayData["game_played"] = self.currGame.title
         userPlayData["object_played_on"] = self.currGame.obj
+        userPlayData["action_played"] = self.currGame.affordance
+        userPlayData["difficulty"] = self.currGame.difficulty
+        userPlayData["level"] = self.numGamesPlayed
+
         userPlayData["object_id"] = self.objectId
         userPlayData["location"] = PFGeoPoint(location:currLocation)
         userPlayData["succeded"] = self.currGame.userAttempt

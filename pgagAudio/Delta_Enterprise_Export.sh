@@ -3,4 +3,4 @@
 
 xcodebuild clean -project pgagAudio -configuration Release -alltargets
 xcodebuild archive -project pgagAudio.xcodeproj -scheme pgagAudio -archivePath pgagAudio.xcarchive
-xcodebuild -exportArchive -archivePath pgagAudio.xcarchive -exportPath pgagAudio -exportFormat ipa -exportProvisioningProfile "Delta"
+xcodebuild -exportArchive -archivePath pgagAudio.xcarchive -exportPath pgagAudio -exportFormat ipa -exportProvisioningProfile "Delta Lab P"
