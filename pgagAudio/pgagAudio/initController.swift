@@ -18,6 +18,14 @@ class initController: UIViewController, UITextFieldDelegate {
     let aD = UIApplication.sharedApplication().delegate as! AppDelegate
     
     
+    
+    
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if (segue.identifier == "beginMission"){
+//            
+//        }
+//    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
          textField.resignFirstResponder()
         

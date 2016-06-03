@@ -49,8 +49,6 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Thxs</string>
-	<key>NSLocationWhenInUse</key>
-	<string>Pls Loc</string>
 	<key>UIApplicationExitsOnSuspend</key>
 	<false/>
 	<key>UIBackgroundModes</key>

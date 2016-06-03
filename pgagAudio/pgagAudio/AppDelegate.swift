@@ -9,6 +9,9 @@
 import UIKit
 import Parse
 import Bolts
+import AVFoundation
+import CoreLocation
+import CoreMotion
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var userName : String!
     var firstLoad : Bool!
     var endGame: Bool!
+    
+    var locationManager: CLLocationManager!
+    var activityManager: CMMotionActivityManager!
+    var motionManager: CMMotionManager!
+    var recorder: AVAudioRecorder!
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -35,6 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.userName = ""
         self.firstLoad = true
         self.endGame = false
+        
+        self.locationManager = CLLocationManager()
+        self.activityManager  = CMMotionActivityManager()
+        self.motionManager = CMMotionManager()
+        self.recorder = AVAudioRecorder()
         
         return true
     }

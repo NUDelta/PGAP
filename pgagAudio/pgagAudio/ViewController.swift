@@ -51,8 +51,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
     let synth = AVSpeechSynthesizer()
     var player : AVAudioPlayer! = nil
 
+    
     var activityManager: CMMotionActivityManager!
     var motionManager: CMMotionManager!
+
     var recorder: AVAudioRecorder!
     var lowPassResults: Double = 0.0
 
@@ -77,7 +79,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             aD.firstLoad = false
         }
 
-
+        
+        
 
         // Do any additional setup after loading the view.
 
@@ -87,6 +90,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
+        
+        if #available(iOS 9.0, *) {
+            locationManager.allowsBackgroundLocationUpdates = true
+        } else {
+            // Fallback on earlier versions
+        }
 
         self.synth.pauseSpeakingAtBoundary(.Word)
         self.synth.delegate = self
@@ -94,6 +103,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
         createAudioRecorder()
         motionManager = CMMotionManager()
         activityManager = CMMotionActivityManager()
+        
 
     }
 
@@ -188,6 +198,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
      ******************************/
 
     func isVoice() {
+        
 
         recorder.prepareToRecord()
         recorder.meteringEnabled = true
@@ -687,31 +698,45 @@ class ViewController: UIViewController, CLLocationManagerDelegate, AVSpeechSynth
             let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
             try audioSession.setActive(true)
+            
+            audioSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if allowed {
+                        //everything
+                        
+                        
+                        //set up the URL for the audio file
+                        let documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
+                        let str =  documents.stringByAppendingPathComponent("recordTest.caf")
+                        let url = NSURL.fileURLWithPath(str as String)
+                        
+                        // make a dictionary to hold the recording settings so we can instantiate our AVAudioRecorder
+                        let recordSettings: [String : AnyObject] = [
+                            AVSampleRateKey:44100.0,
+                            AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
+                            AVLinearPCMBitDepthKey:16,
+                            AVEncoderAudioQualityKey:AVAudioQuality.Max.rawValue
+                        ]
+                        
+                        //Instantiate an AVAudioRecorder
+                        do {
+                            try self.recorder = AVAudioRecorder(URL:url, settings: recordSettings)
+                        }
+                        catch {
+                            
+                        }
+                        
+                    } else {
+                        print("CREATE AUDIO RECORDER EERRRRORORRR NOOO")
+                    }
+                }
+            }
         }
         catch {
         }
-
-        //set up the URL for the audio file
-        let documents: AnyObject = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.DocumentDirectory,  NSSearchPathDomainMask.UserDomainMask, true)[0]
-        let str =  documents.stringByAppendingPathComponent("recordTest.caf")
-        let url = NSURL.fileURLWithPath(str as String)
-
-        // make a dictionary to hold the recording settings so we can instantiate our AVAudioRecorder
-        let recordSettings: [String : AnyObject] = [
-            AVSampleRateKey:44100.0,
-            AVNumberOfChannelsKey:2,AVEncoderBitRateKey:12800,
-            AVLinearPCMBitDepthKey:16,
-            AVEncoderAudioQualityKey:AVAudioQuality.Max.rawValue
-        ]
-
-        //Instantiate an AVAudioRecorder
-        do {
-            try recorder = AVAudioRecorder(URL:url, settings: recordSettings)
-        }
-        catch {
-
-        }
+       
     }
+    
 
     func makeAudioPlayer(file: String, type: String) -> AVAudioPlayer {
 
